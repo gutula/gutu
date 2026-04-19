@@ -27,6 +27,10 @@ Historical entries may reference optional plugin packages that were part of earl
 - Updated workspace discovery tooling so task runners now read workspace patterns from the current root `package.json`, which lets generated consumer workspaces use vendored framework packages cleanly.
 - Added a public `moki` script alias at the repo root and a `moki` bin alias in `@platform/cli`.
 - Updated the README install story to recommend creating a separate clean workspace rather than coding directly in the framework source repository.
+- Split the long plugin/framework authoring content out of the root README into dedicated docs:
+  - `docs/plugin-authoring.md`
+  - `docs/library-authoring.md`
+- Updated `docs/README.md` and the root README reading list to point to the new authoring guides.
 - Commands run during this wave:
   - `bun test framework/core/cli/tests/unit/package.test.ts`
   - `bun run moki -- --help`

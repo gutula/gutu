@@ -87,8 +87,7 @@ Optional domain plugins, connectors, migration packs, verticals, and tested dist
 - [Getting Started](#getting-started)
 - [Common Commands](#common-commands)
 - [How To Build With The Framework](#how-to-build-with-the-framework)
-- [How To Create A Plugin](#how-to-create-a-plugin)
-- [How To Create A Framework Package](#how-to-create-a-framework-package)
+- [Authoring Guides](#authoring-guides)
 - [How To Create A Runnable App](#how-to-create-a-runnable-app)
 - [How To Create Connectors Migration Packs And Bundles](#how-to-create-connectors-migration-packs-and-bundles)
 - [Security And Governance Model](#security-and-governance-model)
@@ -1214,322 +1213,36 @@ Use this rule-of-thumb:
 
 ---
 
-## How To Create A Plugin
+## Authoring Guides
 
-### Step 1: create the manifest
+The main README is the public front door. The deeper “how to build on Moki” guides now live in dedicated docs so plugin authors and library developers do not have to mine one giant handbook.
 
-Plugins use the manifest DSL from `@platform/kernel`.
+### For plugin authors
 
-Example:
+Use [docs/plugin-authoring.md](./docs/plugin-authoring.md) for:
 
-```ts
-import { definePackage } from "@platform/kernel";
+- plugin manifests
+- resources and actions
+- understanding docs
+- admin contributions
+- connector, migration-pack, and bundle guidance
+- plugin testing expectations
 
-export default definePackage({
-  id: "dashboard-core",
-  kind: "app",
-  version: "0.1.0",
-  displayName: "Dashboard Core",
-  description: "Dashboard, widget, and saved view backbone.",
-  dependsOn: ["auth-core", "org-tenant-core", "role-policy-core", "audit-core"],
-  providesCapabilities: ["dashboard.views"],
-  requestedCapabilities: ["ui.register.admin", "api.rest.mount", "data.write.dashboard"],
-  ownsData: ["dashboard.views"],
-  trustTier: "first-party",
-  reviewTier: "R1",
-  isolationProfile: "same-process-trusted",
-  compatibility: {
-    framework: "^0.1.0",
-    runtime: "bun>=1.3.12",
-    db: ["postgres", "sqlite"]
-  }
-});
-```
+### For framework and library developers
 
-### Step 2: scaffold the understanding pack
+Use [docs/library-authoring.md](./docs/library-authoring.md) for:
 
-```bash
-bun run platform -- docs scaffold --target framework/builtin-plugins/dashboard-core
-```
+- framework package boundaries
+- wrapper-first design
+- public API discipline
+- reusable package rules
+- when to promote helpers into libraries
 
-At minimum, fill in:
+### Keep this rule in mind
 
-- `docs/AGENT_CONTEXT.md`
-- `docs/BUSINESS_RULES.md`
-- `docs/FLOWS.md`
-- `docs/GLOSSARY.md`
-- `docs/EDGE_CASES.md`
-- `docs/MANDATORY_STEPS.md`
-
-### Step 3: define resources
-
-Resources describe typed data, field metadata, and admin affordances.
-
-```ts
-import { defineResource } from "@platform/schema";
-import { z } from "zod";
-
-export const ContactResource = defineResource({
-  id: "crm.contacts",
-  description: "A tenant-scoped person record used for lead, customer, and relationship workflows.",
-  businessPurpose: "Acts as the canonical person-level CRM record that sales, marketing, support, and account teams reference.",
-  invariants: [
-    "A contact always belongs to exactly one tenant.",
-    "A contact can be archived without losing audit history."
-  ],
-  contract: z.object({
-    id: z.string().uuid(),
-    tenantId: z.string().uuid(),
-    fullName: z.string().min(2),
-    email: z.string().email().optional(),
-    lifecycleStatus: z.enum(["lead", "active", "customer", "inactive"]),
-    createdAt: z.string()
-  }),
-  fields: {
-    fullName: {
-      searchable: true,
-      sortable: true,
-      label: "Name",
-      description: "Operator-facing display name for the person.",
-      businessMeaning: "The canonical display value used in CRM, activity, and approval surfaces.",
-      sourceOfTruth: true
-    },
-    email: {
-      searchable: true,
-      sortable: true,
-      label: "Email",
-      description: "Primary email used for contact, deduplication, and communication routing."
-    },
-    lifecycleStatus: {
-      filter: "select",
-      label: "Lifecycle",
-      description: "Commercial relationship stage used by segmentation and pipeline flows.",
-      requiredForFlows: ["lead-conversion", "campaign-targeting"]
-    }
-  },
-  admin: {
-    autoCrud: true,
-    defaultColumns: ["fullName", "email", "lifecycleStatus"]
-  }
-});
-```
-
-### Step 4: define actions
-
-Actions are typed commands with permission and audit semantics.
-
-```ts
-import { defineAction } from "@platform/schema";
-import { z } from "zod";
-
-export const archiveContactAction = defineAction({
-  id: "crm.contacts.archive",
-  description: "Archives a contact for active operations while keeping historical references intact.",
-  businessPurpose: "Removes stale contacts from active pipelines without destroying audit or reporting history.",
-  input: z.object({
-    contactId: z.string().uuid(),
-    tenantId: z.string().uuid(),
-    currentStatus: z.enum(["lead", "active", "customer", "inactive"]),
-    reason: z.string().min(3).optional()
-  }),
-  output: z.object({
-    ok: z.literal(true),
-    nextStatus: z.literal("inactive")
-  }),
-  permission: "crm.contacts.archive",
-  idempotent: true,
-  audit: true,
-  preconditions: [
-    "The caller must have archive permission for the current tenant.",
-    "The contact must already exist."
-  ],
-  mandatorySteps: [
-    "Record why the contact is being archived.",
-    "Emit an audit event for the status change."
-  ],
-  sideEffects: [
-    "The contact leaves active operational default views.",
-    "Downstream workflows may stop offering this contact for new outreach."
-  ],
-  postconditions: [
-    "Historical references to the contact remain valid."
-  ],
-  failureModes: [
-    "Permission denied.",
-    "Unknown contact."
-  ],
-  forbiddenShortcuts: [
-    "Do not delete the record instead of archiving it."
-  ],
-  handler: async ({ input }) => {
-    return {
-      ok: true,
-      nextStatus: "inactive"
-    };
-  }
-});
-```
-
-### Step 5: register admin surfaces if the plugin belongs in the admin workbench
-
-```ts
-import {
-  defineAdminNav,
-  defineCommand,
-  definePage,
-  defineReport,
-  defineSearchProvider,
-  defineWidget,
-  defineWorkspace
-} from "@platform/admin-contracts";
-
-export const adminContributions = {
-  workspaces: [
-    defineWorkspace({
-      id: "crm",
-      label: "CRM",
-      permission: "crm.contacts.read",
-      homePath: "/admin/workspace/crm"
-    })
-  ],
-  nav: [
-    defineAdminNav({
-      workspace: "crm",
-      group: "customers",
-      items: [
-        {
-          id: "crm.contacts",
-          label: "Contacts",
-          to: "/admin/crm/contacts",
-          permission: "crm.contacts.read"
-        }
-      ]
-    })
-  ],
-  pages: [
-    definePage({
-      id: "crm.contacts.list",
-      kind: "list",
-      route: "/admin/crm/contacts",
-      label: "Contacts",
-      workspace: "crm",
-      permission: "crm.contacts.read"
-    })
-  ],
-  widgets: [
-    defineWidget({
-      id: "crm.pipeline-summary",
-      kind: "kpi",
-      shell: "admin",
-      slot: "dashboard.crm",
-      permission: "crm.contacts.read"
-    })
-  ],
-  reports: [
-    defineReport({
-      id: "crm.pipeline.report",
-      kind: "tabular",
-      route: "/admin/reports/crm-pipeline",
-      label: "CRM Pipeline",
-      permission: "crm.contacts.read",
-      query: "crm.pipeline.summary",
-      filters: [{ key: "ownerUserId", type: "user-select" }],
-      export: ["csv", "xlsx"]
-    })
-  ],
-  commands: [
-    defineCommand({
-      id: "crm.contacts.open",
-      label: "Open CRM Contacts",
-      permission: "crm.contacts.read",
-      href: "/admin/crm/contacts"
-    })
-  ],
-  searchProviders: [
-    defineSearchProvider({
-      id: "crm.contacts.search",
-      scopes: ["contacts"],
-      permission: "crm.contacts.read",
-      search(query) {
-        return [
-          {
-            id: `crm.contacts:${query}`,
-            label: `Contact ${query}`,
-            href: "/admin/crm/contacts",
-            kind: "resource"
-          }
-        ];
-      }
-    })
-  ]
-};
-```
-
-### Step 6: add tests
-
-A real plugin normally needs:
-
-- unit tests for services and helpers,
-- contract tests for manifests/resources/actions/admin contributions,
-- integration tests where DB/API/workflows matter,
-- UI/browser tests when the plugin contributes critical shell surfaces.
-
----
-
-## How To Create A Framework Package
-
-Framework packages live in `framework/core/*` and `framework/libraries/*`.
-
-Use them for:
-
-- runtime wrappers,
-- shell wrappers,
-- contract DSLs,
-- platform-wide services,
-- low-level adapters,
-- reusable framework logic.
-
-### Good candidates for `framework/core/*` or `framework/libraries/*`
-
-- routing wrappers
-- query/cache helpers
-- data-table wrappers
-- form wrappers
-- chart wrappers
-- editor wrappers
-- config/runtime helpers
-- auth or DB adapters
-- telemetry utilities
-
-### Package design rules
-
-- keep the public API narrow and typed,
-- hide raw vendor details where possible,
-- export stable helpers,
-- keep tests close,
-- prefer deterministic defaults over flexible but ambiguous behavior.
-
-### Example package responsibilities
-
-| Package | Responsibility |
-| --- | --- |
-| `@platform/ui` | shared primitives, icons, toasts, empty/loading states |
-| `@platform/data-table` | saved views, virtualization, bulk actions, selection |
-| `@platform/form` | RHF + Zod integration, field registry, dirty guards |
-| `@platform/chart` | ECharts presets and typed chart builders |
-| `@platform/router` | typed routes, auth guards, safe deep links |
-| `@platform/query` | query keys, invalidation, optimistic mutation helpers |
-
-### When not to create a framework package
-
-Do not add a new framework library just because one plugin needs a tiny helper.
-
-Create a framework package when:
-
-- multiple plugins need it,
-- it defines a platform contract,
-- it standardizes a stack choice,
-- or it protects the rest of the repo from vendor sprawl.
+- business and installable behavior belongs in plugins
+- reusable contracts and wrappers belong in libraries
+- runnable hosts and verification surfaces belong in apps
 
 ---
 
@@ -1929,6 +1642,8 @@ The repository supports:
 ### Supporting docs
 
 - [docs/README.md](./docs/README.md)
+- [docs/plugin-authoring.md](./docs/plugin-authoring.md)
+- [docs/library-authoring.md](./docs/library-authoring.md)
 - [docs/admin-ui-stack.md](./docs/admin-ui-stack.md)
 - [docs/agent-understanding.md](./docs/agent-understanding.md)
 - [docs/ecosystem-cli-and-registries.md](./docs/ecosystem-cli-and-registries.md)

@@ -10,6 +10,8 @@ Current implementation layout note:
 
 - [Goal.md](/Users/chinmoybhuyan/Desktop/Personal/Framework/docs/Goal.md)
 - [Developer_DeepDive.md](/Users/chinmoybhuyan/Desktop/Personal/Framework/docs/Developer_DeepDive.md)
+- [plugin-authoring.md](/Users/chinmoybhuyan/Desktop/Personal/Framework/docs/plugin-authoring.md)
+- [library-authoring.md](/Users/chinmoybhuyan/Desktop/Personal/Framework/docs/library-authoring.md)
 - [admin-ui-stack.md](/Users/chinmoybhuyan/Desktop/Personal/Framework/docs/admin-ui-stack.md)
 - [agent-understanding.md](/Users/chinmoybhuyan/Desktop/Personal/Framework/docs/agent-understanding.md)
 

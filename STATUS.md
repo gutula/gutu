@@ -46,6 +46,9 @@
 - Updated workspace discovery tooling to respect the active root `package.json` workspaces instead of relying on hardcoded roots only.
 - Added the root `moki` script alias and published CLI alias so the framework name now appears directly in the terminal flow.
 - Updated the root README to recommend generating a clean consumer workspace instead of coding directly inside the framework source repo.
+- Split plugin authoring and library/framework package guidance out of the root README into dedicated docs:
+  - `docs/plugin-authoring.md`
+  - `docs/library-authoring.md`
 
 - Read `Goal.md` fully.
 - Read `Developer_DeepDive.md` fully.
