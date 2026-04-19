@@ -1,13 +1,34 @@
-# Moki
+<p align="center">
+  <img src="./docs/assets/moki-hero.svg" alt="Moki mascot hero" width="100%" />
+</p>
 
-> Moki is a Bun-native, AI-first application platform for building secure, multi-tenant, plugin-driven products with a governed admin workbench, explicit contracts, and production-grade delivery gates.
+<h1 align="center">Moki</h1>
 
-This repository is the implementation baseline for the platform described in:
+<p align="center">
+  <strong>Cute on the outside. Serious about shipping.</strong>
+</p>
 
-- [Goal.md](./Goal.md)
-- [Developer_DeepDive.md](./Developer_DeepDive.md)
+<p align="center">
+  Moki is a Bun-native, AI-first application platform for building secure, multi-tenant, plugin-driven products with a governed admin workbench, explicit contracts, and production-grade delivery gates.
+</p>
 
-It is designed for teams that want more than a web framework:
+<p align="center">
+  <a href="./Goal.md">Vision</a>
+  ·
+  <a href="./Developer_DeepDive.md">Deep Dive</a>
+  ·
+  <a href="./docs/agent-understanding.md">Agent Understanding</a>
+  ·
+  <a href="./docs/admin-ui-stack.md">Admin UI Stack</a>
+</p>
+
+---
+
+## Moki At A Glance
+
+Moki is for teams that want more than a web framework and less chaos than a pile of ad hoc app code.
+
+It gives you:
 
 - a framework runtime,
 - a plugin operating system,
@@ -23,11 +44,33 @@ The checked-in repository now ships only:
 - built-in plugins that are part of the batteries-included distribution,
 - apps and tooling used to verify the framework itself.
 
-Optional domain plugins, connectors, migration packs, verticals, and tested distributions are still supported by the platform model, but they are no longer checked into this Git repository. Those belong in the future plugin store or in separately vendored installs.
+Optional domain plugins, connectors, migration packs, verticals, and tested distributions are still supported by the platform model, but they are intentionally no longer checked into this Git repository. Those belong in the future plugin store or in separately vendored installs.
+
+<table>
+  <tr>
+    <td><strong>Feeling</strong></td>
+    <td>Friendly, explicit, and batteries-included.</td>
+  </tr>
+  <tr>
+    <td><strong>Style</strong></td>
+    <td>Low-code where metadata helps, custom code where product depth matters.</td>
+  </tr>
+  <tr>
+    <td><strong>Best at</strong></td>
+    <td>Operator-heavy products, plugin ecosystems, AI-assisted teams, and long-lived business platforms.</td>
+  </tr>
+  <tr>
+    <td><strong>Not trying to be</strong></td>
+    <td>A tiny request router, a no-governance page builder, or a magic black box.</td>
+  </tr>
+</table>
 
 ---
 
 ## Table of Contents
+
+<details>
+<summary>Open the full README map</summary>
 
 - [What This Is](#what-this-is)
 - [Why This Exists](#why-this-exists)
@@ -55,9 +98,17 @@ Optional domain plugins, connectors, migration packs, verticals, and tested dist
 - [When To Use This Framework](#when-to-use-this-framework)
 - [Further Reading](#further-reading)
 
+</details>
+
 ---
 
 ## What This Is
+
+<p align="center">
+  <img src="./docs/assets/moki-overview.svg" alt="Overview of the Moki platform flow" width="100%" />
+</p>
+
+If the short version helps: Moki is the part most product teams eventually end up building for themselves anyway, except here it already arrives with names, contracts, tests, and a personality.
 
 This repository is a **full-stack platform baseline** for building applications out of explicit packages and installable plugins.
 
@@ -87,6 +138,8 @@ This is not a thin starter kit. It is a structured platform intended to support:
 
 ## Why This Exists
 
+Moki exists because the boring platform work turns out to be the important work: the rules, the shell, the releases, the permissions, the docs, and the consistency that keep a growing product from becoming a maze.
+
 Most teams end up re-building the same missing platform layers:
 
 - auth/session conventions,
@@ -112,6 +165,8 @@ This platform exists to give you:
 ---
 
 ## Core Principles
+
+These principles are the reason Moki can stay expressive without becoming mushy.
 
 ### 1. Explicit metadata over hidden magic
 
@@ -198,6 +253,8 @@ This keeps the platform coherent and dramatically reduces AI/tooling confusion.
 
 ## How This Differs From Other Approaches
 
+Moki is happiest in the space between a tiny framework and an all-knowing product builder.
+
 ### Comparison by category
 
 | Category | This platform | Traditional monolith frameworks | Low-code internal tool platforms | Headless backend kits |
@@ -246,6 +303,12 @@ This framework wins when you need:
 ---
 
 ## AI-First Developer Experience
+
+<p align="center">
+  <img src="./docs/assets/moki-ai-loop.svg" alt="Human, Moki, and AI agent collaboration loop" width="100%" />
+</p>
+
+Moki is designed so an AI agent can understand the system before it starts changing it. That sounds simple, but it changes everything about package layout, docs, contracts, and wrappers.
 
 This repository is intentionally structured so AI agents can build on top of it with minimal code and low ambiguity.
 
@@ -939,6 +1002,12 @@ See [docs/admin-ui-stack.md](./docs/admin-ui-stack.md) for the policy details.
 ---
 
 ## Getting Started
+
+<p align="center">
+  <img src="./docs/assets/moki-journey.svg" alt="Typical Moki project journey" width="100%" />
+</p>
+
+The easiest mental model is: start with the framework baseline, keep the built-ins, then grow your product by adding explicit packages and plugins instead of hiding important behavior in random folders.
 
 ### Prerequisites
 
@@ -1824,6 +1893,10 @@ The repository supports:
 ---
 
 ## Final Notes
+
+<p align="center">
+  <img src="./docs/assets/moki-footer.svg" alt="Moki footer mascot" width="100%" />
+</p>
 
 If you are building on this repository, the most important working rules are:
 
