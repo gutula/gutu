@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+artifacts/
+playwright-report/
+test-results/
+.gutu/cache/
+.gutu/state/
+*.tsbuildinfo
+.DS_Store

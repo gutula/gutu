@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="./docs/assetsgutu-hero.svg" alt="Gutu mascot hero" width="100%" />
+  <img src="./docs/assets/gutu-hero.svg" alt="Gutu mascot hero" width="100%" />
 </p>
 
 <h1 align="center">Gutu</h1>
 
 <p align="center">
-  <strong>Cute on the outside. Serious about shipping.</strong>
+  <strong>Small mascot. Sharp claws. Serious about shipping.</strong>
 </p>
 
 <p align="center">
@@ -104,7 +104,7 @@ Optional domain plugins, connectors, migration packs, verticals, and tested dist
 ## What This Is
 
 <p align="center">
-  <img src="./docs/assetsgutu-overview.svg" alt="Overview of the Gutu platform flow" width="100%" />
+  <img src="./docs/assets/gutu-overview.svg" alt="Overview of the Gutu platform flow" width="100%" />
 </p>
 
 If the short version helps: Gutu is the part most product teams eventually end up building for themselves anyway, except here it already arrives with names, contracts, tests, and a personality.
@@ -304,7 +304,7 @@ This framework wins when you need:
 ## AI-First Developer Experience
 
 <p align="center">
-  <img src="./docs/assetsgutu-ai-loop.svg" alt="Human, Gutu, and AI agent collaboration loop" width="100%" />
+  <img src="./docs/assets/gutu-ai-loop.svg" alt="Human, Gutu, and AI agent collaboration loop" width="100%" />
 </p>
 
 Gutu is designed so an AI agent can understand the system before it starts changing it. That sounds simple, but it changes everything about package layout, docs, contracts, and wrappers.
@@ -1003,7 +1003,7 @@ See [docs/admin-ui-stack.md](./docs/admin-ui-stack.md) for the policy details.
 ## Getting Started
 
 <p align="center">
-  <img src="./docs/assetsgutu-journey.svg" alt="Typical Gutu project journey" width="100%" />
+  <img src="./docs/assets/gutu-journey.svg" alt="Typical Gutu project journey" width="100%" />
 </p>
 
 The easiest mental model is: start with the framework baseline, keep the built-ins, then grow your product by adding explicit packages and plugins instead of hiding important behavior in random folders.
@@ -1672,7 +1672,7 @@ The repository supports:
 ## Final Notes
 
 <p align="center">
-  <img src="./docs/assetsgutu-footer.svg" alt="Gutu footer mascot" width="100%" />
+  <img src="./docs/assets/gutu-footer.svg" alt="Gutu footer mascot" width="100%" />
 </p>
 
 If you are building on this repository, the most important working rules are:
