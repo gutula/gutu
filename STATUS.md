@@ -9,6 +9,7 @@
 
 ## Current Phase
 
+- `Phase 17 - clean installable consumer workspace flow complete`
 - `Phase 16 - framework-only distribution cleanup and documentation reconciliation in progress`
 - `Admin Desk Program - Stage A6 complete`
 - `Admin UI Stack Alignment - Stage S5 complete`
@@ -33,6 +34,18 @@
 13. Phase 12 - reconcile docs, results, and residual risks.
 
 ## Completed Milestones
+
+- Added a clean consumer-project initialization flow through `moki init` / `platform init`.
+- Added a separate developer-workspace shape for product teams:
+  - `apps/*`
+  - `plugins/*`
+  - `libraries/*`
+  - `vendor/framework/moki`
+  - `vendor/plugins/*`
+  - `vendor/libraries/*`
+- Updated workspace discovery tooling to respect the active root `package.json` workspaces instead of relying on hardcoded roots only.
+- Added the root `moki` script alias and published CLI alias so the framework name now appears directly in the terminal flow.
+- Updated the root README to recommend generating a clean consumer workspace instead of coding directly inside the framework source repo.
 
 - Read `Goal.md` fully.
 - Read `Developer_DeepDive.md` fully.

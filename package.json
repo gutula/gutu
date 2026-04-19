@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "scaffold": "bun run tooling/scripts/scaffold-workspace.mjs",
+    "moki": "bun run framework/core/cli/src/bin.ts",
     "platform": "bun run framework/core/cli/src/bin.ts",
     "build": "bun run tooling/scripts/workspace-task.mjs build",
     "typecheck": "bun run tooling/scripts/workspace-task.mjs typecheck",

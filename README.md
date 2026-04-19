@@ -1009,6 +1009,57 @@ See [docs/admin-ui-stack.md](./docs/admin-ui-stack.md) for the policy details.
 
 The easiest mental model is: start with the framework baseline, keep the built-ins, then grow your product by adding explicit packages and plugins instead of hiding important behavior in random folders.
 
+### Current installation model
+
+Today, the cleanest way to start a Moki product is:
+
+1. clone the framework repo once,
+2. use the CLI to generate a **separate clean project workspace**,
+3. keep your product code in that new workspace,
+4. keep the framework vendored under `vendor/framework/moki`.
+
+That means your actual developer project stays tidy:
+
+- `apps/*` for your runnable hosts,
+- `plugins/*` for your business modules,
+- `libraries/*` for local shared code if you need it,
+- `vendor/framework/moki` for the vendored framework distribution,
+- `vendor/plugins/*` and `vendor/libraries/*` for future external installs.
+
+Recommended flow:
+
+```bash
+git clone https://github.com/hyndex/moki.git
+cd moki
+bun install
+bun run moki -- init ../my-product
+cd ../my-product
+bun install
+```
+
+By default, `moki init` creates a clean consumer workspace and links the framework in a separated vendor directory. If you want a detached local copy instead of symlinks:
+
+```bash
+bun run moki -- init ../my-product --framework-mode copy
+```
+
+### What is not the main path yet
+
+Right now, Moki is **not yet** a polished public experience like:
+
+```bash
+npx moki new my-product
+moki make plugin crm
+moki plugin install billing-suite
+```
+
+That ecosystem and registry model is planned, and the design is already documented in [docs/ecosystem-cli-and-registries.md](./docs/ecosystem-cli-and-registries.md), but the shipped repo today is still best used as a cloned baseline.
+
+### Practical rule of thumb
+
+- If you want to **start a real Moki product today**, generate a clean workspace with `moki init`.
+- If you want to **consume individual framework packages later**, that becomes realistic once the package and registry publishing flow is formalized.
+
 ### Prerequisites
 
 - Bun `1.3.12` or later
@@ -1074,7 +1125,9 @@ TEST_POSTGRES_URL=postgresql:///framework_platform_test bun test framework/core/
 
 | Command | Purpose |
 | --- | --- |
+| `bun run moki -- init <target>` | create a clean consumer workspace with the framework vendored under `vendor/framework/moki` |
 | `bun run scaffold` | regenerate the baseline workspace structure |
+| `bun run moki -- --help` | show the public Moki CLI command surface |
 | `bun run build` | build all workspaces |
 | `bun run typecheck` | typecheck all workspaces |
 | `bun run lint` | lint all workspaces |

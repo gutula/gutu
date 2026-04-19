@@ -2,6 +2,43 @@
 
 Historical entries may reference optional plugin packages that were part of earlier implementation waves before the repository was narrowed to the framework-only Git baseline.
 
+## 2026-04-20 20:05:00 IST - Clean installable consumer workspace flow
+
+- Added a new clean-project generator in `@platform/cli`:
+  - `moki init [target]`
+  - `platform init [target]`
+- The new init flow generates a separate product workspace with:
+  - `apps/*`
+  - `plugins/*`
+  - `libraries/*`
+  - `vendor/framework/moki`
+  - `vendor/plugins/*`
+  - `vendor/libraries/*`
+  - `.moki/*`
+  - `moki.project.json`
+- Implemented two vendoring modes:
+  - `--framework-mode symlink`
+  - `--framework-mode copy`
+- Added generated starter content so a new workspace is not empty:
+  - one starter app host
+  - one starter business plugin
+  - one generated understanding doc pack
+  - one project-level context doc
+- Updated workspace discovery tooling so task runners now read workspace patterns from the current root `package.json`, which lets generated consumer workspaces use vendored framework packages cleanly.
+- Added a public `moki` script alias at the repo root and a `moki` bin alias in `@platform/cli`.
+- Updated the README install story to recommend creating a separate clean workspace rather than coding directly in the framework source repository.
+- Commands run during this wave:
+  - `bun test framework/core/cli/tests/unit/package.test.ts`
+  - `bun run moki -- --help`
+  - `bun run moki -- init /tmp/... --framework-mode symlink`
+  - `bun run moki -- init /tmp/... --framework-mode copy`
+  - `bun run typecheck` in `framework/core/cli`
+  - `bun run lint`
+- Verification result:
+  - CLI unit tests passed
+  - both symlink and copy workspace initialization paths succeeded
+  - repo-wide lint passed with the same pre-existing warning-only React refresh notices in admin-shell/editor packages
+
 ## 2026-04-20 10:35:00 IST - Framework-only repository cleanup
 
 - Removed the checked-in optional plugin catalog from the framework distribution plan.

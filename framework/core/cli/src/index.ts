@@ -35,6 +35,7 @@ import {
   scaffoldUnderstandingDocs,
   validateUnderstandingDocs
 } from "./understanding";
+import { initMokiWorkspace } from "./project";
 
 export const packageId = "cli" as const;
 export const packageDisplayName = "CLI" as const;
@@ -58,6 +59,20 @@ export async function runCli(argv: string[], io: CliIo): Promise<number> {
   }
 
   try {
+    if (command === "init" || command === "new") {
+      const initArgs = [subcommand, ...rest].filter((entry): entry is string => Boolean(entry));
+      const target = readInitTarget(initArgs) ?? optionalFlag(initArgs, "--target") ?? "moki-project";
+      return commandSuccess(
+        io,
+        initMokiWorkspace(io.cwd, {
+          target,
+          frameworkSource: optionalFlag(initArgs, "--framework-source"),
+          frameworkMode: readFlag(initArgs, "--framework-mode", "symlink") as "symlink" | "copy",
+          force: readFlag(initArgs, "--force", "false") === "true"
+        })
+      );
+    }
+
     if (command === "docs" && subcommand === "scaffold") {
       return commandSuccess(
         io,
@@ -327,6 +342,28 @@ function hasFlag(args: string[], flag: string): boolean {
   return args.includes(flag);
 }
 
+function readInitTarget(args: string[]): string | undefined {
+  const valueFlags = new Set(["--target", "--framework-source", "--framework-mode", "--force"]);
+
+  for (let index = 0; index < args.length; index += 1) {
+    const entry = args[index];
+    if (!entry) {
+      continue;
+    }
+
+    if (entry.startsWith("--")) {
+      if (valueFlags.has(entry)) {
+        index += 1;
+      }
+      continue;
+    }
+
+    return entry;
+  }
+
+  return undefined;
+}
+
 function optionalFlag(args: string[], flag: string): string | undefined {
   const index = args.indexOf(flag);
   return index === -1 ? undefined : args[index + 1];
@@ -359,21 +396,22 @@ function write(stream: CliIo["stdout"] | CliIo["stderr"], text: string) {
 
 function helpText(): string {
   return [
-    "platform docs scaffold [--all | --target <path-or-id>] [--overwrite true|false]",
-    "platform docs index [--all | --target <path-or-id>] [--out <path>]",
-    "platform docs validate [--all | --target <path-or-id>] [--strict true|false]",
-    "platform agent run --tenant <id> --actor <id> --agent <id> --prompt-version <id> --goal <text> [--tool <id>]",
-    "platform agent replay --run <id>",
-    "platform agent approve --run <id> --checkpoint <id> [--approved true|false] [--note <text>]",
-    "platform prompt validate --body <text>",
-    "platform prompt diff --left <prompt-version-id> --right <prompt-version-id>",
-    "platform memory ingest --tenant <id> --collection <id> --title <title> --body <text>",
-    "platform memory reindex --tenant <id> --collection <id>",
-    "platform eval run --tenant <id> --dataset <id> --label <candidate>",
-    "platform eval compare --tenant <id> --baseline <id> --candidate <id>",
-    "platform mcp serve",
-    "platform mcp inspect [--tool <id> | --resource <id>]",
-    "platform make ai-pack --id <slug>"
+    "moki init [target] [--framework-source <path>] [--framework-mode symlink|copy] [--force true|false]",
+    "moki docs scaffold [--all | --target <path-or-id>] [--overwrite true|false]",
+    "moki docs index [--all | --target <path-or-id>] [--out <path>]",
+    "moki docs validate [--all | --target <path-or-id>] [--strict true|false]",
+    "moki agent run --tenant <id> --actor <id> --agent <id> --prompt-version <id> --goal <text> [--tool <id>]",
+    "moki agent replay --run <id>",
+    "moki agent approve --run <id> --checkpoint <id> [--approved true|false] [--note <text>]",
+    "moki prompt validate --body <text>",
+    "moki prompt diff --left <prompt-version-id> --right <prompt-version-id>",
+    "moki memory ingest --tenant <id> --collection <id> --title <title> --body <text>",
+    "moki memory reindex --tenant <id> --collection <id>",
+    "moki eval run --tenant <id> --dataset <id> --label <candidate>",
+    "moki eval compare --tenant <id> --baseline <id> --candidate <id>",
+    "moki mcp serve",
+    "moki mcp inspect [--tool <id> | --resource <id>]",
+    "moki make ai-pack --id <slug>"
   ].join("\n");
 }
 

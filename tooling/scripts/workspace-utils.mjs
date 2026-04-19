@@ -3,31 +3,54 @@ import path from "node:path";
 
 export const rootDir = process.cwd();
 export const BUN_BIN = process.env.BUN_BIN || process.execPath || "bun";
-export const workspaceRoots = [
-  "apps",
-  path.join("framework", "core"),
-  path.join("framework", "libraries"),
-  path.join("framework", "builtin-plugins"),
-  path.join("plugins", "domain"),
-  path.join("plugins", "feature-packs"),
-  path.join("plugins", "connectors"),
-  path.join("plugins", "migrations"),
-  path.join("plugins", "verticals"),
-  path.join("plugins", "bundles"),
-  "tooling"
+export const fallbackWorkspacePatterns = [
+  "apps/*",
+  path.join("framework", "core", "*"),
+  path.join("framework", "libraries", "*"),
+  path.join("framework", "builtin-plugins", "*"),
+  "plugins/*",
+  "libraries/*",
+  "tooling/*"
 ];
 
 export function getWorkspacePackageDirs(root = rootDir) {
-  const packageDirs = [];
+  const packageDirs = new Set();
 
-  for (const workspaceRoot of workspaceRoots) {
-    const absoluteRoot = path.join(root, workspaceRoot);
-    if (!existsSync(absoluteRoot)) {
-      continue;
+  for (const workspacePattern of getWorkspacePatterns(root)) {
+    for (const packageDir of expandWorkspacePattern(root, workspacePattern)) {
+      packageDirs.add(packageDir);
+    }
+  }
+
+  return [...packageDirs].sort((left, right) => left.localeCompare(right));
+}
+
+export function getWorkspacePatterns(root = rootDir) {
+  const packageJsonPath = path.join(root, "package.json");
+  if (!existsSync(packageJsonPath)) {
+    return [...fallbackWorkspacePatterns];
+  }
+
+  const packageJson = readJson(packageJsonPath);
+  if (Array.isArray(packageJson.workspaces) && packageJson.workspaces.every((entry) => typeof entry === "string")) {
+    return packageJson.workspaces;
+  }
+
+  return [...fallbackWorkspacePatterns];
+}
+
+export function expandWorkspacePattern(root, workspacePattern) {
+  const normalizedPattern = workspacePattern.replace(/\/+$/, "");
+
+  if (normalizedPattern.endsWith("/*")) {
+    const parentPath = path.join(root, normalizedPattern.slice(0, -2));
+    if (!existsSync(parentPath)) {
+      return [];
     }
 
-    for (const entry of readdirSync(absoluteRoot)) {
-      const absoluteEntry = path.join(absoluteRoot, entry);
+    const packageDirs = [];
+    for (const entry of readdirSync(parentPath)) {
+      const absoluteEntry = path.join(parentPath, entry);
       if (!statSync(absoluteEntry).isDirectory()) {
         continue;
       }
@@ -36,9 +59,16 @@ export function getWorkspacePackageDirs(root = rootDir) {
         packageDirs.push(absoluteEntry);
       }
     }
+
+    return packageDirs;
   }
 
-  return packageDirs.sort((left, right) => left.localeCompare(right));
+  const absolutePath = path.join(root, normalizedPattern);
+  if (existsSync(path.join(absolutePath, "package.json"))) {
+    return [absolutePath];
+  }
+
+  return [];
 }
 
 export function readJson(filePath) {
