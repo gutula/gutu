@@ -9,6 +9,7 @@ const pluginFacts = discoverPluginFacts(workspaceRoot);
 const catalogReadmePath = join(workspaceRoot, "catalogs", "gutu-plugins", "README.md");
 
 const requiredReadmeHeadings = [
+  "## Part Of The Gutu Stack",
   "## What It Does Now",
   "## Maturity",
   "## Verified Capability Summary",
@@ -108,6 +109,12 @@ function checkPluginDocs(facts) {
     if ((readme.content.match(/img\.shields\.io/g) || []).length < 4) {
       failures.push(`${facts.repoName}: README.md is missing the full badge row.`);
     }
+    if (!readme.content.includes("./docs/assets/gutu-mascot.png")) {
+      failures.push(`${facts.repoName}: README.md is missing the mascot image reference.`);
+    }
+    if (!readme.content.includes("## Part Of The Gutu Stack")) {
+      failures.push(`${facts.repoName}: README.md is missing the stack-positioning section.`);
+    }
     if (!readme.content.includes("**Maturity Tier:**")) {
       failures.push(`${facts.repoName}: README.md is missing the maturity declaration.`);
     }
@@ -155,6 +162,12 @@ function checkCatalog() {
 
   if (!catalog.includes("# gutu-plugins")) {
     failures.push("catalogs/gutu-plugins/README.md: missing title.");
+  }
+  if (!catalog.includes("./docs/assets/gutu-mascot.png")) {
+    failures.push("catalogs/gutu-plugins/README.md: missing mascot image.");
+  }
+  if (!catalog.includes("## What Gutu Solves")) {
+    failures.push("catalogs/gutu-plugins/README.md: missing framework problem/solution section.");
   }
   if (!catalog.includes("## Maturity Matrix")) {
     failures.push("catalogs/gutu-plugins/README.md: missing maturity matrix.");

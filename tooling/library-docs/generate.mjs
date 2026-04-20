@@ -99,9 +99,18 @@ function renderReadme(facts) {
 
   return `# ${facts.displayName}
 
+${renderMascot()}
+
 ${facts.description}
 
 ${badges.join(" ")}
+
+## Part Of The Gutu Stack
+
+${toMarkdownTable(["Aspect", "Value"], renderStackRows(facts))}
+
+- Gutu libraries stay intentionally separate from apps and plugins so teams can version shared contracts, UI primitives, and runtime helpers without burying them in product code.
+- This library should be consumed through explicit imports, providers, callbacks, and typed helpers rather than undocumented global extension points.
 
 ## What It Does Now
 
@@ -415,9 +424,47 @@ ${toMarkdownTable(
 
   return `# gutu-libraries
 
+${renderMascot()}
+
 Catalog repository for first-party Gutu libraries.
 
 This catalog is a **truth-first index** for the extracted library ecosystem. The badges and maturity labels referenced here are local-status documentation badges backed by repo facts, not live npm or GitHub Actions badges.
+
+## What Gutu Solves
+
+${toMarkdownTable(
+    ["Platform Problem", "Typical Failure Mode", "Gutu Response"],
+    [
+      [
+        "Shared code turns into undocumented internal glue",
+        "Teams copy utilities across apps and silently fork behavior.",
+        "Gutu libraries keep reusable behavior versioned, typed, and documented as standalone repos."
+      ],
+      [
+        "UI primitives drift from domain/runtime contracts",
+        "Frontend work becomes coupled to product-specific assumptions.",
+        "Libraries separate UI foundations, data helpers, and runtime packages from plugin-level business ownership."
+      ],
+      [
+        "Repo extraction breaks consumption ergonomics",
+        "Independent packages become painful to install and verify together.",
+        "Gutu uses workspace-aware docs, vendor sync, and certification to keep multi-repo consumption honest."
+      ]
+    ]
+  )}
+
+## Ecosystem Shape
+
+\`\`\`mermaid
+flowchart LR
+  Core["gutu-core"] --> Runtime["Kernel + schema + commands/events/jobs"]
+  Runtime --> Libraries["First-party libraries"]
+  Libraries --> Plugins["First-party plugins"]
+  Libraries --> Apps["Apps and product surfaces"]
+  Plugins --> Apps
+  Libraries --> Catalog["Library catalog"]
+  Plugins --> Catalog2["Plugin catalog"]
+\`\`\`
 
 ## Library Maturity Matrix
 
@@ -438,6 +485,22 @@ function createSummaryScript(facts) {
 const summary = ${JSON.stringify(summarizeFacts(facts), null, 2)};
 console.log(JSON.stringify(summary, null, 2));
 `;
+}
+
+function renderMascot() {
+  return `<p align="center">
+  <img src="./docs/assets/gutu-mascot.png" alt="Gutu mascot" width="220" />
+</p>`;
+}
+
+function renderStackRows(facts) {
+  return [
+    ["Repo kind", "First-party library"],
+    ["Domain group", facts.profile.group],
+    ["Primary focus", facts.profile.focusAreas.join(", ")],
+    ["Best when", "You need reusable contracts or UI/runtime helpers with their own release cadence and docs."],
+    ["Consumed through", facts.consumptionModel]
+  ];
 }
 
 function createDocsCheckScript(facts) {
@@ -473,13 +536,19 @@ for (const doc of requiredDocs) {
 }
 
 const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
-for (const heading of ["## What It Does Now", "## Maturity", "## Verified API Summary", "## Capability Matrix", "## Current Test Coverage", "## Recommended Next Milestones"]) {
+for (const heading of ["## Part Of The Gutu Stack", "## What It Does Now", "## Maturity", "## Verified API Summary", "## Capability Matrix", "## Current Test Coverage", "## Recommended Next Milestones"]) {
   if (!readme.includes(heading)) {
     failures.push(\`README.md is missing heading '\${heading}'.\`);
   }
 }
 if ((readme.match(/https:\\/\\/img\\.shields\\.io\\/badge\\//g) || []).length < 4) {
   failures.push("README.md is missing the required local badge block.");
+}
+if (!readme.includes("./docs/assets/gutu-mascot.png")) {
+  failures.push("README.md is missing the mascot image reference.");
+}
+if (!fs.existsSync(path.join(root, "docs", "assets", "gutu-mascot.png"))) {
+  failures.push("docs/assets/gutu-mascot.png is missing.");
 }
 
 const developer = fs.readFileSync(path.join(root, "DEVELOPER.md"), "utf8");

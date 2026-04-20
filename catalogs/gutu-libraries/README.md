@@ -1,8 +1,33 @@
 # gutu-libraries
 
+<p align="center">
+  <img src="./docs/assets/gutu-mascot.png" alt="Gutu mascot" width="220" />
+</p>
+
 Catalog repository for first-party Gutu libraries.
 
 This catalog is a **truth-first index** for the extracted library ecosystem. The badges and maturity labels referenced here are local-status documentation badges backed by repo facts, not live npm or GitHub Actions badges.
+
+## What Gutu Solves
+
+| Platform Problem | Typical Failure Mode | Gutu Response |
+| --- | --- | --- |
+| Shared code turns into undocumented internal glue | Teams copy utilities across apps and silently fork behavior. | Gutu libraries keep reusable behavior versioned, typed, and documented as standalone repos. |
+| UI primitives drift from domain/runtime contracts | Frontend work becomes coupled to product-specific assumptions. | Libraries separate UI foundations, data helpers, and runtime packages from plugin-level business ownership. |
+| Repo extraction breaks consumption ergonomics | Independent packages become painful to install and verify together. | Gutu uses workspace-aware docs, vendor sync, and certification to keep multi-repo consumption honest. |
+
+## Ecosystem Shape
+
+```mermaid
+flowchart LR
+  Core["gutu-core"] --> Runtime["Kernel + schema + commands/events/jobs"]
+  Runtime --> Libraries["First-party libraries"]
+  Libraries --> Plugins["First-party plugins"]
+  Libraries --> Apps["Apps and product surfaces"]
+  Plugins --> Apps
+  Libraries --> Catalog["Library catalog"]
+  Plugins --> Catalog2["Plugin catalog"]
+```
 
 ## Library Maturity Matrix
 

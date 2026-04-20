@@ -1,9 +1,33 @@
-# gutu-app-examples
+# Gutu Examples App
 
-This folder is the intended standalone git repository for the `examples` app.
+<p align="center">
+  <img src="./docs/assets/gutu-mascot.png" alt="Gutu mascot" width="220" />
+</p>
 
-Source lives under:
+Reference app for example compositions built on the framework package and plugin surfaces.
+
+## Where It Fits In Gutu
+
+| Aspect | Value |
+| --- | --- |
+| Repo kind | First-party app |
+| Role | Reference implementation for common framework assembly patterns |
+| Solves | Shows how libraries, plugins, and `gutu-core` surfaces compose in practice |
+| Depends on | `@platform/kernel` plus the shared app runtime |
+
+## Why It Matters
+
+- Teams evaluating the framework often need a realistic example before committing to the ecosystem.
+- This app gives them composition patterns they can copy without guessing how the split repos are meant to work together.
+
+## Source Layout
 
 - `apps/examples`
 
-This repo was extracted from the previous monolithic workspace so the app can be developed independently from `gutu-core`.
+## Quick Start
+
+```bash
+bun install
+bun --cwd apps/examples run build
+bun --cwd apps/examples run test
+```

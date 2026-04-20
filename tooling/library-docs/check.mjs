@@ -1,5 +1,5 @@
 import { join, relative } from "node:path";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
@@ -68,6 +68,7 @@ function checkLibraryDocs(facts) {
   const rootPackage = facts.rootPackageJson;
 
   for (const heading of [
+    "## Part Of The Gutu Stack",
     "## What It Does Now",
     "## Maturity",
     "## Verified API Summary",
@@ -104,6 +105,12 @@ function checkLibraryDocs(facts) {
   if ((readme.match(/https:\/\/img\.shields\.io\/badge\//g) || []).length < 4) {
     localFailures.push(`${facts.repoName}: README.md is missing the required local badge block.`);
   }
+  if (!readme.includes("./docs/assets/gutu-mascot.png")) {
+    localFailures.push(`${facts.repoName}: README.md is missing the mascot image reference.`);
+  }
+  if (!existsSync(join(facts.repoRoot, "docs", "assets", "gutu-mascot.png"))) {
+    localFailures.push(`${facts.repoName}: docs/assets/gutu-mascot.png is missing.`);
+  }
 
   if (!developer.includes("mermaid")) {
     localFailures.push(`${facts.repoName}: DEVELOPER.md is missing a Mermaid diagram.`);
@@ -130,6 +137,12 @@ function checkCatalog() {
 
   if (!catalog.includes("# gutu-libraries")) {
     localFailures.push("catalogs/gutu-libraries/README.md: missing title.");
+  }
+  if (!catalog.includes("./docs/assets/gutu-mascot.png")) {
+    localFailures.push("catalogs/gutu-libraries/README.md: missing mascot image.");
+  }
+  if (!catalog.includes("## What Gutu Solves")) {
+    localFailures.push("catalogs/gutu-libraries/README.md: missing framework problem/solution section.");
   }
   if (!catalog.includes("## Library Maturity Matrix")) {
     localFailures.push("catalogs/gutu-libraries/README.md: missing maturity matrix.");

@@ -1,25 +1,50 @@
 # Gutu Core
 
-`gutu-core` is the clean, plugin-free foundation repository for the Gutu ecosystem.
+<p align="center">
+  <img src="./docs/assets/gutu-mascot.png" alt="Gutu mascot" width="240" />
+</p>
 
-## Repository Position
+`gutu-core` is the clean, plugin-free foundation repository for the Gutu ecosystem. It owns the runtime model, compatibility contracts, install and release machinery, and the orchestration primitives that keep the wider plugin ecosystem coherent.
 
-This repository now lives inside a larger umbrella workspace that is divided by intended Git repository boundaries. The `gutu-core/` folder is the canonical core repo root inside that workspace.
+## What gutu-core Is Responsible For
 
-This repo intentionally contains only:
+| Area | What gutu-core Owns | Why It Exists |
+| --- | --- | --- |
+| Package and repo boundaries | Kernel contracts, manifest validation, permissions, schema helpers, plugin solving | Extracted repos need one authoritative operating model |
+| Ecosystem delivery | Lockfiles, vendor sync, channels, catalog metadata, rollout tooling | Consumers need reproducible installs across many repos |
+| Runtime orchestration | Commands, events, jobs, workflows, and topology validation | Cross-plugin behavior must be explicit and governable |
+| Release truth | Provenance, signatures, verification, doctor checks, release manifests | “Works on my machine” is not enough for a real framework |
 
-- framework core packages
-- ecosystem metadata and workspace bootstrap logic
-- the CLI used to scaffold consumer workspaces
-- cross-plugin runtime primitives for commands, events, jobs, and plugin graph solving
-- fresh governance, status, risk, and verification documents
+## What Gutu Solves For Teams
 
-It intentionally does **not** contain:
+| Team Problem | Without gutu-core | With gutu-core |
+| --- | --- | --- |
+| Independent repos drift apart | Packages compile in isolation but fail together | Compatibility metadata and certification keep the graph honest |
+| Business automations become magical side effects | Teams overuse implicit callbacks or generic hooks | Commands, durable events, jobs, and workflows define the supported runtime surface |
+| Split repos become hard to consume | Local workspaces and releases diverge | Vendor sync, lockfiles, and signed artifacts keep installs reproducible |
+| Internal platform docs fall behind reality | New teams cannot tell what is truly supported | Doctor checks, release validation, and truth-first docs keep claims bounded |
 
-- built-in plugin source
-- optional plugin source
-- product apps
-- legacy release artifacts or generated framework bundles
+## Why Commands, Events, Jobs, And Workflows Beat Generic Hooks
+
+| Model | Where It Breaks | Gutu Response |
+| --- | --- | --- |
+| Generic hooks | Hidden ordering, poor observability, fragile coupling | Commands and resources stay explicit; events and jobs are durable and typed |
+| Direct cross-plugin service calls | Tight coupling and upgrade pain | Plugin contracts are registered through manifests and stable public surfaces |
+| Queue-only async systems | Hard to see business ownership and intent | Jobs and workflows are attached to domain surfaces and verification evidence |
+
+## Architecture At A Glance
+
+```mermaid
+flowchart LR
+  CLI["gutu CLI"] --> Ecosystem["ecosystem metadata + vendor sync"]
+  Ecosystem --> Solver["plugin solver + compatibility checks"]
+  Solver --> Runtime["commands + events + jobs + workflows"]
+  Runtime --> Libraries["libraries"]
+  Runtime --> Plugins["plugins"]
+  Libraries --> Apps["apps / product surfaces"]
+  Plugins --> Apps
+  Runtime --> Certify["ecosystem certification"]
+```
 
 ## Production Baseline
 
@@ -49,6 +74,15 @@ The rebuilt core baseline now includes:
 - `@platform/jobs`: job definitions, retries, dead-letter handling, and workflow transitions
 - `@platform/plugin-solver`: dependency ordering plus command/event topology warnings
 
+## Compare The Operating Model
+
+| Concern | Conventional Outcome | Gutu-Core Outcome |
+| --- | --- | --- |
+| Packaging | Core and extensions blur together over time | `gutu-core` stays plugin-free and treats plugins as external repos |
+| Cross-plugin automation | Integrators reinvent ad hoc side effects | The runtime provides commands, events, jobs, and workflows as first-class primitives |
+| Consumer onboarding | Every adopter assembles their own install story | The CLI and ecosystem metadata define one repeatable path |
+| Release confidence | Build success is mistaken for platform readiness | Release manifests, provenance, doctor checks, and certification add operational proof |
+
 ## Commands
 
 ```bash
@@ -64,29 +98,10 @@ bun run gutu -- init demo-workspace
 bun run gutu -- doctor
 ```
 
-## Repository Shape
+## More Reading
 
-```text
-framework/core/cli
-framework/core/ecosystem
-framework/core/kernel
-framework/core/platform-kernel
-framework/core/permissions
-framework/core/schema
-framework/core/commands
-framework/core/events
-framework/core/jobs
-framework/core/plugin-solver
-docs/
-```
-
-## Design Direction
-
-- `gutu-core` remains plugin-free.
-- Plugins and libraries are expected to live in separate repositories.
-- Cross-plugin business orchestration is expected to happen through explicit commands, durable events, and jobs/workflows.
-- Consumer workspaces use `gutu.project.json`, `gutu.lock.json`, and `gutu.overrides.json`.
-- Consumer workspaces install vendored package contents with `gutu vendor sync`.
-- External rollout automation is driven by `ecosystem/rollout/organization.json`.
-
-See [docs/architecture.md](./docs/architecture.md), [docs/release-process.md](./docs/release-process.md), [docs/external-repositories.md](./docs/external-repositories.md), [docs/ecosystem/2026-04-20-gutu-core-reset-todo.md](./docs/ecosystem/2026-04-20-gutu-core-reset-todo.md), and [docs/ecosystem/2026-04-20-cross-plugin-orchestration-todo.md](./docs/ecosystem/2026-04-20-cross-plugin-orchestration-todo.md).
+- [Framework Overview](./docs/framework-overview.md)
+- [Architecture Notes](./docs/architecture.md)
+- [Status](./STATUS.md)
+- [Risk Register](./RISK_REGISTER.md)
+- [Implementation Ledger](./IMPLEMENTATION_LEDGER.md)

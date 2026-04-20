@@ -149,9 +149,18 @@ function renderReadme(facts) {
 
   return `# ${facts.displayName}
 
+${renderMascot()}
+
 ${facts.description}
 
 ${renderBadgeRow(facts)}
+
+## Part Of The Gutu Stack
+
+${toMarkdownTable(["Aspect", "Value"], renderStackRows(facts))}
+
+- Gutu keeps plugins as independent repos with manifest-governed boundaries, compatibility channels, and verification lanes instead of hiding everything behind one giant mutable codebase.
+- This plugin is meant to compose through explicit actions, resources, jobs, workflows, and runtime envelopes, not through undocumented hook chains.
 
 ## What It Does Now
 
@@ -688,9 +697,47 @@ function renderCatalogReadme(factsList) {
 
   return `# gutu-plugins
 
+${renderMascot()}
+
 Catalog repository for first-party Gutu plugins.
 
 This catalog is a **truth-first index** for the extracted plugin ecosystem. The badges and maturity labels referenced here are local-status documentation badges backed by repo facts, not live npm or GitHub Actions badges.
+
+## What Gutu Solves
+
+${toMarkdownTable(
+    ["Platform Problem", "Typical Failure Mode", "Gutu Response"],
+    [
+      [
+        "Plugin sprawl without governance",
+        "Teams ship hidden dependencies, magical integration points, and stale docs.",
+        "Each plugin carries a manifest, explicit capability requests, and repo-local verification."
+      ],
+      [
+        "Hook-heavy extension models",
+        "Side effects become hard to trace, test, or replay safely.",
+        "Gutu prefers commands, resources, durable events, jobs, and workflows over generic hook buses."
+      ],
+      [
+        "Monorepo-only internal platforms",
+        "Independent release cadence and ownership boundaries stay fuzzy.",
+        "Plugins are shaped as standalone repos with focused docs, CI surfaces, and compatibility metadata."
+      ]
+    ]
+  )}
+
+## Ecosystem Shape
+
+\`\`\`mermaid
+flowchart LR
+  Core["gutu-core"] --> Runtime["Commands + Events + Jobs + Workflows"]
+  Runtime --> Plugins["First-party plugins"]
+  Plugins --> Apps["Apps and operator surfaces"]
+  Core --> Catalog["Catalogs and channels"]
+  Plugins --> Catalog
+  Catalog --> Consumers["Consumer workspaces"]
+  Consumers --> Integration["Certification and vendor sync"]
+\`\`\`
 
 ## Maturity Matrix
 
@@ -713,6 +760,22 @@ function renderBadgeRow(facts) {
     badgeFor("DB", facts.compatibility.db.length ? facts.compatibility.db.join("+") : "None", dbColor(facts.compatibility.db)),
     badgeFor("Integration Model", facts.integrationModel, integrationColor(facts.integrationModel))
   ].join(" ");
+}
+
+function renderMascot() {
+  return `<p align="center">
+  <img src="./docs/assets/gutu-mascot.png" alt="Gutu mascot" width="220" />
+</p>`;
+}
+
+function renderStackRows(facts) {
+  return [
+    ["Repo kind", "First-party plugin"],
+    ["Domain group", facts.profile.group],
+    ["Primary focus", facts.profile.focusAreas.join(", ")],
+    ["Best when", "You need a governed domain boundary with explicit contracts and independent release cadence."],
+    ["Composes through", facts.integrationModel]
+  ];
 }
 
 function renderMaturityReason(facts) {
@@ -977,6 +1040,7 @@ if (process.argv.includes("--json")) {
 function renderDocsCheckScript(facts) {
   const nestedRelative = join("framework", "builtin-plugins", facts.packageDirName).replaceAll("\\", "/");
   const requiredReadmeHeadings = [
+    "## Part Of The Gutu Stack",
     "## What It Does Now",
     "## Maturity",
     "## Verified Capability Summary",
@@ -1062,9 +1126,17 @@ if ((readme.match(/img\\.shields\\.io/g) || []).length < 4) {
   failures.push("README.md must contain four local-status badges.");
 }
 
+if (!readme.includes("./docs/assets/gutu-mascot.png")) {
+  failures.push("README.md must reference the mascot image.");
+}
+
 for (const docName of requiredInternalDocs) {
   const content = requireFile(join(nestedRoot, "docs", docName));
   checkPlaceholders(content, "docs/" + docName);
+}
+
+if (!existsSync(join(repoRoot, "docs", "assets", "gutu-mascot.png"))) {
+  failures.push("docs/assets/gutu-mascot.png is missing.");
 }
 
 if (!packageTs.includes("id:")) {

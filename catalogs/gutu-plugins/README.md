@@ -1,8 +1,33 @@
 # gutu-plugins
 
+<p align="center">
+  <img src="./docs/assets/gutu-mascot.png" alt="Gutu mascot" width="220" />
+</p>
+
 Catalog repository for first-party Gutu plugins.
 
 This catalog is a **truth-first index** for the extracted plugin ecosystem. The badges and maturity labels referenced here are local-status documentation badges backed by repo facts, not live npm or GitHub Actions badges.
+
+## What Gutu Solves
+
+| Platform Problem | Typical Failure Mode | Gutu Response |
+| --- | --- | --- |
+| Plugin sprawl without governance | Teams ship hidden dependencies, magical integration points, and stale docs. | Each plugin carries a manifest, explicit capability requests, and repo-local verification. |
+| Hook-heavy extension models | Side effects become hard to trace, test, or replay safely. | Gutu prefers commands, resources, durable events, jobs, and workflows over generic hook buses. |
+| Monorepo-only internal platforms | Independent release cadence and ownership boundaries stay fuzzy. | Plugins are shaped as standalone repos with focused docs, CI surfaces, and compatibility metadata. |
+
+## Ecosystem Shape
+
+```mermaid
+flowchart LR
+  Core["gutu-core"] --> Runtime["Commands + Events + Jobs + Workflows"]
+  Runtime --> Plugins["First-party plugins"]
+  Plugins --> Apps["Apps and operator surfaces"]
+  Core --> Catalog["Catalogs and channels"]
+  Plugins --> Catalog
+  Catalog --> Consumers["Consumer workspaces"]
+  Consumers --> Integration["Certification and vendor sync"]
+```
 
 ## Maturity Matrix
 
