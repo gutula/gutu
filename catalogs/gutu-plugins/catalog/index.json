@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-21T18:13:51.296Z",
+  "generatedAt": "2026-04-22T16:30:00.000Z",
   "packages": [
     {
       "id": "@plugins/admin-shell-workbench",
@@ -24,11 +24,25 @@
       "channel": "stable"
     },
     {
+      "id": "@plugins/ai-skills-core",
+      "kind": "plugin",
+      "repo": "gutula/gutu-plugin-ai-skills-core",
+      "version": "0.1.0",
+      "channel": "next"
+    },
+    {
       "id": "@plugins/ai-rag",
       "kind": "plugin",
       "repo": "gutula/gutu-plugin-ai-rag",
       "version": "0.1.0",
       "channel": "stable"
+    },
+    {
+      "id": "@plugins/automation-core",
+      "kind": "plugin",
+      "repo": "gutula/gutu-plugin-automation-core",
+      "version": "0.1.0",
+      "channel": "next"
     },
     {
       "id": "@plugins/audit-core",
@@ -50,6 +64,13 @@
       "repo": "gutula/gutu-plugin-booking-core",
       "version": "0.1.0",
       "channel": "stable"
+    },
+    {
+      "id": "@plugins/company-builder-core",
+      "kind": "ai-pack",
+      "repo": "gutula/gutu-plugin-company-builder-core",
+      "version": "0.1.0",
+      "channel": "next"
     },
     {
       "id": "@plugins/community-core",
@@ -80,6 +101,13 @@
       "channel": "stable"
     },
     {
+      "id": "@plugins/execution-workspaces-core",
+      "kind": "plugin",
+      "repo": "gutula/gutu-plugin-execution-workspaces-core",
+      "version": "0.1.0",
+      "channel": "next"
+    },
+    {
       "id": "@plugins/files-core",
       "kind": "plugin",
       "repo": "gutula/gutu-plugin-files-core",
@@ -99,6 +127,20 @@
       "repo": "gutula/gutu-plugin-jobs-core",
       "version": "0.1.0",
       "channel": "stable"
+    },
+    {
+      "id": "@plugins/integration-core",
+      "kind": "plugin",
+      "repo": "gutula/gutu-plugin-integration-core",
+      "version": "0.1.0",
+      "channel": "next"
+    },
+    {
+      "id": "@plugins/issues-core",
+      "kind": "plugin",
+      "repo": "gutula/gutu-plugin-issues-core",
+      "version": "0.1.0",
+      "channel": "next"
     },
     {
       "id": "@plugins/knowledge-core",
@@ -148,6 +190,13 @@
       "repo": "gutula/gutu-plugin-role-policy-core",
       "version": "0.1.0",
       "channel": "stable"
+    },
+    {
+      "id": "@plugins/runtime-bridge-core",
+      "kind": "plugin",
+      "repo": "gutula/gutu-plugin-runtime-bridge-core",
+      "version": "0.1.0",
+      "channel": "next"
     },
     {
       "id": "@plugins/search-core",

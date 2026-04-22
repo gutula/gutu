@@ -1,11 +1,10 @@
 # Ecosystem Audit
 
-Generated: 2026-04-21T18:29:28.646Z
+Generated: 2026-04-22T10:43:02.500Z
 
-- Source mode: live
-- Source workspace: `/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace`
-- Live topology: `/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/matrix/live-topology.json`
-- Packages discovered: 62
+- Source mode: local
+- Source workspace: `/Users/chinmoybhuyan/Desktop/Personal/Framework`
+- Packages discovered: 73
 - Core runtime packages: 12
 - Compatibility shims: 0
 - Unresolved workspace dependencies: 0

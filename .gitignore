@@ -4,3 +4,10 @@
 **/coverage/
 **/.gutu/
 **/*.tsbuildinfo
+
+# Graphify durable outputs can be committed; skip only local/runtime byproducts.
+graphify-out/cache/
+graphify-out/manifest.json
+graphify-out/cost.json
+graphify-out/needs_update
+graphify-out/.graphify_*

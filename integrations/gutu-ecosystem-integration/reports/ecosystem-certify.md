@@ -1,12 +1,12 @@
 # Ecosystem Certification
 
-Generated: 2026-04-21T18:32:40.562Z
+Generated: 2026-04-22T10:46:52.412Z
 
-- Source mode: live
+- Source mode: local
 - Certification workspace: `/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/certify-workspace`
 - Workspace install: pass
-- Packages checked: 62
-- Commands executed: 310
+- Packages checked: 73
+- Commands executed: 361
 - Failed commands: 0
 
 ## Failures
@@ -14,6 +14,30 @@ Generated: 2026-04-21T18:32:40.562Z
 - none
 
 ## Package Results
+
+### @apps/docs
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+
+### @apps/examples
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+
+### @apps/platform-dev-console
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+
+### @apps/playground
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
 
 ### @platform/admin-builders
 - pass `bun run lint` (0)
@@ -309,6 +333,13 @@ Generated: 2026-04-21T18:32:40.562Z
 - pass `bun run test` (0)
 - pass `npm pack --json --dry-run` (0)
 
+### @plugins/ai-skills-core
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+- pass `npm pack --json --dry-run` (0)
+
 ### @plugins/audit-core
 - pass `bun run lint` (0)
 - pass `bun run build` (0)
@@ -323,6 +354,13 @@ Generated: 2026-04-21T18:32:40.562Z
 - pass `bun run test` (0)
 - pass `npm pack --json --dry-run` (0)
 
+### @plugins/automation-core
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+- pass `npm pack --json --dry-run` (0)
+
 ### @plugins/booking-core
 - pass `bun run lint` (0)
 - pass `bun run build` (0)
@@ -331,6 +369,13 @@ Generated: 2026-04-21T18:32:40.562Z
 - pass `npm pack --json --dry-run` (0)
 
 ### @plugins/community-core
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+- pass `npm pack --json --dry-run` (0)
+
+### @plugins/company-builder-core
 - pass `bun run lint` (0)
 - pass `bun run build` (0)
 - pass `bun run typecheck` (0)
@@ -358,6 +403,13 @@ Generated: 2026-04-21T18:32:40.562Z
 - pass `bun run test` (0)
 - pass `npm pack --json --dry-run` (0)
 
+### @plugins/execution-workspaces-core
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+- pass `npm pack --json --dry-run` (0)
+
 ### @plugins/files-core
 - pass `bun run lint` (0)
 - pass `bun run build` (0)
@@ -366,6 +418,20 @@ Generated: 2026-04-21T18:32:40.562Z
 - pass `npm pack --json --dry-run` (0)
 
 ### @plugins/forms-core
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+- pass `npm pack --json --dry-run` (0)
+
+### @plugins/integration-core
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+- pass `npm pack --json --dry-run` (0)
+
+### @plugins/issues-core
 - pass `bun run lint` (0)
 - pass `bun run build` (0)
 - pass `bun run typecheck` (0)
@@ -415,6 +481,13 @@ Generated: 2026-04-21T18:32:40.562Z
 - pass `npm pack --json --dry-run` (0)
 
 ### @plugins/role-policy-core
+- pass `bun run lint` (0)
+- pass `bun run build` (0)
+- pass `bun run typecheck` (0)
+- pass `bun run test` (0)
+- pass `npm pack --json --dry-run` (0)
+
+### @plugins/runtime-bridge-core
 - pass `bun run lint` (0)
 - pass `bun run build` (0)
 - pass `bun run typecheck` (0)

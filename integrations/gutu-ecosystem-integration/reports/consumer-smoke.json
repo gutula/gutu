@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-21T18:35:32.593Z",
-  "mode": "live",
+  "generatedAt": "2026-04-22T10:46:56.954Z",
+  "mode": "local",
   "exampleRoot": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/consumer-smoke/demo-consumer",
   "certificationInstall": {
     "ok": true,
     "command": "bun install",
     "code": 0,
-    "stdout": "bun install v1.3.12 (700fc117)\n\nChecked 383 installs across 332 packages (no changes) [42.00ms]\n",
+    "stdout": "bun install v1.3.12 (700fc117)\n\nChecked 405 installs across 343 packages (no changes) [40.00ms]\n",
     "stderr": ""
   },
   "init": {
@@ -28,7 +28,7 @@
     "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/consumer-smoke/demo-consumer/vendor/plugins/notifications-core/package.json"
   ],
   "packagedArtifacts": [
-    "https://github.com/gutula/gutu-lib-communication/releases/download/v0.1.0/platform-communication-0.1.0.tgz",
-    "https://github.com/gutula/gutu-plugin-notifications-core/releases/download/v0.1.0/plugins-notifications-core-0.1.0.tgz"
+    "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/certify-workspace/libraries/gutu-lib-communication/framework/libraries/communication/platform-communication-0.1.0.tgz",
+    "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/certify-workspace/plugins/gutu-plugin-notifications-core/framework/builtin-plugins/notifications-core/plugins-notifications-core-0.1.0.tgz"
   ]
 }

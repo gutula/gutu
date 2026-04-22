@@ -1,17 +1,99 @@
 {
-  "generatedAt": "2026-04-21T18:29:28.646Z",
-  "mode": "live",
-  "workspaceRoot": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace",
+  "generatedAt": "2026-04-22T10:43:02.500Z",
+  "mode": "local",
+  "workspaceRoot": "/Users/chinmoybhuyan/Desktop/Personal/Framework",
   "integrationRoot": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration",
-  "topologyPath": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/matrix/live-topology.json",
   "packages": [
+    {
+      "id": "@apps/docs",
+      "kind": "app",
+      "private": true,
+      "repoRootRelative": "apps/gutu-app-docs",
+      "packageRelative": "apps/gutu-app-docs/apps/docs",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/apps/gutu-app-docs/apps/docs",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:unit": "bun test tests/unit"
+      },
+      "workspaceDependencies": [
+        "@platform/kernel"
+      ]
+    },
+    {
+      "id": "@apps/examples",
+      "kind": "app",
+      "private": true,
+      "repoRootRelative": "apps/gutu-app-examples",
+      "packageRelative": "apps/gutu-app-examples/apps/examples",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/apps/gutu-app-examples/apps/examples",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:unit": "bun test tests/unit"
+      },
+      "workspaceDependencies": [
+        "@platform/kernel"
+      ]
+    },
+    {
+      "id": "@apps/platform-dev-console",
+      "kind": "app",
+      "private": true,
+      "repoRootRelative": "apps/gutu-app-platform-dev-console",
+      "packageRelative": "apps/gutu-app-platform-dev-console/apps/platform-dev-console",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/apps/gutu-app-platform-dev-console/apps/platform-dev-console",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test tests/unit",
+        "test:unit": "bun test tests/unit",
+        "test:e2e": "bun run tests/e2e/run-shell-harness.ts"
+      },
+      "workspaceDependencies": [
+        "@platform/admin-shell-workbench",
+        "@platform/kernel",
+        "@platform/permissions",
+        "@platform/plugin-solver",
+        "@platform/ui-shell",
+        "@plugins/ai-core",
+        "@plugins/ai-evals",
+        "@plugins/ai-rag",
+        "@plugins/dashboard-core",
+        "@plugins/notifications-core",
+        "@plugins/page-builder-core"
+      ]
+    },
+    {
+      "id": "@apps/playground",
+      "kind": "app",
+      "private": true,
+      "repoRootRelative": "apps/gutu-app-playground",
+      "packageRelative": "apps/gutu-app-playground/apps/playground",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/apps/gutu-app-playground/apps/playground",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:unit": "bun test tests/unit"
+      },
+      "workspaceDependencies": [
+        "@platform/kernel"
+      ]
+    },
     {
       "id": "@platform/admin-builders",
       "kind": "library",
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-admin-builders",
       "packageRelative": "libraries/gutu-lib-admin-builders/framework/libraries/admin-builders",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-admin-builders/framework/libraries/admin-builders",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-admin-builders/framework/libraries/admin-builders",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -32,7 +114,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-admin-contracts",
       "packageRelative": "libraries/gutu-lib-admin-contracts/framework/libraries/admin-contracts",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-admin-contracts/framework/libraries/admin-contracts",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-admin-contracts/framework/libraries/admin-contracts",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -50,7 +132,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-admin-formview",
       "packageRelative": "libraries/gutu-lib-admin-formview/framework/libraries/admin-formview",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-admin-formview/framework/libraries/admin-formview",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-admin-formview/framework/libraries/admin-formview",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -72,7 +154,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-admin-listview",
       "packageRelative": "libraries/gutu-lib-admin-listview/framework/libraries/admin-listview",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-admin-listview/framework/libraries/admin-listview",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-admin-listview/framework/libraries/admin-listview",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -95,7 +177,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-admin-reporting",
       "packageRelative": "libraries/gutu-lib-admin-reporting/framework/libraries/admin-reporting",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-admin-reporting/framework/libraries/admin-reporting",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-admin-reporting/framework/libraries/admin-reporting",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -114,7 +196,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-admin-shell-workbench",
       "packageRelative": "libraries/gutu-lib-admin-shell-workbench/framework/libraries/admin-shell-workbench",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-admin-shell-workbench/framework/libraries/admin-shell-workbench",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-admin-shell-workbench/framework/libraries/admin-shell-workbench",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -145,7 +227,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-admin-widgets",
       "packageRelative": "libraries/gutu-lib-admin-widgets/framework/libraries/admin-widgets",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-admin-widgets/framework/libraries/admin-widgets",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-admin-widgets/framework/libraries/admin-widgets",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -166,7 +248,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ai",
       "packageRelative": "libraries/gutu-lib-ai/framework/libraries/ai",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ai/framework/libraries/ai",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ai/framework/libraries/ai",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -184,7 +266,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ai-evals",
       "packageRelative": "libraries/gutu-lib-ai-evals/framework/libraries/ai-evals",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ai-evals/framework/libraries/ai-evals",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ai-evals/framework/libraries/ai-evals",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -202,7 +284,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ai-guardrails",
       "packageRelative": "libraries/gutu-lib-ai-guardrails/framework/libraries/ai-guardrails",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ai-guardrails/framework/libraries/ai-guardrails",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ai-guardrails/framework/libraries/ai-guardrails",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -221,7 +303,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ai-mcp",
       "packageRelative": "libraries/gutu-lib-ai-mcp/framework/libraries/ai-mcp",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ai-mcp/framework/libraries/ai-mcp",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ai-mcp/framework/libraries/ai-mcp",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -240,7 +322,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ai-memory",
       "packageRelative": "libraries/gutu-lib-ai-memory/framework/libraries/ai-memory",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ai-memory/framework/libraries/ai-memory",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ai-memory/framework/libraries/ai-memory",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -258,7 +340,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ai-runtime",
       "packageRelative": "libraries/gutu-lib-ai-runtime/framework/libraries/ai-runtime",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ai-runtime/framework/libraries/ai-runtime",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ai-runtime/framework/libraries/ai-runtime",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -277,7 +359,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-analytics",
       "packageRelative": "libraries/gutu-lib-analytics/framework/libraries/analytics",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-analytics/framework/libraries/analytics",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-analytics/framework/libraries/analytics",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -293,7 +375,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-chart",
       "packageRelative": "libraries/gutu-lib-chart/framework/libraries/chart",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-chart/framework/libraries/chart",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-chart/framework/libraries/chart",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -309,7 +391,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-command-palette",
       "packageRelative": "libraries/gutu-lib-command-palette/framework/libraries/command-palette",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-command-palette/framework/libraries/command-palette",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-command-palette/framework/libraries/command-palette",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -327,7 +409,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-communication",
       "packageRelative": "libraries/gutu-lib-communication/framework/libraries/communication",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-communication/framework/libraries/communication",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-communication/framework/libraries/communication",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -345,7 +427,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-contracts",
       "packageRelative": "libraries/gutu-lib-contracts/framework/libraries/contracts",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-contracts/framework/libraries/contracts",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-contracts/framework/libraries/contracts",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -366,7 +448,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-data-table",
       "packageRelative": "libraries/gutu-lib-data-table/framework/libraries/data-table",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-data-table/framework/libraries/data-table",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-data-table/framework/libraries/data-table",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -384,7 +466,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-editor",
       "packageRelative": "libraries/gutu-lib-editor/framework/libraries/editor",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-editor/framework/libraries/editor",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-editor/framework/libraries/editor",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -402,7 +484,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-email-templates",
       "packageRelative": "libraries/gutu-lib-email-templates/framework/libraries/email-templates",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-email-templates/framework/libraries/email-templates",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-email-templates/framework/libraries/email-templates",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -418,7 +500,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-form",
       "packageRelative": "libraries/gutu-lib-form/framework/libraries/form",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-form/framework/libraries/form",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-form/framework/libraries/form",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -436,7 +518,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-geo",
       "packageRelative": "libraries/gutu-lib-geo/framework/libraries/geo",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-geo/framework/libraries/geo",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-geo/framework/libraries/geo",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -452,7 +534,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-layout",
       "packageRelative": "libraries/gutu-lib-layout/framework/libraries/layout",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-layout/framework/libraries/layout",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-layout/framework/libraries/layout",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -470,7 +552,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-query",
       "packageRelative": "libraries/gutu-lib-query/framework/libraries/query",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-query/framework/libraries/query",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-query/framework/libraries/query",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -488,7 +570,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-router",
       "packageRelative": "libraries/gutu-lib-router/framework/libraries/router",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-router/framework/libraries/router",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-router/framework/libraries/router",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -506,7 +588,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-search",
       "packageRelative": "libraries/gutu-lib-search/framework/libraries/search",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-search/framework/libraries/search",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-search/framework/libraries/search",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -522,7 +604,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-telemetry-ui",
       "packageRelative": "libraries/gutu-lib-telemetry-ui/framework/libraries/telemetry-ui",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-telemetry-ui/framework/libraries/telemetry-ui",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-telemetry-ui/framework/libraries/telemetry-ui",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -540,7 +622,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui",
       "packageRelative": "libraries/gutu-lib-ui/framework/libraries/ui",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui/framework/libraries/ui",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui/framework/libraries/ui",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -558,7 +640,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-editor",
       "packageRelative": "libraries/gutu-lib-ui-editor/framework/libraries/ui-editor",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-editor/framework/libraries/ui-editor",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-editor/framework/libraries/ui-editor",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -574,7 +656,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-form",
       "packageRelative": "libraries/gutu-lib-ui-form/framework/libraries/ui-form",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-form/framework/libraries/ui-form",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-form/framework/libraries/ui-form",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -590,7 +672,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-kit",
       "packageRelative": "libraries/gutu-lib-ui-kit/framework/libraries/ui-kit",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-kit/framework/libraries/ui-kit",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-kit/framework/libraries/ui-kit",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -606,7 +688,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-query",
       "packageRelative": "libraries/gutu-lib-ui-query/framework/libraries/ui-query",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-query/framework/libraries/ui-query",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-query/framework/libraries/ui-query",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -622,7 +704,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-router",
       "packageRelative": "libraries/gutu-lib-ui-router/framework/libraries/ui-router",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-router/framework/libraries/ui-router",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-router/framework/libraries/ui-router",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -640,7 +722,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-shell",
       "packageRelative": "libraries/gutu-lib-ui-shell/framework/libraries/ui-shell",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-shell/framework/libraries/ui-shell",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-shell/framework/libraries/ui-shell",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -656,7 +738,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-table",
       "packageRelative": "libraries/gutu-lib-ui-table/framework/libraries/ui-table",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-table/framework/libraries/ui-table",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-table/framework/libraries/ui-table",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -672,7 +754,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-zone-next",
       "packageRelative": "libraries/gutu-lib-ui-zone-next/framework/libraries/ui-zone-next",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-zone-next/framework/libraries/ui-zone-next",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-zone-next/framework/libraries/ui-zone-next",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -691,7 +773,7 @@
       "private": false,
       "repoRootRelative": "libraries/gutu-lib-ui-zone-static",
       "packageRelative": "libraries/gutu-lib-ui-zone-static/framework/libraries/ui-zone-static",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/libraries/gutu-lib-ui-zone-static/framework/libraries/ui-zone-static",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/libraries/gutu-lib-ui-zone-static/framework/libraries/ui-zone-static",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -710,7 +792,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-admin-shell-workbench",
       "packageRelative": "plugins/gutu-plugin-admin-shell-workbench/framework/builtin-plugins/admin-shell-workbench",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-admin-shell-workbench/framework/builtin-plugins/admin-shell-workbench",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-admin-shell-workbench/framework/builtin-plugins/admin-shell-workbench",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -736,21 +818,25 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-ai-core",
       "packageRelative": "plugins/gutu-plugin-ai-core/framework/builtin-plugins/ai-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-ai-core/framework/builtin-plugins/ai-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-ai-core/framework/builtin-plugins/ai-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
         "lint": "bunx eslint .",
         "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
         "test:unit": "bun test tests/unit",
         "test:contracts": "bun test tests/contracts"
       },
       "workspaceDependencies": [
+        "@platform/admin-builders",
         "@platform/admin-contracts",
         "@platform/ai",
         "@platform/ai-guardrails",
         "@platform/ai-runtime",
         "@platform/chart",
+        "@platform/jobs",
         "@platform/kernel",
         "@platform/permissions",
         "@platform/schema",
@@ -771,16 +857,19 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-ai-evals",
       "packageRelative": "plugins/gutu-plugin-ai-evals/framework/builtin-plugins/ai-evals",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-ai-evals/framework/builtin-plugins/ai-evals",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-ai-evals/framework/builtin-plugins/ai-evals",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
         "lint": "bunx eslint .",
         "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
         "test:unit": "bun test tests/unit",
         "test:contracts": "bun test tests/contracts"
       },
       "workspaceDependencies": [
+        "@platform/admin-builders",
         "@platform/admin-contracts",
         "@platform/ai-evals",
         "@platform/ai-runtime",
@@ -801,16 +890,19 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-ai-rag",
       "packageRelative": "plugins/gutu-plugin-ai-rag/framework/builtin-plugins/ai-rag",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-ai-rag/framework/builtin-plugins/ai-rag",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-ai-rag/framework/builtin-plugins/ai-rag",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
         "lint": "bunx eslint .",
         "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
         "test:unit": "bun test tests/unit",
         "test:contracts": "bun test tests/contracts"
       },
       "workspaceDependencies": [
+        "@platform/admin-builders",
         "@platform/admin-contracts",
         "@platform/ai-memory",
         "@platform/ai-runtime",
@@ -826,12 +918,45 @@
       ]
     },
     {
+      "id": "@plugins/ai-skills-core",
+      "kind": "plugin",
+      "private": false,
+      "repoRootRelative": "plugins/gutu-plugin-ai-skills-core",
+      "packageRelative": "plugins/gutu-plugin-ai-skills-core/framework/builtin-plugins/ai-skills-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-ai-skills-core/framework/builtin-plugins/ai-skills-core",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
+        "test:unit": "bun test tests/unit",
+        "test:contracts": "bun test tests/contracts"
+      },
+      "workspaceDependencies": [
+        "@platform/admin-builders",
+        "@platform/admin-contracts",
+        "@platform/ai-runtime",
+        "@platform/kernel",
+        "@platform/permissions",
+        "@platform/schema",
+        "@platform/ui",
+        "@platform/ui-shell",
+        "@plugins/audit-core",
+        "@plugins/auth-core",
+        "@plugins/org-tenant-core",
+        "@plugins/role-policy-core",
+        "@plugins/runtime-bridge-core"
+      ]
+    },
+    {
       "id": "@plugins/audit-core",
       "kind": "plugin",
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-audit-core",
       "packageRelative": "plugins/gutu-plugin-audit-core/framework/builtin-plugins/audit-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-audit-core/framework/builtin-plugins/audit-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-audit-core/framework/builtin-plugins/audit-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -856,7 +981,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-auth-core",
       "packageRelative": "plugins/gutu-plugin-auth-core/framework/builtin-plugins/auth-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-auth-core/framework/builtin-plugins/auth-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-auth-core/framework/builtin-plugins/auth-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -873,12 +998,48 @@
       ]
     },
     {
+      "id": "@plugins/automation-core",
+      "kind": "plugin",
+      "private": false,
+      "repoRootRelative": "plugins/gutu-plugin-automation-core",
+      "packageRelative": "plugins/gutu-plugin-automation-core/framework/builtin-plugins/automation-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-automation-core/framework/builtin-plugins/automation-core",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
+        "test:unit": "bun test tests/unit",
+        "test:contracts": "bun test tests/contracts"
+      },
+      "workspaceDependencies": [
+        "@platform/admin-contracts",
+        "@platform/ai-runtime",
+        "@platform/kernel",
+        "@platform/permissions",
+        "@platform/schema",
+        "@platform/ui",
+        "@platform/ui-shell",
+        "@plugins/audit-core",
+        "@plugins/auth-core",
+        "@plugins/issues-core",
+        "@plugins/jobs-core",
+        "@plugins/notifications-core",
+        "@plugins/org-tenant-core",
+        "@plugins/role-policy-core",
+        "@plugins/runtime-bridge-core",
+        "@plugins/workflow-core"
+      ]
+    },
+    {
       "id": "@plugins/booking-core",
       "kind": "plugin",
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-booking-core",
       "packageRelative": "plugins/gutu-plugin-booking-core/framework/builtin-plugins/booking-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-booking-core/framework/builtin-plugins/booking-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-booking-core/framework/builtin-plugins/booking-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -908,7 +1069,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-community-core",
       "packageRelative": "plugins/gutu-plugin-community-core/framework/builtin-plugins/community-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-community-core/framework/builtin-plugins/community-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-community-core/framework/builtin-plugins/community-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -929,12 +1090,57 @@
       ]
     },
     {
+      "id": "@plugins/company-builder-core",
+      "kind": "plugin",
+      "private": false,
+      "repoRootRelative": "plugins/gutu-plugin-company-builder-core",
+      "packageRelative": "plugins/gutu-plugin-company-builder-core/framework/builtin-plugins/company-builder-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-company-builder-core/framework/builtin-plugins/company-builder-core",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
+        "test:unit": "bun test tests/unit",
+        "test:contracts": "bun test tests/contracts"
+      },
+      "workspaceDependencies": [
+        "@platform/admin-builders",
+        "@platform/admin-contracts",
+        "@platform/ai-runtime",
+        "@platform/chart",
+        "@platform/kernel",
+        "@platform/permissions",
+        "@platform/schema",
+        "@platform/ui",
+        "@platform/ui-shell",
+        "@plugins/ai-core",
+        "@plugins/ai-evals",
+        "@plugins/ai-rag",
+        "@plugins/ai-skills-core",
+        "@plugins/audit-core",
+        "@plugins/auth-core",
+        "@plugins/automation-core",
+        "@plugins/execution-workspaces-core",
+        "@plugins/integration-core",
+        "@plugins/issues-core",
+        "@plugins/jobs-core",
+        "@plugins/notifications-core",
+        "@plugins/org-tenant-core",
+        "@plugins/role-policy-core",
+        "@plugins/runtime-bridge-core",
+        "@plugins/workflow-core"
+      ]
+    },
+    {
       "id": "@plugins/content-core",
       "kind": "plugin",
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-content-core",
       "packageRelative": "plugins/gutu-plugin-content-core/framework/builtin-plugins/content-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-content-core/framework/builtin-plugins/content-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-content-core/framework/builtin-plugins/content-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -960,7 +1166,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-dashboard-core",
       "packageRelative": "plugins/gutu-plugin-dashboard-core/framework/builtin-plugins/dashboard-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-dashboard-core/framework/builtin-plugins/dashboard-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-dashboard-core/framework/builtin-plugins/dashboard-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -987,7 +1193,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-document-core",
       "packageRelative": "plugins/gutu-plugin-document-core/framework/builtin-plugins/document-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-document-core/framework/builtin-plugins/document-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-document-core/framework/builtin-plugins/document-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1008,12 +1214,43 @@
       ]
     },
     {
+      "id": "@plugins/execution-workspaces-core",
+      "kind": "plugin",
+      "private": false,
+      "repoRootRelative": "plugins/gutu-plugin-execution-workspaces-core",
+      "packageRelative": "plugins/gutu-plugin-execution-workspaces-core/framework/builtin-plugins/execution-workspaces-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-execution-workspaces-core/framework/builtin-plugins/execution-workspaces-core",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
+        "test:unit": "bun test tests/unit",
+        "test:contracts": "bun test tests/contracts"
+      },
+      "workspaceDependencies": [
+        "@platform/admin-contracts",
+        "@platform/ai-runtime",
+        "@platform/kernel",
+        "@platform/permissions",
+        "@platform/schema",
+        "@platform/ui",
+        "@platform/ui-shell",
+        "@plugins/audit-core",
+        "@plugins/auth-core",
+        "@plugins/org-tenant-core",
+        "@plugins/role-policy-core"
+      ]
+    },
+    {
       "id": "@plugins/files-core",
       "kind": "plugin",
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-files-core",
       "packageRelative": "plugins/gutu-plugin-files-core/framework/builtin-plugins/files-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-files-core/framework/builtin-plugins/files-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-files-core/framework/builtin-plugins/files-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1039,7 +1276,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-forms-core",
       "packageRelative": "plugins/gutu-plugin-forms-core/framework/builtin-plugins/forms-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-forms-core/framework/builtin-plugins/forms-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-forms-core/framework/builtin-plugins/forms-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1060,12 +1297,77 @@
       ]
     },
     {
+      "id": "@plugins/integration-core",
+      "kind": "plugin",
+      "private": false,
+      "repoRootRelative": "plugins/gutu-plugin-integration-core",
+      "packageRelative": "plugins/gutu-plugin-integration-core/framework/builtin-plugins/integration-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-integration-core/framework/builtin-plugins/integration-core",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
+        "test:unit": "bun test tests/unit",
+        "test:contracts": "bun test tests/contracts"
+      },
+      "workspaceDependencies": [
+        "@platform/admin-builders",
+        "@platform/admin-contracts",
+        "@platform/ai-mcp",
+        "@platform/ai-runtime",
+        "@platform/kernel",
+        "@platform/permissions",
+        "@platform/schema",
+        "@platform/ui",
+        "@platform/ui-shell",
+        "@plugins/audit-core",
+        "@plugins/auth-core",
+        "@plugins/org-tenant-core",
+        "@plugins/role-policy-core"
+      ]
+    },
+    {
+      "id": "@plugins/issues-core",
+      "kind": "plugin",
+      "private": false,
+      "repoRootRelative": "plugins/gutu-plugin-issues-core",
+      "packageRelative": "plugins/gutu-plugin-issues-core/framework/builtin-plugins/issues-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-issues-core/framework/builtin-plugins/issues-core",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
+        "test:unit": "bun test tests/unit",
+        "test:contracts": "bun test tests/contracts"
+      },
+      "workspaceDependencies": [
+        "@platform/admin-builders",
+        "@platform/admin-contracts",
+        "@platform/ai-runtime",
+        "@platform/kernel",
+        "@platform/permissions",
+        "@platform/schema",
+        "@platform/ui",
+        "@platform/ui-shell",
+        "@plugins/audit-core",
+        "@plugins/auth-core",
+        "@plugins/org-tenant-core",
+        "@plugins/role-policy-core"
+      ]
+    },
+    {
       "id": "@plugins/jobs-core",
       "kind": "plugin",
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-jobs-core",
       "packageRelative": "plugins/gutu-plugin-jobs-core/framework/builtin-plugins/jobs-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-jobs-core/framework/builtin-plugins/jobs-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-jobs-core/framework/builtin-plugins/jobs-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1092,7 +1394,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-knowledge-core",
       "packageRelative": "plugins/gutu-plugin-knowledge-core/framework/builtin-plugins/knowledge-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-knowledge-core/framework/builtin-plugins/knowledge-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-knowledge-core/framework/builtin-plugins/knowledge-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1118,7 +1420,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-notifications-core",
       "packageRelative": "plugins/gutu-plugin-notifications-core/framework/builtin-plugins/notifications-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-notifications-core/framework/builtin-plugins/notifications-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-notifications-core/framework/builtin-plugins/notifications-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1148,7 +1450,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-org-tenant-core",
       "packageRelative": "plugins/gutu-plugin-org-tenant-core/framework/builtin-plugins/org-tenant-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-org-tenant-core/framework/builtin-plugins/org-tenant-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-org-tenant-core/framework/builtin-plugins/org-tenant-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1171,7 +1473,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-page-builder-core",
       "packageRelative": "plugins/gutu-plugin-page-builder-core/framework/builtin-plugins/page-builder-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-page-builder-core/framework/builtin-plugins/page-builder-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-page-builder-core/framework/builtin-plugins/page-builder-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1201,7 +1503,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-portal-core",
       "packageRelative": "plugins/gutu-plugin-portal-core/framework/builtin-plugins/portal-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-portal-core/framework/builtin-plugins/portal-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-portal-core/framework/builtin-plugins/portal-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1227,7 +1529,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-role-policy-core",
       "packageRelative": "plugins/gutu-plugin-role-policy-core/framework/builtin-plugins/role-policy-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-role-policy-core/framework/builtin-plugins/role-policy-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-role-policy-core/framework/builtin-plugins/role-policy-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1246,12 +1548,46 @@
       ]
     },
     {
+      "id": "@plugins/runtime-bridge-core",
+      "kind": "plugin",
+      "private": false,
+      "repoRootRelative": "plugins/gutu-plugin-runtime-bridge-core",
+      "packageRelative": "plugins/gutu-plugin-runtime-bridge-core/framework/builtin-plugins/runtime-bridge-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-runtime-bridge-core/framework/builtin-plugins/runtime-bridge-core",
+      "scripts": {
+        "build": "bunx tsc -p tsconfig.build.json",
+        "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+        "lint": "bunx eslint .",
+        "test": "bun test",
+        "test:integration": "bun test tests/integration",
+        "test:migrations": "bun test tests/migrations",
+        "test:unit": "bun test tests/unit",
+        "test:contracts": "bun test tests/contracts"
+      },
+      "workspaceDependencies": [
+        "@platform/admin-builders",
+        "@platform/admin-contracts",
+        "@platform/ai-runtime",
+        "@platform/kernel",
+        "@platform/permissions",
+        "@platform/schema",
+        "@platform/ui",
+        "@platform/ui-shell",
+        "@plugins/audit-core",
+        "@plugins/auth-core",
+        "@plugins/execution-workspaces-core",
+        "@plugins/integration-core",
+        "@plugins/org-tenant-core",
+        "@plugins/role-policy-core"
+      ]
+    },
+    {
       "id": "@plugins/search-core",
       "kind": "plugin",
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-search-core",
       "packageRelative": "plugins/gutu-plugin-search-core/framework/builtin-plugins/search-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-search-core/framework/builtin-plugins/search-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-search-core/framework/builtin-plugins/search-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1277,7 +1613,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-template-core",
       "packageRelative": "plugins/gutu-plugin-template-core/framework/builtin-plugins/template-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-template-core/framework/builtin-plugins/template-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-template-core/framework/builtin-plugins/template-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1303,7 +1639,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-user-directory",
       "packageRelative": "plugins/gutu-plugin-user-directory/framework/builtin-plugins/user-directory",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-user-directory/framework/builtin-plugins/user-directory",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-user-directory/framework/builtin-plugins/user-directory",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
@@ -1329,7 +1665,7 @@
       "private": false,
       "repoRootRelative": "plugins/gutu-plugin-workflow-core",
       "packageRelative": "plugins/gutu-plugin-workflow-core/framework/builtin-plugins/workflow-core",
-      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/integrations/gutu-ecosystem-integration/.tmp/live-workspace/plugins/gutu-plugin-workflow-core/framework/builtin-plugins/workflow-core",
+      "packageAbsolute": "/Users/chinmoybhuyan/Desktop/Personal/Framework/plugins/gutu-plugin-workflow-core/framework/builtin-plugins/workflow-core",
       "scripts": {
         "build": "bunx tsc -p tsconfig.build.json",
         "typecheck": "bunx tsc -p tsconfig.json --noEmit",
