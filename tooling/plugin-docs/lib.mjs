@@ -3,6 +3,22 @@ import { basename, dirname, join, resolve } from "node:path";
 
 import { getProfile, maturityOrder, pluginGroupOrder } from "./profiles.mjs";
 
+export const pluginCategoryOrder = [
+  "platform_governance",
+  "user_management",
+  "business",
+  "content_experience",
+  "ai_automation",
+  "integrations"
+];
+
+export const defaultPluginCategory = {
+  id: "platform_governance",
+  label: "Platform Governance",
+  subcategoryId: "uncategorized",
+  subcategoryLabel: "Uncategorized"
+};
+
 export const requiredRootDocs = ["README.md", "DEVELOPER.md", "TODO.md"];
 export const requiredInternalDocs = [
   "AGENT_CONTEXT.md",
@@ -58,11 +74,33 @@ export function extractPluginFacts(repoRoot) {
   const manifestPath = join(packageDir, "package.ts");
   const manifestText = readText(manifestPath);
   const profile = getProfile(parseStringField(manifestText, "id"));
+  const defaultCategoryBody = parseObjectField(manifestText, "defaultCategory");
+  const defaultCategory = defaultCategoryBody
+    ? {
+        id: parseStringField(defaultCategoryBody, "id"),
+        label: parseStringField(defaultCategoryBody, "label"),
+        subcategoryId: parseStringField(defaultCategoryBody, "subcategoryId"),
+        subcategoryLabel: parseStringField(defaultCategoryBody, "subcategoryLabel")
+      }
+    : defaultPluginCategory;
   const docsDir = join(packageDir, "docs");
   const rootDocsState = collectDocsState(repoRoot, requiredRootDocs);
   const internalDocsState = collectDocsState(docsDir, requiredInternalDocs);
   const nestedScripts = nestedPackageJson.scripts ?? {};
   const indexExports = collectIndexExports(join(packageDir, "src", "index.ts"));
+  const domainCatalogPath = join(packageDir, "src", "domain", "catalog.ts");
+  const domainCatalogText = existsSync(domainCatalogPath) ? readText(domainCatalogPath) : "";
+  const domainCatalogBody = domainCatalogText ? parseObjectField(domainCatalogText, "domainCatalog") : "";
+  const domainCatalog = {
+    erpnextModules: domainCatalogBody ? parseArrayField(domainCatalogBody, "erpnextModules") : [],
+    erpnextDoctypes: domainCatalogBody ? parseArrayField(domainCatalogBody, "erpnextDoctypes") : [],
+    ownedEntities: domainCatalogBody ? parseArrayField(domainCatalogBody, "ownedEntities") : [],
+    reports: domainCatalogBody ? parseArrayField(domainCatalogBody, "reports") : [],
+    exceptionQueues: domainCatalogBody ? parseArrayField(domainCatalogBody, "exceptionQueues") : [],
+    operationalScenarios: domainCatalogBody ? parseArrayField(domainCatalogBody, "operationalScenarios") : [],
+    settingsSurfaces: domainCatalogBody ? parseArrayField(domainCatalogBody, "settingsSurfaces") : [],
+    edgeCases: domainCatalogBody ? parseArrayField(domainCatalogBody, "edgeCases") : []
+  };
 
   const actions = collectDefineBlocks(packageDir, "actions", "defineAction").map((block) => ({
     symbol: block.symbol,
@@ -136,6 +174,10 @@ export function extractPluginFacts(repoRoot) {
     manifestVersion: parseStringField(manifestText, "version"),
     displayName: parseStringField(manifestText, "displayName"),
     description: parseStringField(manifestText, "description"),
+    defaultCategory,
+    defaultCategoryWarning: defaultCategoryBody
+      ? ""
+      : "Missing defaultCategory in manifest; falling back to Platform Governance / Uncategorized.",
     trustTier: parseStringField(manifestText, "trustTier"),
     reviewTier: parseStringField(manifestText, "reviewTier"),
     isolationProfile: parseStringField(manifestText, "isolationProfile"),
@@ -170,7 +212,8 @@ export function extractPluginFacts(repoRoot) {
     docsState: {
       root: rootDocsState,
       internal: internalDocsState
-    }
+    },
+    domainCatalog
   };
 
   return {
@@ -206,6 +249,7 @@ export function summarizeFacts(facts) {
     packageId: facts.packageId,
     displayName: facts.displayName,
     group: facts.profile.group,
+    defaultCategory: `${facts.defaultCategory.label} / ${facts.defaultCategory.subcategoryLabel}`,
     maturity: facts.maturity,
     description: facts.description,
     actions: facts.actions.length,
@@ -334,6 +378,42 @@ function deriveCurrentCapabilities(facts) {
     bullets.push(`Service results already expose ${surfaces.join(" and ")} for orchestration-aware hosts.`);
   }
 
+  if (facts.domainCatalog.ownedEntities.length) {
+    bullets.push(
+      `Documents ${facts.domainCatalog.ownedEntities.length} owned entity surface(s): ${facts.domainCatalog.ownedEntities
+        .slice(0, 6)
+        .map((entry) => `\`${entry}\``)
+        .join(", ")}${facts.domainCatalog.ownedEntities.length > 6 ? ", and more" : ""}.`
+    );
+  }
+
+  if (facts.domainCatalog.reports.length || facts.domainCatalog.exceptionQueues.length) {
+    bullets.push(
+      `Carries ${facts.domainCatalog.reports.length} report surface(s) and ${facts.domainCatalog.exceptionQueues.length} exception queue(s) for operator parity and reconciliation visibility.`
+    );
+  }
+
+  if (facts.domainCatalog.erpnextModules.length) {
+    bullets.push(
+      `Tracks ERPNext reference parity against module(s): ${facts.domainCatalog.erpnextModules.map((entry) => `\`${entry}\``).join(", ")}.`
+    );
+  }
+
+  if (facts.domainCatalog.operationalScenarios.length) {
+    bullets.push(
+      `Operational scenario matrix includes ${facts.domainCatalog.operationalScenarios
+        .slice(0, 5)
+        .map((entry) => `\`${entry}\``)
+        .join(", ")}${facts.domainCatalog.operationalScenarios.length > 5 ? ", and more" : ""}.`
+    );
+  }
+
+  if (facts.domainCatalog.settingsSurfaces.length) {
+    bullets.push(
+      `Governs ${facts.domainCatalog.settingsSurfaces.length} settings or policy surface(s) for operator control and rollout safety.`
+    );
+  }
+
   return bullets;
 }
 
@@ -360,6 +440,10 @@ function deriveCurrentGaps(facts) {
     gaps.push("Repo-local documentation verification entrypoints were missing before this pass and need to stay green as the repo evolves.");
   }
 
+  if (!facts.domainCatalog.ownedEntities.length) {
+    gaps.push("The repo does not yet export a domain parity catalog with owned entities, reports, settings surfaces, and exception queues.");
+  }
+
   return dedupeList(gaps);
 }
 
@@ -380,6 +464,15 @@ function deriveRecommendedNext(facts) {
 
   if (!facts.surfaces.hasAdminContributions && facts.surfaces.hasUiSurface) {
     next.push("Broaden the admin entry surface only if operators need more than the current embedded view or resource listing.");
+  }
+
+  if (facts.domainCatalog.erpnextDoctypes.length) {
+    next.push(
+      `Convert more ERP parity references into first-class runtime handlers where needed, starting from ${facts.domainCatalog.erpnextDoctypes
+        .slice(0, 3)
+        .map((entry) => `\`${entry}\``)
+        .join(", ")}.`
+    );
   }
 
   return dedupeList(next);
@@ -482,6 +575,20 @@ function deriveGlossaryTerms(facts) {
     terms.push({
       term: workflow.id,
       meaning: workflow.description ?? "Workflow definition exported by this plugin."
+    });
+  }
+
+  for (const entity of facts.domainCatalog.ownedEntities.slice(0, 8)) {
+    terms.push({
+      term: entity,
+      meaning: `Declared domain entity owned or governed by ${facts.displayName}.`
+    });
+  }
+
+  for (const report of facts.domainCatalog.reports.slice(0, 8)) {
+    terms.push({
+      term: report,
+      meaning: `Operational or reconciliation report surface tracked for ${facts.displayName}.`
     });
   }
 
@@ -649,7 +756,7 @@ function collectWorkflowStates(blockBody) {
 }
 
 function parseArrayField(text, fieldName) {
-  const matcher = new RegExp(`${escapeRegex(fieldName)}\\s*:\\s*\\[([\\s\\S]*?)\\]`);
+  const matcher = new RegExp(`${fieldPattern(fieldName)}\\s*:\\s*\\[([\\s\\S]*?)\\]`);
   const match = text.match(matcher);
   if (!match) {
     return [];
@@ -664,8 +771,14 @@ function parseNestedArrayField(text, parentField, childField) {
 }
 
 function parseObjectField(text, fieldName) {
-  const startPattern = new RegExp(`${escapeRegex(fieldName)}\\s*:\\s*\\{`);
-  const match = startPattern.exec(text);
+  const startPatterns = [
+    new RegExp(`${fieldPattern(fieldName)}\\s*:\\s*\\{`),
+    new RegExp(`(?:export\\s+)?(?:const|let|var)\\s+${escapeRegex(fieldName)}\\s*=\\s*\\{`)
+  ];
+  const match = startPatterns
+    .map((pattern) => ({ pattern, match: pattern.exec(text) }))
+    .filter((entry) => entry.match && entry.match.index >= 0)
+    .sort((left, right) => left.match.index - right.match.index)[0]?.match;
   if (!match || match.index < 0) {
     return "";
   }
@@ -695,23 +808,23 @@ function parseStringField(text, fieldName) {
 }
 
 function parseOptionalStringField(text, fieldName) {
-  const matcher = new RegExp(`${escapeRegex(fieldName)}\\s*:\\s*"([^"]+)"`);
+  const matcher = new RegExp(`${fieldPattern(fieldName)}\\s*:\\s*"([^"]+)"`);
   return matcher.exec(text)?.[1] ?? "";
 }
 
 function parseOptionalIdentifierField(text, fieldName) {
-  const matcher = new RegExp(`${escapeRegex(fieldName)}\\s*:\\s*([A-Za-z0-9_]+)`);
+  const matcher = new RegExp(`${fieldPattern(fieldName)}\\s*:\\s*([A-Za-z0-9_]+)`);
   return matcher.exec(text)?.[1] ?? "";
 }
 
 function parseOptionalBooleanField(text, fieldName) {
-  const matcher = new RegExp(`${escapeRegex(fieldName)}\\s*:\\s*(true|false)`);
+  const matcher = new RegExp(`${fieldPattern(fieldName)}\\s*:\\s*(true|false)`);
   const value = matcher.exec(text)?.[1];
   return value ? value === "true" : null;
 }
 
 function parseOptionalNumberField(text, fieldName) {
-  const matcher = new RegExp(`${escapeRegex(fieldName)}\\s*:\\s*([0-9_]+)`);
+  const matcher = new RegExp(`${fieldPattern(fieldName)}\\s*:\\s*([0-9_]+)`);
   const value = matcher.exec(text)?.[1];
   return value ? Number(value.replaceAll("_", "")) : null;
 }
@@ -799,6 +912,10 @@ function relativeToWorkspace(targetPath) {
 
 function escapeRegex(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function fieldPattern(fieldName) {
+  return `"?${escapeRegex(fieldName)}"?`;
 }
 
 export { maturityOrder };

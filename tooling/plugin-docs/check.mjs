@@ -118,6 +118,9 @@ function checkPluginDocs(facts) {
     if (!readme.content.includes("**Maturity Tier:**")) {
       failures.push(`${facts.repoName}: README.md is missing the maturity declaration.`);
     }
+    if (!readme.content.includes("Default category")) {
+      failures.push(`${facts.repoName}: README.md is missing the default category summary.`);
+    }
   }
 
   if (developer.exists) {
@@ -127,6 +130,9 @@ function checkPluginDocs(facts) {
     }
     if (!developer.content.includes("## Hooks, Events, And Orchestration")) {
       failures.push(`${facts.repoName}: DEVELOPER.md is missing the hooks/events/orchestration section.`);
+    }
+    if (!developer.content.includes("Default Category")) {
+      failures.push(`${facts.repoName}: DEVELOPER.md is missing the default category manifest field.`);
     }
   }
 
@@ -153,6 +159,10 @@ function checkPluginDocs(facts) {
     failures.push(`${facts.repoName}: root package.json is missing docs:summary.`);
   }
 
+  if (facts.defaultCategoryWarning) {
+    failures.push(`${facts.repoName}: ${facts.defaultCategoryWarning}`);
+  }
+
   return failures;
 }
 
@@ -171,6 +181,12 @@ function checkCatalog() {
   }
   if (!catalog.includes("## Maturity Matrix")) {
     failures.push("catalogs/gutu-plugins/README.md: missing maturity matrix.");
+  }
+  if (!catalog.includes("## Dashboard Categories")) {
+    failures.push("catalogs/gutu-plugins/README.md: missing dashboard category section.");
+  }
+  if (!catalog.includes("## Architecture Groups")) {
+    failures.push("catalogs/gutu-plugins/README.md: missing architecture group section.");
   }
 
   for (const facts of pluginFacts) {

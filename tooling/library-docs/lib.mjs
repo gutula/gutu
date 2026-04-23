@@ -32,17 +32,22 @@ export function extractLibraryFacts(repoRoot, workspaceRoot = resolve(repoRoot, 
   const rootPackageJsonPath = join(repoRoot, "package.json");
   const rootPackageJson = readJson(rootPackageJsonPath);
   const nestedLibrariesRoot = join(repoRoot, "framework", "libraries");
-  const packageDirName = readdirSync(nestedLibrariesRoot).find((entry) =>
-    statSync(join(nestedLibrariesRoot, entry)).isDirectory()
-  );
+  const nestedPackages = discoverNestedPackages(nestedLibrariesRoot);
+  const packageDirName = selectPrimaryPackageDirName(rootPackageJson, nestedPackages);
 
-  if (!packageDirName) {
+  if (!packageDirName || nestedPackages.length === 0) {
     throw new Error(`Could not resolve library package directory for '${repoRoot}'.`);
   }
 
-  const packageDir = join(nestedLibrariesRoot, packageDirName);
-  const nestedPackageJson = readJson(join(packageDir, "package.json"));
+  const primaryPackage = nestedPackages.find((entry) => entry.packageDirName === packageDirName);
+  if (!primaryPackage) {
+    throw new Error(`Could not resolve the primary library package '${packageDirName}' for '${repoRoot}'.`);
+  }
+
+  const packageDir = primaryPackage.packageDir;
+  const nestedPackageJson = primaryPackage.nestedPackageJson;
   const nestedScripts = nestedPackageJson.scripts ?? {};
+  const allNestedScripts = Object.assign({}, ...nestedPackages.map((entry) => entry.nestedPackageJson.scripts ?? {}));
   const indexPath = join(packageDir, "src", "index.ts");
   const indexText = existsSync(indexPath) ? readText(indexPath) : "";
   const packageId = parseConstString(indexText, "packageId") || nestedPackageJson.name.replace(/^@platform\//, "");
@@ -64,6 +69,8 @@ export function extractLibraryFacts(repoRoot, workspaceRoot = resolve(repoRoot, 
     ...packageConstants,
     ...moduleFacts.flatMap((entry) => entry.exports)
   ]);
+  const canonicalPackageName = nestedPackageJson.name.replace(/^@platform\//, "@gutu/");
+  const legacyPackageNames = canonicalPackageName === nestedPackageJson.name ? [] : [nestedPackageJson.name];
 
   const facts = {
     repoName: basename(repoRoot),
@@ -71,13 +78,20 @@ export function extractLibraryFacts(repoRoot, workspaceRoot = resolve(repoRoot, 
     repoRelative: relative(workspaceRoot, repoRoot).replaceAll("\\", "/"),
     rootPackageJson,
     rootPackageJsonPath,
+    packageCount: nestedPackages.length,
     packageDirName,
+    packageDirNames: nestedPackages.map((entry) => entry.packageDirName),
     packageDir,
     packageRelative: relative(workspaceRoot, packageDir).replaceAll("\\", "/"),
     packageRepoRelative: relative(repoRoot, packageDir).replaceAll("\\", "/"),
     nestedPackageJson,
     nestedPackageName: nestedPackageJson.name,
+    canonicalPackageName,
+    legacyPackageNames,
+    nestedPackageNames: nestedPackages.map((entry) => entry.nestedPackageJson.name),
+    nestedPackages,
     nestedScripts,
+    allNestedScripts,
     packageId,
     displayName,
     description,
@@ -143,6 +157,7 @@ export function summarizeFacts(facts) {
     repoName: facts.repoName,
     packageId: facts.packageId,
     displayName: facts.displayName,
+    packageCount: facts.packageCount,
     group: facts.profile.group,
     maturity: facts.maturity,
     description: facts.description,
@@ -240,17 +255,18 @@ function deriveConsumptionModel(facts) {
 }
 
 function deriveVerificationLabel(facts) {
+  const scripts = facts.packageCount > 1 ? facts.allNestedScripts : facts.nestedScripts;
   const parts = [];
-  if (facts.nestedScripts.build) {
+  if (scripts.build) {
     parts.push("Build");
   }
-  if (facts.nestedScripts.typecheck) {
+  if (scripts.typecheck) {
     parts.push("Typecheck");
   }
-  if (facts.nestedScripts.lint) {
+  if (scripts.lint) {
     parts.push("Lint");
   }
-  if (facts.nestedScripts.test) {
+  if (scripts.test) {
     parts.push("Test");
   }
   if (facts.tests.byLane.contracts.length > 0) {
@@ -268,7 +284,8 @@ function deriveVerificationCommands(facts) {
     "bun run docs:check"
   ];
 
-  for (const scriptName of Object.keys(facts.nestedScripts).sort()) {
+  const scripts = facts.packageCount > 1 ? facts.allNestedScripts : facts.nestedScripts;
+  for (const scriptName of Object.keys(scripts).sort()) {
     if (scriptName.startsWith("test:") && scriptName !== "test" && !commands.includes(`bun run ${scriptName}`)) {
       commands.push(`bun run ${scriptName}`);
     }
@@ -278,7 +295,8 @@ function deriveVerificationCommands(facts) {
 }
 
 function computeMaturity(facts) {
-  if (!facts.nestedScripts.build || !facts.nestedScripts.typecheck || !facts.nestedScripts.lint || !facts.nestedScripts.test) {
+  const scripts = facts.packageCount > 1 ? facts.allNestedScripts : facts.nestedScripts;
+  if (!scripts.build || !scripts.typecheck || !scripts.lint || !scripts.test) {
     return "Scaffolded";
   }
 
@@ -304,6 +322,12 @@ function computeMaturity(facts) {
 function deriveCurrentCapabilities(facts) {
   const bullets = [];
 
+  if (facts.packageCount > 1) {
+    bullets.push(
+      `Aggregates ${facts.packageCount} nested packages in one repo, led by \`${facts.nestedPackageName}\` and including ${facts.nestedPackageNames.slice(0, 4).map((entry) => `\`${entry}\``).join(", ")}${facts.nestedPackageNames.length > 4 ? ", and more." : "."}`
+    );
+  }
+
   bullets.push(
     `Publishes ${facts.publicModules.length} public module${facts.publicModules.length === 1 ? "" : "s"} from \`${facts.nestedPackageName}\`${facts.publicModules.length ? `: ${facts.publicModules.map((entry) => `\`${entry}\``).join(", ")}.` : "."}`
   );
@@ -323,6 +347,33 @@ function deriveCurrentCapabilities(facts) {
   );
 
   return bullets;
+}
+
+function discoverNestedPackages(nestedLibrariesRoot) {
+  return readdirSync(nestedLibrariesRoot)
+    .filter((entry) => statSync(join(nestedLibrariesRoot, entry)).isDirectory())
+    .map((packageDirName) => {
+      const packageDir = join(nestedLibrariesRoot, packageDirName);
+      return {
+        packageDirName,
+        packageDir,
+        nestedPackageJson: readJson(join(packageDir, "package.json"))
+      };
+    })
+    .filter((entry) => Boolean(entry.nestedPackageJson.name))
+    .sort((left, right) => left.packageDirName.localeCompare(right.packageDirName));
+}
+
+function selectPrimaryPackageDirName(rootPackageJson, nestedPackages) {
+  const configuredPrimaryPackage = rootPackageJson.gutuEcosystem?.primaryPackage;
+  if (
+    configuredPrimaryPackage &&
+    nestedPackages.some((entry) => entry.packageDirName === configuredPrimaryPackage)
+  ) {
+    return configuredPrimaryPackage;
+  }
+
+  return nestedPackages[0]?.packageDirName;
 }
 
 function deriveCurrentGaps(facts) {

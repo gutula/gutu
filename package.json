@@ -1,0 +1,26 @@
+{
+  "name": "gutu-workspace",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.3.12",
+  "scripts": {
+    "business:scaffold": "node tooling/business-os/scaffold.mjs",
+    "business:check": "bun tooling/business-os/check.mjs",
+    "business:verify": "bun tooling/business-os/check.mjs --json",
+    "business:e2e-flows": "bun tooling/business-os/run-e2e-flows.mjs",
+    "business:resilience": "bun tooling/business-os/run-resilience-flows.mjs",
+    "business:fanout-ci": "bun tooling/business-os/run-ci-fanout.mjs",
+    "business:validate-packs": "cd catalogs/gutu-business-packs && bun run validate",
+    "business:sign-packs": "cd catalogs/gutu-business-packs && bun run sign",
+    "business:promote-packs:stable": "cd catalogs/gutu-business-packs && bun run promote:stable",
+    "business:certify": "bun run business:check && bun run business:e2e-flows && bun run business:resilience && bun run business:fanout-ci && bun run business:validate-packs && node tooling/plugin-docs/check.mjs && bunx tsc -p gutu-core/tsconfig.json --noEmit"
+  },
+  "workspaces": [
+    "gutu-core/framework/core/*",
+    "libraries/*/framework/libraries/*",
+    "plugins/*/framework/builtin-plugins/*",
+    "apps/*/apps/*",
+    "catalogs/*",
+    "integrations/gutu-ecosystem-integration"
+  ]
+}

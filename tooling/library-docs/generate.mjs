@@ -39,16 +39,27 @@ function updateRootPackageJson(facts) {
   const packageJsonPath = join(facts.repoRoot, "package.json");
   const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
   const nestedRelative = join("framework", "libraries", facts.packageDirName).replaceAll("\\", "/");
-  const nextScripts = {
-    build: `bun --cwd ${nestedRelative} run build`,
-    typecheck: `bun --cwd ${nestedRelative} run typecheck`,
-    lint: `bun --cwd ${nestedRelative} run lint`,
-    test: `bun --cwd ${nestedRelative} run test`
-  };
+  const multiPackageRepo = facts.packageCount > 1;
+  const scriptSource = multiPackageRepo ? facts.allNestedScripts : facts.nestedScripts;
+  const nextScripts = multiPackageRepo
+    ? {
+        build: "node scripts/run-workspaces.mjs build",
+        typecheck: "node scripts/run-workspaces.mjs typecheck",
+        lint: "node scripts/run-workspaces.mjs lint",
+        test: "node scripts/run-workspaces.mjs test"
+      }
+    : {
+        build: `bun --cwd ${nestedRelative} run build`,
+        typecheck: `bun --cwd ${nestedRelative} run typecheck`,
+        lint: `bun --cwd ${nestedRelative} run lint`,
+        test: `bun --cwd ${nestedRelative} run test`
+      };
 
-  for (const [scriptName] of Object.entries(facts.nestedScripts).sort(([left], [right]) => left.localeCompare(right))) {
+  for (const [scriptName] of Object.entries(scriptSource).sort(([left], [right]) => left.localeCompare(right))) {
     if (scriptName.startsWith("test:")) {
-      nextScripts[scriptName] = `bun --cwd ${nestedRelative} run ${scriptName}`;
+      nextScripts[scriptName] = multiPackageRepo
+        ? `node scripts/run-workspaces.mjs ${scriptName}`
+        : `bun --cwd ${nestedRelative} run ${scriptName}`;
     }
   }
 
@@ -64,6 +75,9 @@ function ensureScripts(facts) {
   mkdirSync(scriptsDir, { recursive: true });
   writeFileSync(join(scriptsDir, "docs-summary.mjs"), createSummaryScript(facts));
   writeFileSync(join(scriptsDir, "docs-check.mjs"), createDocsCheckScript(facts));
+  if (facts.packageCount > 1) {
+    writeFileSync(join(scriptsDir, "run-workspaces.mjs"), createWorkspaceRunnerScript());
+  }
 }
 
 function renderReadme(facts) {
@@ -91,6 +105,8 @@ function renderReadme(facts) {
 
   const dependencyRows = [
     ["Package Name", `\`${facts.nestedPackageName}\``],
+    ["Canonical Namespace Target", `\`${facts.canonicalPackageName}\``],
+    ["Legacy Compatibility IDs", facts.legacyPackageNames.length ? facts.legacyPackageNames.map((entry) => `\`${entry}\``).join(", ") : "None"],
     ["Direct Dependencies", facts.dependencies.length ? facts.dependencies.map((entry) => `\`${entry}\``).join(", ") : "None"],
     ["Peer Dependencies", facts.peerDependencies.length ? facts.peerDependencies.map((entry) => `\`${entry}\``).join(", ") : "None"],
     ["React Runtime", facts.reactDependency ? "Yes" : "No"],
@@ -132,6 +148,7 @@ Why this tier:
 ${toMarkdownTable(["Field", "Value"], [
     ["Package ID", `\`${facts.packageId}\``],
     ["Import Name", `\`${facts.nestedPackageName}\``],
+    ["Canonical Namespace Target", `\`${facts.canonicalPackageName}\``],
     ["UI Surface", facts.uiSurface],
     ["Consumption Model", facts.consumptionModel],
     ["Verification", facts.verificationLabel]
@@ -140,6 +157,12 @@ ${toMarkdownTable(["Field", "Value"], [
 ## Dependency And Compatibility Summary
 
 ${toMarkdownTable(["Field", "Value"], dependencyRows)}
+
+## Namespace Policy
+
+- \`@gutu/*\` is the canonical public framework namespace for new work.
+- This repo currently publishes \`${facts.nestedPackageName}\`${facts.legacyPackageNames.length ? ` as the legacy compatibility package id while the migration to \`${facts.canonicalPackageName}\` is completed.` : "."}
+- Catalog metadata carries the canonical target id so dashboards, docs, and future tooling can present one uniform Gutu namespace without breaking current consumers.
 
 ## Capability Matrix
 
@@ -196,6 +219,7 @@ function renderDeveloperGuide(facts) {
     ["Package ID", `\`${facts.packageId}\``],
     ["Display Name", facts.displayName],
     ["Import Name", `\`${facts.nestedPackageName}\``],
+    ["Canonical Namespace Target", `\`${facts.canonicalPackageName}\``],
     ["Version", `\`${facts.nestedPackageJson.version}\``],
     ["UI Surface", facts.uiSurface],
     ["Consumption Model", facts.consumptionModel]
@@ -206,7 +230,8 @@ function renderDeveloperGuide(facts) {
     ["Peer Dependencies", facts.peerDependencies.length ? facts.peerDependencies.map((entry) => `\`${entry}\``).join(", ") : "None"],
     ["Dev Dependencies", facts.devDependencies.length ? facts.devDependencies.map((entry) => `\`${entry}\``).join(", ") : "None"],
     ["React Runtime", facts.reactDependency ? "Yes" : "No"],
-    ["Workspace Scoped", facts.dependencies.some((entry) => entry.startsWith("@platform/") || entry.startsWith("@plugins/")) ? "Yes" : "No"]
+    ["Workspace Scoped", facts.dependencies.some((entry) => entry.startsWith("@platform/") || entry.startsWith("@plugins/")) ? "Yes" : "No"],
+    ["Legacy Compatibility IDs", facts.legacyPackageNames.length ? facts.legacyPackageNames.map((entry) => `\`${entry}\``).join(", ") : "None"]
   ];
 
   const publicApiRows = facts.moduleFacts.map((entry) => [
@@ -390,6 +415,7 @@ function renderCatalog(factsList) {
 
   const matrixRows = factsList.map((facts) => [
     `[${facts.displayName}](../${facts.repoRelative}/README.md)`,
+    facts.packageCount,
     facts.profile.group,
     facts.maturity,
     facts.verificationLabel,
@@ -408,9 +434,10 @@ function renderCatalog(factsList) {
       return `## ${group}
 
 ${toMarkdownTable(
-        ["Library", "Maturity", "Verification", "UI", "Consumption", "Highlights"],
+        ["Library", "Packages", "Maturity", "Verification", "UI", "Consumption", "Highlights"],
         entries.map((facts) => [
           `[${facts.displayName}](../${facts.repoRelative}/README.md)`,
+          facts.packageCount,
           facts.maturity,
           facts.verificationLabel,
           facts.uiSurface,
@@ -429,6 +456,19 @@ ${renderMascot()}
 Catalog repository for first-party Gutu libraries.
 
 This catalog is a **truth-first index** for the extracted library ecosystem. The badges and maturity labels referenced here are local-status documentation badges backed by repo facts, not live npm or GitHub Actions badges.
+
+## Live Catalog Surface
+
+- \`catalog/index.json\` tracks the full first-party library inventory.
+- \`channels/stable.json\` and \`channels/next.json\` are the installable release channels used by \`gutu vendor sync\`.
+- Promoted \`stable\` channel entries point at signed GitHub Release assets and are validated in CI before merge.
+- Unreleased or unpromoted packages stay on \`next\` even when the repo is mature, so the catalog never claims a stable install path without a verified artifact.
+
+## Package Namespace Policy
+
+- \`@gutu/*\` is the canonical framework namespace for new public packages and docs.
+- Existing first-party libraries under \`@platform/*\` remain legacy compatibility ids until the migration is complete.
+- Catalog entries carry both the current package id and a canonical Gutu target id so dashboard and release tooling can present one consistent namespace story without breaking current consumers.
 
 ## What Gutu Solves
 
@@ -468,7 +508,7 @@ flowchart LR
 
 ## Library Maturity Matrix
 
-${toMarkdownTable(["Library", "Domain", "Maturity", "Verification", "UI", "Consumption", "Docs"], matrixRows)}
+${toMarkdownTable(["Library", "Packages", "Domain", "Maturity", "Verification", "UI", "Consumption", "Docs"], matrixRows)}
 
 ${sections}
 
@@ -477,6 +517,7 @@ ${sections}
 - Every library repo is expected to publish a public \`README.md\`, a deep \`DEVELOPER.md\`, and a repo-local \`TODO.md\`.
 - Libraries should describe imports, providers, callbacks, and typed helpers honestly rather than implying undocumented global hooks.
 - Split-repo consumption still relies on the Gutu workspace/vendor model when \`workspace:*\` dependencies are present.
+- Multi-package library repos are allowed when the package catalog, release metadata, and root docs all enumerate the nested packages honestly.
 `;
 }
 
@@ -484,6 +525,45 @@ function createSummaryScript(facts) {
   return `#!/usr/bin/env node
 const summary = ${JSON.stringify(summarizeFacts(facts), null, 2)};
 console.log(JSON.stringify(summary, null, 2));
+`;
+}
+
+function createWorkspaceRunnerScript() {
+  return `#!/usr/bin/env node
+import { readdirSync, readFileSync } from "node:fs";
+import { join, resolve } from "node:path";
+import { spawnSync } from "node:child_process";
+
+const root = process.cwd();
+const scriptName = process.argv[2];
+
+if (!scriptName) {
+  console.error("usage: run-workspaces.mjs <script>");
+  process.exit(1);
+}
+
+const librariesRoot = resolve(root, "framework", "libraries");
+const packageDirs = readdirSync(librariesRoot)
+  .map((entry) => join(librariesRoot, entry))
+  .filter((entry) => {
+    try {
+      const packageJson = JSON.parse(readFileSync(join(entry, "package.json"), "utf8"));
+      return Boolean(packageJson.scripts?.[scriptName]);
+    } catch {
+      return false;
+    }
+  })
+  .sort((left, right) => left.localeCompare(right));
+
+for (const packageDir of packageDirs) {
+  const child = spawnSync("bun", ["run", scriptName], {
+    cwd: packageDir,
+    stdio: "inherit"
+  });
+  if (child.status !== 0) {
+    process.exit(child.status ?? 1);
+  }
+}
 `;
 }
 

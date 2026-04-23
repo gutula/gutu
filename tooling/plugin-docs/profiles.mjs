@@ -9,6 +9,7 @@ export const pluginGroupOrder = [
   "Platform Backbone",
   "Operational Data",
   "AI Systems",
+  "Governed AI Operating Models",
   "Content and Experience"
 ];
 
@@ -50,6 +51,19 @@ export const groupDefaults = {
     ],
     laterOptional: [
       "More connector breadth, richer evaluation libraries, and domain-specific copilots after the baseline contracts settle."
+    ]
+  },
+  "Governed AI Operating Models": {
+    nonGoals: [
+      "Not a generic no-code company simulator or unrestricted agent swarm shell.",
+      "Not a replacement for the lower-level AI, workflow, integration, and audit primitives it composes."
+    ],
+    recommendedNext: [
+      "Broaden operating-model depth only where the current governed execution, queue, and department contracts have already stabilized.",
+      "Add richer cross-domain observability once operator teams depend on the composed company builder surfaces daily."
+    ],
+    laterOptional: [
+      "Vertical operating-model packs, richer staffing simulations, and external business system orchestration after the baseline pack stabilizes."
     ]
   },
   "Content and Experience": {
@@ -120,6 +134,16 @@ export const pluginProfiles = {
       "Hybrid search, reranking, and external-connector packs once the baseline retrieval pipeline stabilizes."
     ]
   },
+  "ai-skills-core": {
+    group: "AI Systems",
+    architectureRole:
+      "Defines the governed skill registry, packaging model, and skill-to-runtime contracts that higher-level AI systems consume.",
+    focusAreas: ["skills registry", "skill contracts", "governed runtime composition"],
+    recommendedNext: [
+      "Deepen skill provenance and release evidence once more production runtimes depend on packaged skills.",
+      "Add stronger diagnostics around skill compatibility and dependency drift as the skill catalog grows."
+    ]
+  },
   "audit-core": {
     group: "Platform Backbone",
     architectureRole:
@@ -142,6 +166,16 @@ export const pluginProfiles = {
     recommendedNext: [
       "Expand session, revocation, and provider-lifecycle surfaces if the surrounding platform needs them.",
       "Add explicit identity lifecycle events when downstream provisioning flows depend on them."
+    ]
+  },
+  "automation-core": {
+    group: "Platform Backbone",
+    architectureRole:
+      "Coordinates automation definitions, recurring execution, and governed follow-up behavior without hiding work inside undocumented cron glue.",
+    focusAreas: ["automation definitions", "scheduled execution", "governed follow-up"],
+    recommendedNext: [
+      "Add stronger operator diagnostics and replay controls where automations start owning more business-critical follow-up work.",
+      "Clarify execution handoff patterns with jobs, workflows, and notifications as automation coverage broadens."
     ]
   },
   "booking-core": {
@@ -169,6 +203,16 @@ export const pluginProfiles = {
     recommendedNext: [
       "Add moderation, invitation, and community lifecycle depth where the current membership contract already supports it.",
       "Expose clearer integration points for notifications and portal experiences if community flows become more user-facing."
+    ]
+  },
+  "company-builder-core": {
+    group: "Governed AI Operating Models",
+    architectureRole:
+      "Composes governed AI, issue, automation, workflow, and runtime primitives into operating-model packs, queues, and department-level execution surfaces.",
+    focusAreas: ["operating models", "department builders", "governed AI execution"],
+    recommendedNext: [
+      "Deepen operating-model diagnostics and release evidence as more teams rely on company-level builders to coordinate work.",
+      "Clarify pack-versioning and migration paths before broader third-party operating-model composition is introduced."
     ]
   },
   "content-core": {
@@ -201,6 +245,16 @@ export const pluginProfiles = {
       "Add stronger file and template integration guidance when document outputs become a common platform contract."
     ]
   },
+  "execution-workspaces-core": {
+    group: "AI Systems",
+    architectureRole:
+      "Owns realized execution workspaces, runtime service inventory, and the durable state used to operate sandboxed AI execution environments.",
+    focusAreas: ["execution workspaces", "runtime services", "workspace realization"],
+    recommendedNext: [
+      "Deepen runtime diagnostics and lifecycle reconciliation as more AI and automation flows depend on long-lived execution environments.",
+      "Add clearer infrastructure handoff guidance where external runtimes or clusters start backing these workspaces."
+    ]
+  },
   "files-core": {
     group: "Content and Experience",
     architectureRole:
@@ -219,6 +273,26 @@ export const pluginProfiles = {
     recommendedNext: [
       "Expand validation and workflow coupling where form submissions drive more downstream automation.",
       "Add stronger portal and dashboard integration guidance if form-driven products become more user-facing."
+    ]
+  },
+  "integration-core": {
+    group: "AI Systems",
+    architectureRole:
+      "Provides the governed connector and webhook foundation used by higher-level runtimes to interact with external systems safely.",
+    focusAreas: ["connectors", "webhooks", "external-system governance"],
+    recommendedNext: [
+      "Broaden connector depth only where the current webhook, secret, and governance contracts have already stabilized.",
+      "Add stronger operator diagnostics for connector health, credential drift, and replay scenarios as usage expands."
+    ]
+  },
+  "issues-core": {
+    group: "AI Systems",
+    architectureRole:
+      "Defines the governed issue and work-item domain used by AI runtimes, operators, and automations to coordinate tracked execution.",
+    focusAreas: ["issues", "work items", "governed execution tracking"],
+    recommendedNext: [
+      "Deepen workflow, notification, and AI handoff coverage as issues become a broader cross-plugin execution spine.",
+      "Add stronger SLA, queue, and reconciliation surfaces once issue state becomes operationally critical."
     ]
   },
   "jobs-core": {
@@ -245,6 +319,16 @@ export const pluginProfiles = {
       "Add richer authoring and review notes if more governed documentation flows land here."
     ]
   },
+  "payments-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Provides the governed payments control plane for provider accounts, payment records, refunds, webhook ingress, and readiness reporting.",
+    focusAreas: ["provider accounts", "payment records", "webhook governance"],
+    recommendedNext: [
+      "Deepen live provider coverage and operator reconciliation where the current framework-level payments surface proves stable.",
+      "Add richer downstream analytics and notification coupling once payment lifecycle contracts settle."
+    ]
+  },
   "notifications-core": {
     group: "Operational Data",
     architectureRole:
@@ -260,6 +344,166 @@ export const pluginProfiles = {
     ],
     laterOptional: [
       "Campaign tooling, inbound processing, and broader provider governance after the transactional substrate has matured."
+    ]
+  },
+  "party-relationships-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Provides the canonical external-party, contact, address, and relationship write model so every business plugin can compose around one governed business identity spine.",
+    focusAreas: ["party masters", "contact facets", "relationship graphs"],
+    recommendedNext: [
+      "Deepen dedupe, survivorship, and merge safety before more downstream commercial and financial plugins depend on party truth.",
+      "Add stronger hierarchy, KYC, and localization-aware contact governance as onboarding depth increases."
+    ]
+  },
+  "product-catalog-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns the shared catalog, variant, and operational default records that downstream selling, buying, inventory, and production plugins can reuse safely.",
+    focusAreas: ["products", "variants", "shared defaults"],
+    recommendedNext: [
+      "Deepen variant, substitution, and lifecycle controls before more downstream domains treat the catalog as fixed truth.",
+      "Add stronger packaging for product templates, quality defaults, and manufacturing-facing policy overlays."
+    ]
+  },
+  "pricing-tax-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Maintains shared pricing, discount, tax, and commercial-policy rules so order, billing, and procurement flows evaluate policy from one governed source.",
+    focusAreas: ["price policies", "tax rules", "commercial evaluation"],
+    recommendedNext: [
+      "Add richer precedence, localization, and approval evidence where pricing and tax changes start driving live operations.",
+      "Clarify override, promotion, and withholding flows before sector packs build on the pricing layer."
+    ]
+  },
+  "traceability-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Defines document lineage, common dimensions, and reconciliation surfaces so cross-plugin business effects stay visible and repairable.",
+    focusAreas: ["lineage graph", "common dimensions", "reconciliation queues"],
+    recommendedNext: [
+      "Deepen drift detection and exception routing as more business plugins emit downstream linked work.",
+      "Expose stronger operator tooling for process lineage and partial-failure recovery."
+    ]
+  },
+  "accounting-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns ledger-oriented financial truth, billing posture, and reconciliation state so every upstream plugin must request finance outcomes explicitly.",
+    focusAreas: ["ledger truth", "billing posture", "financial reconciliation"],
+    recommendedNext: [
+      "Deepen posting templates, close controls, and reversal handling before upstream domains rely on accounting intents in production.",
+      "Add stronger downstream bank, tax, and subledger reconciliation coverage as the finance surface hardens."
+    ]
+  },
+  "crm-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns lead, opportunity, and pre-sales readiness state so commercial handoff stays explicit before Sales becomes the demand source of truth.",
+    focusAreas: ["lead intake", "opportunity state", "handoff readiness"],
+    recommendedNext: [
+      "Deepen scoring, routing, and handoff validation before more quote creation depends on CRM quality.",
+      "Add stronger campaign and activity evidence where pre-sales governance becomes operationally significant."
+    ]
+  },
+  "sales-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns quote-to-order demand truth, downstream billing requests, and fulfillment orchestration requests without leaking into stock or ledger writes.",
+    focusAreas: ["quotes", "orders", "billing requests"],
+    recommendedNext: [
+      "Deepen amendment, return, and partial-fulfillment coverage as more downstream inventory and accounting flows depend on sales demand truth.",
+      "Clarify credit, hold, and promise-date orchestration before higher-volume order flows go live."
+    ]
+  },
+  "procurement-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns requisitions, sourcing outcomes, purchase commitments, and receipt expectations while leaving stock and finance truth to their owning plugins.",
+    focusAreas: ["requisitions", "purchase commitments", "receipt expectations"],
+    recommendedNext: [
+      "Deepen sourcing, tolerance, and exception handling before more warehouse and financial flows depend on procurement commitments.",
+      "Add stronger scorecard and substitution support where supplier governance becomes critical."
+    ]
+  },
+  "inventory-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns physical stock, reservations, transfers, and reconciliation state so warehouse truth remains explicit and durable.",
+    focusAreas: ["stock truth", "reservations", "movement reconciliation"],
+    recommendedNext: [
+      "Deepen warehouse execution, counting, and discrepancy handling before more downstream operational flows depend on inventory truth.",
+      "Add stronger negative-stock, transfer, and quality-state enforcement where physical operations become denser."
+    ]
+  },
+  "projects-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns project execution, milestone progress, and delivery-driven billing readiness without collapsing into sales or accounting truth.",
+    focusAreas: ["project execution", "milestones", "billing readiness"],
+    recommendedNext: [
+      "Deepen budget, change, and timesheet-aware delivery flows before project-backed billing becomes production critical.",
+      "Add stronger portfolio and commitment views where multi-project delivery coordination matters."
+    ]
+  },
+  "support-service-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns ticket, service-order, and SLA state so service operations remain explicit and auditable across intake, execution, and billing readiness.",
+    focusAreas: ["tickets", "service orders", "sla state"],
+    recommendedNext: [
+      "Deepen entitlement, escalation, and spare-consumption coverage before service operations depend on the boundary in production.",
+      "Add stronger omnichannel intake and operator recovery paths where support becomes a primary customer workflow."
+    ]
+  },
+  "pos-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns POS sessions, receipt journals, and sync or closeout exception state while handing settled stock and finance effects downstream explicitly.",
+    focusAreas: ["sessions", "receipt journals", "sync reconciliation"],
+    recommendedNext: [
+      "Deepen offline replay, cashier variance, and settlement controls before broader retail deployment.",
+      "Add stronger loyalty, payment, and omnichannel bridge guidance once the session boundary stabilizes."
+    ]
+  },
+  "manufacturing-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns BOM, routing, work-order, and WIP state so production truth remains explicit and separate from inventory or accounting outcomes.",
+    focusAreas: ["boms", "work orders", "wip"],
+    recommendedNext: [
+      "Deepen production variance, subcontracting, and rework handling before the manufacturing boundary is treated as production-grade.",
+      "Add stronger planning and quality integration contracts where plant execution depends on them daily."
+    ]
+  },
+  "quality-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns inspections, nonconformance, release holds, and CAPA state so conformity and remediation decisions remain first-class business truth.",
+    focusAreas: ["inspections", "quality holds", "capa"],
+    recommendedNext: [
+      "Deepen hold or release, deviation approval, and CAPA closure handling before more stock and production flows rely on the quality boundary.",
+      "Add stronger sampling and evidence packaging for regulated operational contexts."
+    ]
+  },
+  "assets-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns fixed-asset register and lifecycle posture so capitalization, custody, transfer, and disposal work stay explicit and governed.",
+    focusAreas: ["asset register", "depreciation posture", "custody transfers"],
+    recommendedNext: [
+      "Deepen book, depreciation, and custody controls before the asset boundary feeds finance and operations in production.",
+      "Add stronger audit and verification tooling where physical asset campaigns depend on the register."
+    ]
+  },
+  "hr-payroll-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns workforce, leave, and payroll state so people and compensation truth remain governed before downstream finance or delivery consumption.",
+    focusAreas: ["employees", "payroll runs", "leave state"],
+    recommendedNext: [
+      "Deepen retro, rerun, and payout-failure handling before payroll moves beyond scaffold coverage.",
+      "Add stronger attendance, benefits, and sensitive-data governance as the HR surface hardens."
     ]
   },
   "org-tenant-core": {
@@ -282,6 +526,96 @@ export const pluginProfiles = {
       "Add clearer content, asset, and portal integration patterns where page assembly becomes more operationally critical."
     ]
   },
+  "contracts-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns long-running agreement, entitlement, and billing-schedule truth so recurring or governed commercial commitments stay explicit.",
+    focusAreas: ["contracts", "entitlements", "billing schedules"],
+    recommendedNext: [
+      "Deepen amendment, renewal, and entitlement exception handling as more commercial flows rely on contracts as a primary boundary.",
+      "Clarify downstream accounting and service entitlement handoff rules before higher-volume recurring operations go live."
+    ]
+  },
+  "subscriptions-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns recurring plan, cycle, and renewal truth for subscription businesses instead of burying recurrence inside orders or invoices.",
+    focusAreas: ["subscription plans", "billing cycles", "renewals"],
+    recommendedNext: [
+      "Deepen pause, resume, arrears, and dunning-oriented lifecycle coverage as recurring revenue use cases expand.",
+      "Clarify renewal and proration handoff rules before financial automation depends on the subscription cycle contract."
+    ]
+  },
+  "business-portals-core": {
+    group: "Content and Experience",
+    architectureRole:
+      "Projects governed business records into customer, vendor, and employee self-service workspaces without taking ownership away from source plugins.",
+    focusAreas: ["self-service portals", "business projections", "portal actions"],
+    recommendedNext: [
+      "Deepen portal-specific workflow and approval guidance as more business plugins expose self-service actions.",
+      "Add stronger projection freshness and reconciliation diagnostics where portals become operationally critical."
+    ]
+  },
+  "field-service-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns dispatch, visit execution, and parts-request coordination for on-site service work while keeping inventory and accounting boundaries explicit.",
+    focusAreas: ["dispatch", "field visits", "spare-parts requests"],
+    recommendedNext: [
+      "Deepen technician mobility, offline follow-up, and completion-proof flows as field execution becomes more demanding.",
+      "Clarify downstream inventory, billing, and entitlement orchestration before higher-volume service dispatch goes live."
+    ]
+  },
+  "maintenance-cmms-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns preventive maintenance plans, work orders, and asset-health posture for maintenance-led operations.",
+    focusAreas: ["maintenance plans", "asset work orders", "asset health"],
+    recommendedNext: [
+      "Deepen downtime, inspection, and preventive scheduling coverage as more asset-intensive flows rely on the maintenance contract.",
+      "Clarify support, inventory, and asset-reconciliation handoffs before broader CMMS usage expands."
+    ]
+  },
+  "treasury-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns treasury-side cash posture, banking operations, and liquidity forecasting as a finance boundary distinct from ledger truth.",
+    focusAreas: ["cash position", "banking", "liquidity forecasting"],
+    recommendedNext: [
+      "Deepen bank-statement, payout, and forecast-variance coverage where treasury work becomes daily operator activity.",
+      "Clarify accounting and payments handoffs before live treasury automation depends on this contract."
+    ]
+  },
+  "e-invoicing-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns electronic invoice preparation, submission posture, and statutory reconciliation without taking financial ownership away from accounting.",
+    focusAreas: ["e-invoice preparation", "submission status", "statutory reconciliation"],
+    recommendedNext: [
+      "Deepen jurisdiction-specific rejection, replay, and archive flows as more country packs depend on this plugin.",
+      "Clarify accounting and tax handoff boundaries before statutory automation becomes production-critical."
+    ]
+  },
+  "analytics-bi-core": {
+    group: "Operational Data",
+    architectureRole:
+      "Owns governed datasets, KPI models, and warehouse-sync posture so heavy analytics does not sprawl into transactional plugins.",
+    focusAreas: ["datasets", "KPIs", "warehouse sync"],
+    recommendedNext: [
+      "Deepen dataset versioning, refresh controls, and warehouse-failure diagnostics as analytics usage broadens.",
+      "Clarify dashboard and BI integration contracts before more consumers depend on the shared dataset layer."
+    ]
+  },
+  "ai-assist-core": {
+    group: "AI Systems",
+    architectureRole:
+      "Provides bounded AI summaries, triage suggestions, and anomaly-review state for business teams without making AI the source of truth.",
+    focusAreas: ["assist summaries", "triage suggestions", "anomaly review"],
+    recommendedNext: [
+      "Deepen review, feedback, and rollback flows as more operators use AI assistance in production workflows.",
+      "Clarify domain-specific guardrails and downstream action policies before automated assist paths broaden."
+    ]
+  },
   "portal-core": {
     group: "Operational Data",
     architectureRole:
@@ -300,6 +634,16 @@ export const pluginProfiles = {
     recommendedNext: [
       "Add clearer downstream enforcement patterns and policy-drift diagnostics when more plugins consume these rules directly.",
       "Expose explicit policy lifecycle events if cross-plugin automation depends on role or grant changes."
+    ]
+  },
+  "runtime-bridge-core": {
+    group: "AI Systems",
+    architectureRole:
+      "Bridges governed platform workflows into external runtimes and service boundaries without leaking orchestration assumptions into every plugin.",
+    focusAreas: ["runtime bridges", "service handoff", "governed orchestration"],
+    recommendedNext: [
+      "Deepen runtime observability and failure recovery patterns as more production workflows depend on bridge handoffs.",
+      "Clarify adapter stability and compatibility boundaries before expanding bridge coverage further."
     ]
   },
   "search-core": {

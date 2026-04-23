@@ -7,10 +7,12 @@
 ## Plugins
 
 - `plugins/gutu-plugin-admin-shell-workbench`
+- `plugins/gutu-plugin-accounting-core`
 - `plugins/gutu-plugin-ai-core`
 - `plugins/gutu-plugin-ai-evals`
 - `plugins/gutu-plugin-ai-rag`
 - `plugins/gutu-plugin-ai-skills-core`
+- `plugins/gutu-plugin-assets-core`
 - `plugins/gutu-plugin-automation-core`
 - `plugins/gutu-plugin-audit-core`
 - `plugins/gutu-plugin-auth-core`
@@ -18,25 +20,49 @@
 - `plugins/gutu-plugin-company-builder-core`
 - `plugins/gutu-plugin-community-core`
 - `plugins/gutu-plugin-content-core`
+- `plugins/gutu-plugin-contracts-core`
+- `plugins/gutu-plugin-crm-core`
 - `plugins/gutu-plugin-dashboard-core`
 - `plugins/gutu-plugin-document-core`
+- `plugins/gutu-plugin-e-invoicing-core`
 - `plugins/gutu-plugin-execution-workspaces-core`
+- `plugins/gutu-plugin-field-service-core`
 - `plugins/gutu-plugin-files-core`
 - `plugins/gutu-plugin-forms-core`
+- `plugins/gutu-plugin-hr-payroll-core`
+- `plugins/gutu-plugin-inventory-core`
 - `plugins/gutu-plugin-integration-core`
 - `plugins/gutu-plugin-issues-core`
 - `plugins/gutu-plugin-jobs-core`
 - `plugins/gutu-plugin-knowledge-core`
+- `plugins/gutu-plugin-manufacturing-core`
+- `plugins/gutu-plugin-maintenance-cmms-core`
 - `plugins/gutu-plugin-notifications-core`
 - `plugins/gutu-plugin-org-tenant-core`
+- `plugins/gutu-plugin-party-relationships-core`
+- `plugins/gutu-plugin-payments-core`
 - `plugins/gutu-plugin-page-builder-core`
+- `plugins/gutu-plugin-business-portals-core`
+- `plugins/gutu-plugin-pos-core`
 - `plugins/gutu-plugin-portal-core`
+- `plugins/gutu-plugin-pricing-tax-core`
+- `plugins/gutu-plugin-procurement-core`
+- `plugins/gutu-plugin-product-catalog-core`
+- `plugins/gutu-plugin-projects-core`
+- `plugins/gutu-plugin-quality-core`
 - `plugins/gutu-plugin-role-policy-core`
 - `plugins/gutu-plugin-runtime-bridge-core`
+- `plugins/gutu-plugin-sales-core`
 - `plugins/gutu-plugin-search-core`
+- `plugins/gutu-plugin-subscriptions-core`
+- `plugins/gutu-plugin-support-service-core`
 - `plugins/gutu-plugin-template-core`
+- `plugins/gutu-plugin-treasury-core`
+- `plugins/gutu-plugin-traceability-core`
 - `plugins/gutu-plugin-user-directory`
 - `plugins/gutu-plugin-workflow-core`
+- `plugins/gutu-plugin-analytics-bi-core`
+- `plugins/gutu-plugin-ai-assist-core`
 
 ## Libraries
 
@@ -64,6 +90,7 @@
 - `libraries/gutu-lib-form`
 - `libraries/gutu-lib-geo`
 - `libraries/gutu-lib-layout`
+- `libraries/gutu-lib-payments`
 - `libraries/gutu-lib-query`
 - `libraries/gutu-lib-router`
 - `libraries/gutu-lib-search`
@@ -89,6 +116,7 @@
 ## Catalogs
 
 - `catalogs/gutu-libraries`
+- `catalogs/gutu-business-packs`
 - `catalogs/gutu-plugins`
 
 ## Integration

@@ -65,6 +65,7 @@ flowchart LR
 
 - Read [gutu-core/README.md](./gutu-core/README.md) for the foundation runtime and CLI.
 - Read [gutu-core/docs/framework-overview.md](./gutu-core/docs/framework-overview.md) for the deeper framework story, operating model, and comparison charts.
+- Read [Business Plugin Goal.md](./Business%20Plugin%20Goal.md) and [Business Plugin TODO.md](./Business%20Plugin%20TODO.md) for the staged Gutu Business OS rollout contract and workspace-level truth board.
 - Use [catalogs/gutu-plugins/README.md](./catalogs/gutu-plugins/README.md) and [catalogs/gutu-libraries/README.md](./catalogs/gutu-libraries/README.md) to navigate the extracted ecosystem.
 - Use [integrations/gutu-ecosystem-integration/README.md](./integrations/gutu-ecosystem-integration/README.md) to understand how the whole system is certified from a consumer point of view.
 

@@ -9,6 +9,7 @@ import {
   integrationColor,
   listInternalDocPaths,
   maturityColor,
+  pluginCategoryOrder,
   sortFactsByGroup,
   toMarkdownTable,
   verificationColor
@@ -34,6 +35,18 @@ function main() {
   }
 
   writeFile(join(catalogRoot, "README.md"), renderCatalogReadme(factsList));
+  writeFile(
+    join(
+      pluginsRoot,
+      "gutu-plugin-dashboard-core",
+      "framework",
+      "builtin-plugins",
+      "dashboard-core",
+      "src",
+      "plugin-metadata.generated.ts"
+    ),
+    renderDashboardPluginMetadata(factsList)
+  );
 }
 
 function writeRootPackageJson(facts) {
@@ -43,24 +56,25 @@ function writeRootPackageJson(facts) {
 
   for (const name of ["build", "typecheck", "lint", "test"]) {
     if (facts.nestedScripts[name]) {
-      orderedScripts[name] = `bun --cwd ${nestedRelative} run ${name}`;
+      orderedScripts[name] = `cd ${nestedRelative} && bun run ${name}`;
     }
   }
 
   for (const name of Object.keys(facts.nestedScripts).filter((entry) => entry.startsWith("test:")).sort()) {
-    orderedScripts[name] = `bun --cwd ${nestedRelative} run ${name}`;
+    orderedScripts[name] = `cd ${nestedRelative} && bun run ${name}`;
   }
 
   if (facts.tests.byLane.integration.length && !orderedScripts["test:integration"]) {
-    orderedScripts["test:integration"] = `bun --cwd ${nestedRelative} test tests/integration`;
+    orderedScripts["test:integration"] = `cd ${nestedRelative} && bun test tests/integration`;
   }
 
   if (facts.tests.byLane.migrations.length && !orderedScripts["test:migrations"]) {
-    orderedScripts["test:migrations"] = `bun --cwd ${nestedRelative} test tests/migrations`;
+    orderedScripts["test:migrations"] = `cd ${nestedRelative} && bun test tests/migrations`;
   }
 
   orderedScripts["docs:summary"] = "node scripts/docs-summary.mjs";
   orderedScripts["docs:check"] = "node scripts/docs-check.mjs";
+  orderedScripts["ci"] = "bun run build && bun run typecheck && bun run lint && bun run test && bun run docs:check";
 
   const next = {
     ...existing,
@@ -122,6 +136,48 @@ function renderReadme(facts) {
       "UI",
       facts.surfaces.hasAdminContributions || facts.surfaces.hasUiSurface ? "Present" : "None",
       describeUiSurface(facts)
+    ],
+    [
+      "Owned Entities",
+      facts.domainCatalog.ownedEntities.length,
+      facts.domainCatalog.ownedEntities.length
+        ? facts.domainCatalog.ownedEntities.map((entry) => `\`${entry}\``).join(", ")
+        : "No explicit domain catalog yet"
+    ],
+    [
+      "Reports",
+      facts.domainCatalog.reports.length,
+      facts.domainCatalog.reports.length
+        ? facts.domainCatalog.reports.map((entry) => `\`${entry}\``).join(", ")
+        : "No explicit report catalog yet"
+    ],
+    [
+      "Exception Queues",
+      facts.domainCatalog.exceptionQueues.length,
+      facts.domainCatalog.exceptionQueues.length
+        ? facts.domainCatalog.exceptionQueues.map((entry) => `\`${entry}\``).join(", ")
+        : "No explicit exception queues yet"
+    ],
+    [
+      "Operational Scenarios",
+      facts.domainCatalog.operationalScenarios.length,
+      facts.domainCatalog.operationalScenarios.length
+        ? facts.domainCatalog.operationalScenarios.map((entry) => `\`${entry}\``).join(", ")
+        : "No explicit operational scenario matrix yet"
+    ],
+    [
+      "Settings Surfaces",
+      facts.domainCatalog.settingsSurfaces.length,
+      facts.domainCatalog.settingsSurfaces.length
+        ? facts.domainCatalog.settingsSurfaces.map((entry) => `\`${entry}\``).join(", ")
+        : "No explicit settings surface catalog yet"
+    ],
+    [
+      "ERPNext Refs",
+      facts.domainCatalog.erpnextModules.length,
+      facts.domainCatalog.erpnextModules.length
+        ? facts.domainCatalog.erpnextModules.map((entry) => `\`${entry}\``).join(", ")
+        : "No direct ERPNext reference mapping declared"
     ]
   ];
 
@@ -176,7 +232,8 @@ ${renderMaturityReason(facts)}
 
 ## Verified Capability Summary
 
-- Group: **${facts.profile.group}**
+- Domain group: **${facts.profile.group}**
+- Default category: **${facts.defaultCategory.label} / ${facts.defaultCategory.subcategoryLabel}**
 - Verification surface: **${facts.verificationLabel}**
 - Tests discovered: **${facts.tests.files.length}** total files across unit, contract${facts.tests.byLane.integration.length ? ", integration" : ""}${facts.tests.byLane.migrations.length ? ", migration" : ""} lanes
 - Integration model: **${facts.integrationModel}**
@@ -241,6 +298,8 @@ function renderDeveloperDoc(facts) {
     ["Package Name", `\`${facts.nestedPackageName}\``],
     ["Manifest ID", `\`${facts.packageId}\``],
     ["Display Name", facts.displayName],
+    ["Domain Group", facts.profile.group],
+    ["Default Category", `${facts.defaultCategory.label} / ${facts.defaultCategory.subcategoryLabel}`],
     ["Version", `\`${facts.manifestVersion}\``],
     ["Kind", `\`${facts.manifestKind}\``],
     ["Trust Tier", `\`${facts.trustTier}\``],
@@ -550,12 +609,18 @@ function renderBusinessRules(facts) {
 - The plugin remains authoritative only for the data declared in \`${facts.packageId}\` and its owned resource set.
 - Integrators must respect the declared permission and idempotency semantics of each exported action.
 - Cross-plugin automation must use explicit commands, resources, jobs, or workflows instead of hidden coupling.
+- ERP parity references are tracked against: ${facts.domainCatalog.erpnextModules.length ? facts.domainCatalog.erpnextModules.map((entry) => `\`${entry}\``).join(", ") : "no direct ERPNext module mapping declared"}.
 
 ## Lifecycle notes
 
 - This plugin currently exports ${facts.actions.length} action(s), ${facts.resources.length} resource(s), ${facts.jobs.length} job definition(s), and ${facts.workflows.length} workflow definition(s).
+- The domain catalog currently tracks ${facts.domainCatalog.ownedEntities.length} owned entity surface(s), ${facts.domainCatalog.reports.length} report surface(s), and ${facts.domainCatalog.exceptionQueues.length} exception queue(s).
 - Durable data behavior is bounded by the declared schema and compatibility contract: ${facts.compatibility.db.length ? facts.compatibility.db.join(", ") : "no explicit database contract"}.
 - Maturity is currently assessed as \`${facts.maturity}\`, which means the documentation and operational promises must stay within that boundary.
+
+## Settings and governance surfaces
+
+${facts.domainCatalog.settingsSurfaces.length ? facts.domainCatalog.settingsSurfaces.map((entry) => `- \`${entry}\``).join("\n") : "- No explicit settings surface catalog is exported today."}
 
 ## Actor expectations
 
@@ -592,6 +657,10 @@ function renderEdgeCases(facts) {
 
 ${bullets.map((entry) => `- ${entry}`).join("\n")}
 
+## Domain-specific edge cases
+
+${facts.domainCatalog.edgeCases.length ? facts.domainCatalog.edgeCases.map((entry) => `- ${entry}`).join("\n") : "- No domain-specific edge-case catalog is exported yet."}
+
 ## Data anomalies
 
 - Duplicate or replayed requests should be evaluated against the action’s documented idempotency behavior rather than guessed at runtime.
@@ -615,6 +684,10 @@ ${facts.actions.length
     ? facts.actions.map((action) => `- \`${action.id}\`: ${action.description || "Governed action exported by this plugin."}`).join("\n")
     : "- No action surface is exported today."}
 
+## Operational scenario matrix
+
+${facts.domainCatalog.operationalScenarios.length ? facts.domainCatalog.operationalScenarios.map((entry) => `- \`${entry}\``).join("\n") : "- No operational scenario catalog is exported today."}
+
 ## Action-level flows
 
 ${facts.actions.length ? facts.actions.map((action) => renderActionFlowBlock(facts, action)).join("\n\n") : "No action flows are documented because the plugin currently exports no actions."}
@@ -624,6 +697,7 @@ ${facts.actions.length ? facts.actions.map((action) => renderActionFlowBlock(fac
 - Direct dependencies: ${facts.dependsOn.length ? facts.dependsOn.map((entry) => `\`${entry}\``).join(", ") : "none"}
 - Requested capabilities: ${facts.requestedCapabilities.length ? facts.requestedCapabilities.map((entry) => `\`${entry}\``).join(", ") : "none"}
 - Integration model: ${facts.integrationModel}
+- ERPNext doctypes used as parity references: ${facts.domainCatalog.erpnextDoctypes.length ? facts.domainCatalog.erpnextDoctypes.map((entry) => `\`${entry}\``).join(", ") : "none declared"}
 - Recovery ownership should stay with the host orchestration layer when the plugin does not explicitly export jobs, workflows, or lifecycle events.
 `;
 }
@@ -671,6 +745,7 @@ function renderCatalogReadme(factsList) {
   const rows = factsList.map((facts) => [
     `[${facts.displayName}](https://github.com/gutula/${facts.repoName})`,
     facts.profile.group,
+    `${facts.defaultCategory.label} / ${facts.defaultCategory.subcategoryLabel}`,
     `\`${facts.maturity}\``,
     facts.verificationLabel,
     facts.compatibility.db.length ? facts.compatibility.db.join(" + ") : "None",
@@ -678,13 +753,56 @@ function renderCatalogReadme(factsList) {
     `[README](https://github.com/gutula/${facts.repoName}#readme) · [DEVELOPER](https://github.com/gutula/${facts.repoName}/blob/main/DEVELOPER.md)`
   ]);
 
-  const sections = pluginGroupOrder
+  const categorySections = pluginCategoryOrder
+    .map((categoryId) => {
+      const categoryFacts = factsList.filter((facts) => facts.defaultCategory.id === categoryId);
+      if (!categoryFacts.length) {
+        return "";
+      }
+
+      const categoryLabel = categoryFacts[0].defaultCategory.label;
+      const subcategoryIds = [...new Set(categoryFacts.map((facts) => facts.defaultCategory.subcategoryId))].sort((left, right) => {
+        const leftLabel = categoryFacts.find((facts) => facts.defaultCategory.subcategoryId === left)?.defaultCategory.subcategoryLabel ?? left;
+        const rightLabel =
+          categoryFacts.find((facts) => facts.defaultCategory.subcategoryId === right)?.defaultCategory.subcategoryLabel ?? right;
+        return leftLabel.localeCompare(rightLabel);
+      });
+
+      const subcategorySections = subcategoryIds
+        .map((subcategoryId) => {
+          const subcategoryFacts = categoryFacts
+            .filter((facts) => facts.defaultCategory.subcategoryId === subcategoryId)
+            .sort((left, right) => left.displayName.localeCompare(right.displayName));
+          const subcategoryLabel = subcategoryFacts[0]?.defaultCategory.subcategoryLabel ?? subcategoryId;
+          return `### ${subcategoryLabel}\n\n${toMarkdownTable(
+            ["Plugin", "Domain Group", "Maturity", "Verification", "Integration"],
+            subcategoryFacts.map((facts) => [
+              `[${facts.displayName}](https://github.com/gutula/${facts.repoName})`,
+              facts.profile.group,
+              `\`${facts.maturity}\``,
+              facts.verificationLabel,
+              facts.integrationModel
+            ])
+          )}`;
+        })
+        .join("\n\n");
+
+      return `## ${categoryLabel}\n\n${subcategorySections}`;
+    })
+    .filter(Boolean)
+    .join("\n\n");
+
+  const architectureSections = pluginGroupOrder
     .map((group) => {
       const groupFacts = grouped[group];
+      if (!groupFacts.length) {
+        return "";
+      }
       return `## ${group}\n\n${toMarkdownTable(
-        ["Plugin", "Maturity", "Verification", "DB", "Integration", "Highlights"],
+        ["Plugin", "Default Category", "Maturity", "Verification", "DB", "Integration", "Highlights"],
         groupFacts.map((facts) => [
           `[${facts.displayName}](https://github.com/gutula/${facts.repoName})`,
+          `${facts.defaultCategory.label} / ${facts.defaultCategory.subcategoryLabel}`,
           `\`${facts.maturity}\``,
           facts.verificationLabel,
           facts.compatibility.db.length ? facts.compatibility.db.join(" + ") : "None",
@@ -693,6 +811,7 @@ function renderCatalogReadme(factsList) {
         ])
       )}`;
     })
+    .filter(Boolean)
     .join("\n\n");
 
   return `# gutu-plugins
@@ -702,6 +821,13 @@ ${renderMascot()}
 Catalog repository for first-party Gutu plugins.
 
 This catalog is a **truth-first index** for the extracted plugin ecosystem. The badges and maturity labels referenced here are local-status documentation badges backed by repo facts, not live npm or GitHub Actions badges.
+
+## Live Catalog Surface
+
+- \`catalog/index.json\` tracks the full first-party plugin inventory.
+- \`channels/stable.json\` and \`channels/next.json\` are the installable release channels used by \`gutu vendor sync\`.
+- Promoted \`stable\` channel entries point at signed GitHub Release assets and are validated in CI before merge.
+- Unreleased or unpromoted plugins stay on \`next\` even when the repo is mature, so the catalog never claims a stable install path without a verified artifact.
 
 ## What Gutu Solves
 
@@ -741,9 +867,15 @@ flowchart LR
 
 ## Maturity Matrix
 
-${toMarkdownTable(["Plugin", "Domain", "Maturity", "Verification", "DB", "Integration", "Docs"], rows)}
+${toMarkdownTable(["Plugin", "Domain Group", "Default Category", "Maturity", "Verification", "DB", "Integration", "Docs"], rows)}
 
-${sections}
+## Dashboard Categories
+
+${categorySections}
+
+## Architecture Groups
+
+${architectureSections}
 
 ## Notes
 
@@ -772,10 +904,43 @@ function renderStackRows(facts) {
   return [
     ["Repo kind", "First-party plugin"],
     ["Domain group", facts.profile.group],
+    ["Default category", `${facts.defaultCategory.label} / ${facts.defaultCategory.subcategoryLabel}`],
     ["Primary focus", facts.profile.focusAreas.join(", ")],
     ["Best when", "You need a governed domain boundary with explicit contracts and independent release cadence."],
     ["Composes through", facts.integrationModel]
   ];
+}
+
+function renderDashboardPluginMetadata(factsList) {
+  const rows = factsList
+    .slice()
+    .sort((left, right) => left.displayName.localeCompare(right.displayName))
+    .map(
+      (facts) => `  {
+    id: "${facts.packageId}",
+    displayName: "${escapeTsString(facts.displayName)}",
+    description: "${escapeTsString(facts.description)}",
+    repoName: "${facts.repoName}",
+    domainGroup: "${escapeTsString(facts.profile.group)}",
+    trustTier: "${facts.trustTier}",
+    reviewTier: "${facts.reviewTier}",
+    maturity: "${facts.maturity}",
+    defaultCategory: {
+      id: "${facts.defaultCategory.id}",
+      label: "${escapeTsString(facts.defaultCategory.label)}",
+      subcategoryId: "${facts.defaultCategory.subcategoryId}",
+      subcategoryLabel: "${escapeTsString(facts.defaultCategory.subcategoryLabel)}"
+    }
+  }`
+    )
+    .join(",\n");
+
+  return `import type { DashboardPluginMetadataInput } from "./plugin-metadata";
+
+export const dashboardPluginMetadata = [
+${rows}
+] satisfies DashboardPluginMetadataInput[];
+`;
 }
 
 function renderMaturityReason(facts) {
@@ -831,6 +996,10 @@ function describeUiSurface(facts) {
     parts.push("zone or canvas extension");
   }
   return parts.length ? parts.join(", ") : "No UI surface exported";
+}
+
+function escapeTsString(value) {
+  return String(value).replaceAll("\\", "\\\\").replaceAll("\"", "\\\"");
 }
 
 function renderOrchestrationDetails(facts) {
@@ -1139,7 +1308,7 @@ if (!existsSync(join(repoRoot, "docs", "assets", "gutu-mascot.png"))) {
   failures.push("docs/assets/gutu-mascot.png is missing.");
 }
 
-if (!packageTs.includes("id:")) {
+if (!/["']?id["']?\\s*:/.test(packageTs)) {
   failures.push("package.ts is missing the plugin id field.");
 }
 

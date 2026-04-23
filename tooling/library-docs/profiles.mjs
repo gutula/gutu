@@ -209,6 +209,20 @@ export const libraryProfiles = {
     "Provides shared layout primitives so apps and surfaces can compose consistent spacing, panels, and responsive structure.",
     ["layout primitives", "responsive structure", "shared composition"]
   ),
+  "payments-core": defineProfile(
+    "Core Data And Query",
+    "Provides the core payment abstraction, provider registry, contract tests, and support-matrix generation that payment-facing plugins and adapters build on.",
+    ["payment contracts", "provider registry", "support-matrix generation"],
+    {
+      recommendedNext: [
+        "Continue moving first-wave providers from honest scaffold status to live SDK-backed integrations behind the shared adapter contract.",
+        "Expand provider-level sandbox coverage only where the implementation depth is already real and publicly testable."
+      ],
+      laterOptional: [
+        "Separate optional modules such as subscriptions, payouts, and marketplaces once provider depth justifies their own release cadence."
+      ]
+    }
+  ),
   "query": defineProfile(
     "Core Data And Query",
     "Provides typed query helpers and shared request/response patterns for packages that need stable data-access abstractions.",
