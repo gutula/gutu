@@ -1,0 +1,3092 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "gutu-workspace",
+    },
+    "apps/gutu-app-docs/apps/docs": {
+      "name": "@apps/docs",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+      },
+    },
+    "apps/gutu-app-examples/apps/examples": {
+      "name": "@apps/examples",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+      },
+    },
+    "apps/gutu-app-platform-dev-console/apps/platform-dev-console": {
+      "name": "@apps/platform-dev-console",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-shell-workbench": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/plugin-solver": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/ai-core": "workspace:*",
+        "@plugins/ai-evals": "workspace:*",
+        "@plugins/ai-rag": "workspace:*",
+        "@plugins/dashboard-core": "workspace:*",
+        "@plugins/notifications-core": "workspace:*",
+        "@plugins/page-builder-core": "workspace:*",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+      },
+    },
+    "apps/gutu-app-playground/apps/playground": {
+      "name": "@apps/playground",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+      },
+    },
+    "catalogs/gutu-libraries": {
+      "name": "gutu-libraries",
+    },
+    "catalogs/gutu-plugins": {
+      "name": "gutu-plugins",
+    },
+    "gutu-core/framework/core/cli": {
+      "name": "@gutu/cli",
+      "version": "0.0.1",
+      "bin": {
+        "gutu": "./src/bin.ts",
+      },
+      "dependencies": {
+        "@gutu/ecosystem": "workspace:*",
+        "@gutu/release": "workspace:*",
+      },
+    },
+    "gutu-core/framework/core/commands": {
+      "name": "@platform/commands",
+      "version": "0.0.1",
+      "dependencies": {
+        "@platform/events": "workspace:*",
+        "@platform/jobs": "workspace:*",
+        "@platform/schema": "workspace:*",
+      },
+    },
+    "gutu-core/framework/core/db-drizzle": {
+      "name": "@platform/db-drizzle",
+      "version": "0.0.1",
+      "dependencies": {
+        "postgres": "^3.4.7",
+      },
+    },
+    "gutu-core/framework/core/ecosystem": {
+      "name": "@gutu/ecosystem",
+      "version": "0.0.1",
+      "dependencies": {
+        "@gutu/kernel": "workspace:*",
+        "@gutu/release": "workspace:*",
+        "zod": "^3.24.3",
+      },
+    },
+    "gutu-core/framework/core/events": {
+      "name": "@platform/events",
+      "version": "0.0.1",
+      "dependencies": {
+        "@platform/jobs": "workspace:*",
+        "@platform/schema": "workspace:*",
+      },
+    },
+    "gutu-core/framework/core/jobs": {
+      "name": "@platform/jobs",
+      "version": "0.0.1",
+      "dependencies": {
+        "@platform/schema": "workspace:*",
+      },
+    },
+    "gutu-core/framework/core/kernel": {
+      "name": "@gutu/kernel",
+      "version": "0.0.1",
+      "dependencies": {
+        "zod": "^3.24.3",
+      },
+    },
+    "gutu-core/framework/core/permissions": {
+      "name": "@platform/permissions",
+      "version": "0.0.1",
+    },
+    "gutu-core/framework/core/platform-kernel": {
+      "name": "@platform/kernel",
+      "version": "0.0.1",
+      "dependencies": {
+        "@gutu/kernel": "workspace:*",
+        "zod": "^3.24.3",
+      },
+    },
+    "gutu-core/framework/core/plugin-solver": {
+      "name": "@platform/plugin-solver",
+      "version": "0.0.1",
+    },
+    "gutu-core/framework/core/release": {
+      "name": "@gutu/release",
+      "version": "0.0.1",
+    },
+    "gutu-core/framework/core/schema": {
+      "name": "@platform/schema",
+      "version": "0.0.1",
+    },
+    "integrations/gutu-ecosystem-integration": {
+      "name": "gutu-ecosystem-integration",
+      "version": "0.1.0",
+      "devDependencies": {
+        "@eslint/js": "^9.25.1",
+        "@types/react": "^19.2.2",
+        "@types/react-dom": "^19.2.2",
+        "bun-types": "^1.3.12",
+        "eslint": "^9.25.1",
+        "globals": "^16.0.0",
+        "playwright": "^1.55.0",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "typescript": "5.8.3",
+        "typescript-eslint": "^8.30.1",
+        "zod": "^3.24.3",
+      },
+    },
+    "libraries/gutu-lib-admin-builders/framework/libraries/admin-builders": {
+      "name": "@platform/admin-builders",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/layout": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-kit": "workspace:*",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-admin-contracts/framework/libraries/admin-contracts": {
+      "name": "@platform/admin-contracts",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui-shell": "workspace:*",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-admin-formview/framework/libraries/admin-formview": {
+      "name": "@platform/admin-formview",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/form": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-form": "workspace:*",
+        "@platform/ui-kit": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-admin-listview/framework/libraries/admin-listview": {
+      "name": "@platform/admin-listview",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/data-table": "workspace:*",
+        "@platform/query": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-query": "workspace:*",
+        "@platform/ui-table": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-admin-reporting/framework/libraries/admin-reporting": {
+      "name": "@platform/admin-reporting",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/search": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-admin-shell-workbench/framework/libraries/admin-shell-workbench": {
+      "name": "@platform/admin-shell-workbench",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/admin-formview": "workspace:*",
+        "@platform/admin-listview": "workspace:*",
+        "@platform/admin-reporting": "workspace:*",
+        "@platform/admin-widgets": "workspace:*",
+        "@platform/chart": "workspace:*",
+        "@platform/command-palette": "workspace:*",
+        "@platform/router": "workspace:*",
+        "@platform/telemetry-ui": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-kit": "workspace:*",
+        "@platform/ui-router": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-admin-widgets/framework/libraries/admin-widgets": {
+      "name": "@platform/admin-widgets",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/chart": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-kit": "workspace:*",
+        "echarts": "^5.6.0",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-ai-evals/framework/libraries/ai-evals": {
+      "name": "@platform/ai-evals",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ai-memory": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-ai-guardrails/framework/libraries/ai-guardrails": {
+      "name": "@platform/ai-guardrails",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ai": "workspace:*",
+        "@platform/schema": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-ai-mcp/framework/libraries/ai-mcp": {
+      "name": "@platform/ai-mcp",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ai": "workspace:*",
+        "@platform/schema": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-ai-memory/framework/libraries/ai-memory": {
+      "name": "@platform/ai-memory",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/search": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-ai-runtime/framework/libraries/ai-runtime": {
+      "name": "@platform/ai-runtime",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ai": "workspace:*",
+        "@platform/schema": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-ai/framework/libraries/ai": {
+      "name": "@platform/ai",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/schema": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-analytics/framework/libraries/analytics": {
+      "name": "@platform/analytics",
+      "version": "0.1.0",
+    },
+    "libraries/gutu-lib-chart/framework/libraries/chart": {
+      "name": "@platform/chart",
+      "version": "0.1.0",
+      "dependencies": {
+        "echarts": "^5.6.0",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-command-palette/framework/libraries/command-palette": {
+      "name": "@platform/command-palette",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui": "workspace:*",
+        "cmdk": "^1.1.1",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-communication/framework/libraries/communication": {
+      "name": "@platform/communication",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/email-templates": "workspace:*",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-contracts/framework/libraries/contracts": {
+      "name": "@platform/contracts",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-data-table/framework/libraries/data-table": {
+      "name": "@platform/data-table",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui-table": "workspace:*",
+        "@tanstack/react-query": "^5.75.0",
+        "@tanstack/react-virtual": "^3.13.24",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-editor/framework/libraries/editor": {
+      "name": "@platform/editor",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui-editor": "workspace:*",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-email-templates/framework/libraries/email-templates": {
+      "name": "@platform/email-templates",
+      "version": "0.1.0",
+      "dependencies": {
+        "@react-email/render": "^1.1.4",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-form/framework/libraries/form": {
+      "name": "@platform/form",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui-form": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-geo/framework/libraries/geo": {
+      "name": "@platform/geo",
+      "version": "0.1.0",
+    },
+    "libraries/gutu-lib-layout/framework/libraries/layout": {
+      "name": "@platform/layout",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui": "workspace:*",
+        "react": "^19.1.0",
+        "react-resizable-panels": "^4.10.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-core": {
+      "name": "@platform/payments-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-2c2p": {
+      "name": "@platform/payments-provider-2c2p",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-adyen": {
+      "name": "@platform/payments-provider-adyen",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-airwallex": {
+      "name": "@platform/payments-provider-airwallex",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-alipay": {
+      "name": "@platform/payments-provider-alipay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-amazon-pay": {
+      "name": "@platform/payments-provider-amazon-pay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-amazon-payment-services": {
+      "name": "@platform/payments-provider-amazon-payment-services",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-asiapay-paydollar": {
+      "name": "@platform/payments-provider-asiapay-paydollar",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-authorize-net": {
+      "name": "@platform/payments-provider-authorize-net",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-billplz": {
+      "name": "@platform/payments-provider-billplz",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-bluesnap": {
+      "name": "@platform/payments-provider-bluesnap",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-braintree": {
+      "name": "@platform/payments-provider-braintree",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-buckaroo": {
+      "name": "@platform/payments-provider-buckaroo",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-cashfree-payments": {
+      "name": "@platform/payments-provider-cashfree-payments",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-ccavenue": {
+      "name": "@platform/payments-provider-ccavenue",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-checkout-com": {
+      "name": "@platform/payments-provider-checkout-com",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-cloudpayments": {
+      "name": "@platform/payments-provider-cloudpayments",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-conekta": {
+      "name": "@platform/payments-provider-conekta",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-cybersource": {
+      "name": "@platform/payments-provider-cybersource",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-dlocal": {
+      "name": "@platform/payments-provider-dlocal",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-doku": {
+      "name": "@platform/payments-provider-doku",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-dwolla": {
+      "name": "@platform/payments-provider-dwolla",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-easebuzz": {
+      "name": "@platform/payments-provider-easebuzz",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-ebanx": {
+      "name": "@platform/payments-provider-ebanx",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-ecommpay": {
+      "name": "@platform/payments-provider-ecommpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-eway": {
+      "name": "@platform/payments-provider-eway",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-eximbay": {
+      "name": "@platform/payments-provider-eximbay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-fincode-bygmo": {
+      "name": "@platform/payments-provider-fincode-bygmo",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-fiserv": {
+      "name": "@platform/payments-provider-fiserv",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-fiuu": {
+      "name": "@platform/payments-provider-fiuu",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-flutterwave": {
+      "name": "@platform/payments-provider-flutterwave",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-fondy": {
+      "name": "@platform/payments-provider-fondy",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-forte": {
+      "name": "@platform/payments-provider-forte",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-global-payments": {
+      "name": "@platform/payments-provider-global-payments",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-helcim": {
+      "name": "@platform/payments-provider-helcim",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-hitpay": {
+      "name": "@platform/payments-provider-hitpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-hyperpay": {
+      "name": "@platform/payments-provider-hyperpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-instamojo": {
+      "name": "@platform/payments-provider-instamojo",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-intasend": {
+      "name": "@platform/payments-provider-intasend",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-ipay88": {
+      "name": "@platform/payments-provider-ipay88",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-iyzico": {
+      "name": "@platform/payments-provider-iyzico",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-klarna": {
+      "name": "@platform/payments-provider-klarna",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-komoju": {
+      "name": "@platform/payments-provider-komoju",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-kushki": {
+      "name": "@platform/payments-provider-kushki",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-liqpay": {
+      "name": "@platform/payments-provider-liqpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-m-pesa-daraja": {
+      "name": "@platform/payments-provider-m-pesa-daraja",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-mercado-pago": {
+      "name": "@platform/payments-provider-mercado-pago",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-midtrans": {
+      "name": "@platform/payments-provider-midtrans",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-mollie": {
+      "name": "@platform/payments-provider-mollie",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-monei": {
+      "name": "@platform/payments-provider-monei",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-moneris": {
+      "name": "@platform/payments-provider-moneris",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-mtn-momo": {
+      "name": "@platform/payments-provider-mtn-momo",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-multisafepay": {
+      "name": "@platform/payments-provider-multisafepay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-myfatoorah": {
+      "name": "@platform/payments-provider-myfatoorah",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-nexi-checkout-nets": {
+      "name": "@platform/payments-provider-nexi-checkout-nets",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-nmi": {
+      "name": "@platform/payments-provider-nmi",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-nuvei": {
+      "name": "@platform/payments-provider-nuvei",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-openpay": {
+      "name": "@platform/payments-provider-openpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-opn-payments-omise": {
+      "name": "@platform/payments-provider-opn-payments-omise",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-ozow": {
+      "name": "@platform/payments-provider-ozow",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-pagar-me": {
+      "name": "@platform/payments-provider-pagar-me",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-pagbank-pagseguro": {
+      "name": "@platform/payments-provider-pagbank-pagseguro",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-pay-jp": {
+      "name": "@platform/payments-provider-pay-jp",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-payfast": {
+      "name": "@platform/payments-provider-payfast",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-payjunction": {
+      "name": "@platform/payments-provider-payjunction",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paymob": {
+      "name": "@platform/payments-provider-paymob",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paymongo": {
+      "name": "@platform/payments-provider-paymongo",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paypal-checkout": {
+      "name": "@platform/payments-provider-paypal-checkout",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-payrexx": {
+      "name": "@platform/payments-provider-payrexx",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paysafe": {
+      "name": "@platform/payments-provider-paysafe",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paysera": {
+      "name": "@platform/payments-provider-paysera",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paystack": {
+      "name": "@platform/payments-provider-paystack",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paytabs": {
+      "name": "@platform/payments-provider-paytabs",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paytm-payment-gateway": {
+      "name": "@platform/payments-provider-paytm-payment-gateway",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-paytrail": {
+      "name": "@platform/payments-provider-paytrail",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-payu-india": {
+      "name": "@platform/payments-provider-payu-india",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-peach-payments": {
+      "name": "@platform/payments-provider-peach-payments",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-pesapal": {
+      "name": "@platform/payments-provider-pesapal",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-phonepe-payment-gateway": {
+      "name": "@platform/payments-provider-phonepe-payment-gateway",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-placetopay": {
+      "name": "@platform/payments-provider-placetopay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-przelewy24": {
+      "name": "@platform/payments-provider-przelewy24",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-rapyd": {
+      "name": "@platform/payments-provider-rapyd",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-razorpay": {
+      "name": "@platform/payments-provider-razorpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-redsys": {
+      "name": "@platform/payments-provider-redsys",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-senangpay": {
+      "name": "@platform/payments-provider-senangpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-shift4": {
+      "name": "@platform/payments-provider-shift4",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-square": {
+      "name": "@platform/payments-provider-square",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-stripe": {
+      "name": "@platform/payments-provider-stripe",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-tap-payments": {
+      "name": "@platform/payments-provider-tap-payments",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-toss-payments": {
+      "name": "@platform/payments-provider-toss-payments",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-toyyibpay": {
+      "name": "@platform/payments-provider-toyyibpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-tpay": {
+      "name": "@platform/payments-provider-tpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-transbank": {
+      "name": "@platform/payments-provider-transbank",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-vipps-mobilepay": {
+      "name": "@platform/payments-provider-vipps-mobilepay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-viva-com": {
+      "name": "@platform/payments-provider-viva-com",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-wechat-pay": {
+      "name": "@platform/payments-provider-wechat-pay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-wompi": {
+      "name": "@platform/payments-provider-wompi",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-worldline": {
+      "name": "@platform/payments-provider-worldline",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-worldpay": {
+      "name": "@platform/payments-provider-worldpay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-xendit": {
+      "name": "@platform/payments-provider-xendit",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-payments/framework/libraries/payments-provider-yookassa": {
+      "name": "@platform/payments-provider-yookassa",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/payments-core": "workspace:*",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-query/framework/libraries/query": {
+      "name": "@platform/query",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui-query": "workspace:*",
+        "@tanstack/react-query": "^5.75.0",
+      },
+    },
+    "libraries/gutu-lib-router/framework/libraries/router": {
+      "name": "@platform/router",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui-router": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-search/framework/libraries/search": {
+      "name": "@platform/search",
+      "version": "0.1.0",
+    },
+    "libraries/gutu-lib-telemetry-ui/framework/libraries/telemetry-ui": {
+      "name": "@platform/telemetry-ui",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui-shell": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-ui-editor/framework/libraries/ui-editor": {
+      "name": "@platform/ui-editor",
+      "version": "0.1.0",
+      "dependencies": {
+        "@tiptap/core": "^2.15.0",
+        "@tiptap/react": "^2.15.0",
+        "@tiptap/starter-kit": "^2.15.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-ui-form/framework/libraries/ui-form": {
+      "name": "@platform/ui-form",
+      "version": "0.1.0",
+      "dependencies": {
+        "@hookform/resolvers": "^4.1.3",
+        "react-hook-form": "^7.56.2",
+        "zod": "^4.0.0",
+      },
+    },
+    "libraries/gutu-lib-ui-kit/framework/libraries/ui-kit": {
+      "name": "@platform/ui-kit",
+      "version": "0.1.0",
+      "dependencies": {
+        "@radix-ui/react-slot": "^1.2.3",
+        "clsx": "^2.1.1",
+        "react": "^19.1.0",
+        "tailwind-merge": "^3.3.0",
+      },
+    },
+    "libraries/gutu-lib-ui-query/framework/libraries/ui-query": {
+      "name": "@platform/ui-query",
+      "version": "0.1.0",
+      "dependencies": {
+        "@tanstack/react-query": "^5.75.0",
+      },
+    },
+    "libraries/gutu-lib-ui-router/framework/libraries/ui-router": {
+      "name": "@platform/ui-router",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@tanstack/react-router": "^1.120.5",
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-ui-shell/framework/libraries/ui-shell": {
+      "name": "@platform/ui-shell",
+      "version": "0.1.0",
+      "dependencies": {
+        "react": "^19.1.0",
+      },
+    },
+    "libraries/gutu-lib-ui-table/framework/libraries/ui-table": {
+      "name": "@platform/ui-table",
+      "version": "0.1.0",
+      "dependencies": {
+        "@tanstack/react-table": "^8.21.3",
+      },
+    },
+    "libraries/gutu-lib-ui-zone-next/framework/libraries/ui-zone-next": {
+      "name": "@platform/ui-zone-next",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-ui-zone-static/framework/libraries/ui-zone-static": {
+      "name": "@platform/ui-zone-static",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+      },
+    },
+    "libraries/gutu-lib-ui/framework/libraries/ui": {
+      "name": "@platform/ui",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/ui-kit": "workspace:*",
+        "date-fns": "^4.1.0",
+        "lucide-react": "^1.8.0",
+        "react": "^19.1.0",
+        "sonner": "^2.0.7",
+      },
+    },
+    "plugins/gutu-plugin-admin-shell-workbench/framework/builtin-plugins/admin-shell-workbench": {
+      "name": "@plugins/admin-shell-workbench",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/admin-shell-workbench": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/dashboard-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "react": "^19.1.0",
+      },
+    },
+    "plugins/gutu-plugin-ai-core/framework/builtin-plugins/ai-core": {
+      "name": "@plugins/ai-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai": "workspace:*",
+        "@platform/ai-guardrails": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/chart": "workspace:*",
+        "@platform/jobs": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/jobs-core": "workspace:*",
+        "@plugins/notifications-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "@plugins/workflow-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-ai-evals/framework/builtin-plugins/ai-evals": {
+      "name": "@plugins/ai-evals",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-evals": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/chart": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/ai-core": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/jobs-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-ai-rag/framework/builtin-plugins/ai-rag": {
+      "name": "@plugins/ai-rag",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-memory": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/chart": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/ai-core": "workspace:*",
+        "@plugins/jobs-core": "workspace:*",
+        "@plugins/knowledge-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-ai-skills-core/framework/builtin-plugins/ai-skills-core": {
+      "name": "@plugins/ai-skills-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "@plugins/runtime-bridge-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-audit-core/framework/builtin-plugins/audit-core": {
+      "name": "@plugins/audit-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/events": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-auth-core/framework/builtin-plugins/auth-core": {
+      "name": "@plugins/auth-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-automation-core/framework/builtin-plugins/automation-core": {
+      "name": "@plugins/automation-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/issues-core": "workspace:*",
+        "@plugins/jobs-core": "workspace:*",
+        "@plugins/notifications-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "@plugins/runtime-bridge-core": "workspace:*",
+        "@plugins/workflow-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-booking-core/framework/builtin-plugins/booking-core": {
+      "name": "@plugins/booking-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/db-drizzle": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/portal-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-community-core/framework/builtin-plugins/community-core": {
+      "name": "@plugins/community-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-company-builder-core/framework/builtin-plugins/company-builder-core": {
+      "name": "@plugins/company-builder-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/chart": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/ai-core": "workspace:*",
+        "@plugins/ai-evals": "workspace:*",
+        "@plugins/ai-rag": "workspace:*",
+        "@plugins/ai-skills-core": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/automation-core": "workspace:*",
+        "@plugins/execution-workspaces-core": "workspace:*",
+        "@plugins/integration-core": "workspace:*",
+        "@plugins/issues-core": "workspace:*",
+        "@plugins/jobs-core": "workspace:*",
+        "@plugins/notifications-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "@plugins/runtime-bridge-core": "workspace:*",
+        "@plugins/workflow-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-content-core/framework/builtin-plugins/content-core": {
+      "name": "@plugins/content-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-dashboard-core/framework/builtin-plugins/dashboard-core": {
+      "name": "@plugins/dashboard-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-document-core/framework/builtin-plugins/document-core": {
+      "name": "@plugins/document-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-execution-workspaces-core/framework/builtin-plugins/execution-workspaces-core": {
+      "name": "@plugins/execution-workspaces-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-files-core/framework/builtin-plugins/files-core": {
+      "name": "@plugins/files-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-forms-core/framework/builtin-plugins/forms-core": {
+      "name": "@plugins/forms-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-integration-core/framework/builtin-plugins/integration-core": {
+      "name": "@plugins/integration-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-mcp": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-issues-core/framework/builtin-plugins/issues-core": {
+      "name": "@plugins/issues-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-jobs-core/framework/builtin-plugins/jobs-core": {
+      "name": "@plugins/jobs-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/jobs": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-knowledge-core/framework/builtin-plugins/knowledge-core": {
+      "name": "@plugins/knowledge-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-notifications-core/framework/builtin-plugins/notifications-core": {
+      "name": "@plugins/notifications-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/communication": "workspace:*",
+        "@platform/db-drizzle": "workspace:*",
+        "@platform/email-templates": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-org-tenant-core/framework/builtin-plugins/org-tenant-core": {
+      "name": "@plugins/org-tenant-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-page-builder-core/framework/builtin-plugins/page-builder-core": {
+      "name": "@plugins/page-builder-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/layout": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-payments-core/framework/builtin-plugins/payments-core": {
+      "name": "@plugins/payments-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/jobs": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/payments-core": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/integration-core": "workspace:*",
+        "@plugins/jobs-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-portal-core/framework/builtin-plugins/portal-core": {
+      "name": "@plugins/portal-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-role-policy-core/framework/builtin-plugins/role-policy-core": {
+      "name": "@plugins/role-policy-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-runtime-bridge-core/framework/builtin-plugins/runtime-bridge-core": {
+      "name": "@plugins/runtime-bridge-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/admin-builders": "workspace:*",
+        "@platform/admin-contracts": "workspace:*",
+        "@platform/ai-runtime": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/execution-workspaces-core": "workspace:*",
+        "@plugins/integration-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-search-core/framework/builtin-plugins/search-core": {
+      "name": "@plugins/search-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-template-core/framework/builtin-plugins/template-core": {
+      "name": "@plugins/template-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-user-directory/framework/builtin-plugins/user-directory": {
+      "name": "@plugins/user-directory",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+    "plugins/gutu-plugin-workflow-core/framework/builtin-plugins/workflow-core": {
+      "name": "@plugins/workflow-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "@platform/jobs": "workspace:*",
+        "@platform/kernel": "workspace:*",
+        "@platform/permissions": "workspace:*",
+        "@platform/schema": "workspace:*",
+        "@platform/ui-shell": "workspace:*",
+        "@plugins/audit-core": "workspace:*",
+        "@plugins/auth-core": "workspace:*",
+        "@plugins/org-tenant-core": "workspace:*",
+        "@plugins/role-policy-core": "workspace:*",
+        "drizzle-orm": "^0.45.2",
+        "react": "^19.1.0",
+        "zod": "^4.0.0",
+      },
+    },
+  },
+  "packages": {
+    "@apps/docs": ["@apps/docs@workspace:apps/gutu-app-docs/apps/docs"],
+
+    "@apps/examples": ["@apps/examples@workspace:apps/gutu-app-examples/apps/examples"],
+
+    "@apps/platform-dev-console": ["@apps/platform-dev-console@workspace:apps/gutu-app-platform-dev-console/apps/platform-dev-console"],
+
+    "@apps/playground": ["@apps/playground@workspace:apps/gutu-app-playground/apps/playground"],
+
+    "@eslint-community/eslint-utils": ["@eslint-community/eslint-utils@4.9.1", "", { "dependencies": { "eslint-visitor-keys": "^3.4.3" }, "peerDependencies": { "eslint": "^6.0.0 || ^7.0.0 || >=8.0.0" } }, "sha512-phrYmNiYppR7znFEdqgfWHXR6NCkZEK7hwWDHZUjit/2/U0r6XvkDl0SYnoM51Hq7FhCGdLDT6zxCCOY1hexsQ=="],
+
+    "@eslint-community/regexpp": ["@eslint-community/regexpp@4.12.2", "", {}, "sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew=="],
+
+    "@eslint/config-array": ["@eslint/config-array@0.21.2", "", { "dependencies": { "@eslint/object-schema": "^2.1.7", "debug": "^4.3.1", "minimatch": "^3.1.5" } }, "sha512-nJl2KGTlrf9GjLimgIru+V/mzgSK0ABCDQRvxw5BjURL7WfH5uoWmizbH7QB6MmnMBd8cIC9uceWnezL1VZWWw=="],
+
+    "@eslint/config-helpers": ["@eslint/config-helpers@0.4.2", "", { "dependencies": { "@eslint/core": "^0.17.0" } }, "sha512-gBrxN88gOIf3R7ja5K9slwNayVcZgK6SOUORm2uBzTeIEfeVaIhOpCtTox3P6R7o2jLFwLFTLnC7kU/RGcYEgw=="],
+
+    "@eslint/core": ["@eslint/core@0.17.0", "", { "dependencies": { "@types/json-schema": "^7.0.15" } }, "sha512-yL/sLrpmtDaFEiUj1osRP4TI2MDz1AddJL+jZ7KSqvBuliN4xqYY54IfdN8qD8Toa6g1iloph1fxQNkjOxrrpQ=="],
+
+    "@eslint/eslintrc": ["@eslint/eslintrc@3.3.5", "", { "dependencies": { "ajv": "^6.14.0", "debug": "^4.3.2", "espree": "^10.0.1", "globals": "^14.0.0", "ignore": "^5.2.0", "import-fresh": "^3.2.1", "js-yaml": "^4.1.1", "minimatch": "^3.1.5", "strip-json-comments": "^3.1.1" } }, "sha512-4IlJx0X0qftVsN5E+/vGujTRIFtwuLbNsVUe7TO6zYPDR1O6nFwvwhIKEKSrl6dZchmYBITazxKoUYOjdtjlRg=="],
+
+    "@eslint/js": ["@eslint/js@9.39.4", "", {}, "sha512-nE7DEIchvtiFTwBw4Lfbu59PG+kCofhjsKaCWzxTpt4lfRjRMqG6uMBzKXuEcyXhOHoUp9riAm7/aWYGhXZ9cw=="],
+
+    "@eslint/object-schema": ["@eslint/object-schema@2.1.7", "", {}, "sha512-VtAOaymWVfZcmZbp6E2mympDIHvyjXs/12LqWYjVw6qjrfF+VK+fyG33kChz3nnK+SU5/NeHOqrTEHS8sXO3OA=="],
+
+    "@eslint/plugin-kit": ["@eslint/plugin-kit@0.4.1", "", { "dependencies": { "@eslint/core": "^0.17.0", "levn": "^0.4.1" } }, "sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA=="],
+
+    "@gutu/cli": ["@gutu/cli@workspace:gutu-core/framework/core/cli"],
+
+    "@gutu/ecosystem": ["@gutu/ecosystem@workspace:gutu-core/framework/core/ecosystem"],
+
+    "@gutu/kernel": ["@gutu/kernel@workspace:gutu-core/framework/core/kernel"],
+
+    "@gutu/release": ["@gutu/release@workspace:gutu-core/framework/core/release"],
+
+    "@hookform/resolvers": ["@hookform/resolvers@4.1.3", "", { "dependencies": { "@standard-schema/utils": "^0.3.0" }, "peerDependencies": { "react-hook-form": "^7.0.0" } }, "sha512-Jsv6UOWYTrEFJ/01ZrnwVXs7KDvP8XIo115i++5PWvNkNvkrsTfGiLS6w+eJ57CYtUtDQalUWovCZDHFJ8u1VQ=="],
+
+    "@humanfs/core": ["@humanfs/core@0.19.2", "", { "dependencies": { "@humanfs/types": "^0.15.0" } }, "sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA=="],
+
+    "@humanfs/node": ["@humanfs/node@0.16.8", "", { "dependencies": { "@humanfs/core": "^0.19.2", "@humanfs/types": "^0.15.0", "@humanwhocodes/retry": "^0.4.0" } }, "sha512-gE1eQNZ3R++kTzFUpdGlpmy8kDZD/MLyHqDwqjkVQI0JMdI1D51sy1H958PNXYkM2rAac7e5/CnIKZrHtPh3BQ=="],
+
+    "@humanfs/types": ["@humanfs/types@0.15.0", "", {}, "sha512-ZZ1w0aoQkwuUuC7Yf+7sdeaNfqQiiLcSRbfI08oAxqLtpXQr9AIVX7Ay7HLDuiLYAaFPu8oBYNq/QIi9URHJ3Q=="],
+
+    "@humanwhocodes/module-importer": ["@humanwhocodes/module-importer@1.0.1", "", {}, "sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA=="],
+
+    "@humanwhocodes/retry": ["@humanwhocodes/retry@0.4.3", "", {}, "sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ=="],
+
+    "@platform/admin-builders": ["@platform/admin-builders@workspace:libraries/gutu-lib-admin-builders/framework/libraries/admin-builders"],
+
+    "@platform/admin-contracts": ["@platform/admin-contracts@workspace:libraries/gutu-lib-admin-contracts/framework/libraries/admin-contracts"],
+
+    "@platform/admin-formview": ["@platform/admin-formview@workspace:libraries/gutu-lib-admin-formview/framework/libraries/admin-formview"],
+
+    "@platform/admin-listview": ["@platform/admin-listview@workspace:libraries/gutu-lib-admin-listview/framework/libraries/admin-listview"],
+
+    "@platform/admin-reporting": ["@platform/admin-reporting@workspace:libraries/gutu-lib-admin-reporting/framework/libraries/admin-reporting"],
+
+    "@platform/admin-shell-workbench": ["@platform/admin-shell-workbench@workspace:libraries/gutu-lib-admin-shell-workbench/framework/libraries/admin-shell-workbench"],
+
+    "@platform/admin-widgets": ["@platform/admin-widgets@workspace:libraries/gutu-lib-admin-widgets/framework/libraries/admin-widgets"],
+
+    "@platform/ai": ["@platform/ai@workspace:libraries/gutu-lib-ai/framework/libraries/ai"],
+
+    "@platform/ai-evals": ["@platform/ai-evals@workspace:libraries/gutu-lib-ai-evals/framework/libraries/ai-evals"],
+
+    "@platform/ai-guardrails": ["@platform/ai-guardrails@workspace:libraries/gutu-lib-ai-guardrails/framework/libraries/ai-guardrails"],
+
+    "@platform/ai-mcp": ["@platform/ai-mcp@workspace:libraries/gutu-lib-ai-mcp/framework/libraries/ai-mcp"],
+
+    "@platform/ai-memory": ["@platform/ai-memory@workspace:libraries/gutu-lib-ai-memory/framework/libraries/ai-memory"],
+
+    "@platform/ai-runtime": ["@platform/ai-runtime@workspace:libraries/gutu-lib-ai-runtime/framework/libraries/ai-runtime"],
+
+    "@platform/analytics": ["@platform/analytics@workspace:libraries/gutu-lib-analytics/framework/libraries/analytics"],
+
+    "@platform/chart": ["@platform/chart@workspace:libraries/gutu-lib-chart/framework/libraries/chart"],
+
+    "@platform/command-palette": ["@platform/command-palette@workspace:libraries/gutu-lib-command-palette/framework/libraries/command-palette"],
+
+    "@platform/commands": ["@platform/commands@workspace:gutu-core/framework/core/commands"],
+
+    "@platform/communication": ["@platform/communication@workspace:libraries/gutu-lib-communication/framework/libraries/communication"],
+
+    "@platform/contracts": ["@platform/contracts@workspace:libraries/gutu-lib-contracts/framework/libraries/contracts"],
+
+    "@platform/data-table": ["@platform/data-table@workspace:libraries/gutu-lib-data-table/framework/libraries/data-table"],
+
+    "@platform/db-drizzle": ["@platform/db-drizzle@workspace:gutu-core/framework/core/db-drizzle"],
+
+    "@platform/editor": ["@platform/editor@workspace:libraries/gutu-lib-editor/framework/libraries/editor"],
+
+    "@platform/email-templates": ["@platform/email-templates@workspace:libraries/gutu-lib-email-templates/framework/libraries/email-templates"],
+
+    "@platform/events": ["@platform/events@workspace:gutu-core/framework/core/events"],
+
+    "@platform/form": ["@platform/form@workspace:libraries/gutu-lib-form/framework/libraries/form"],
+
+    "@platform/geo": ["@platform/geo@workspace:libraries/gutu-lib-geo/framework/libraries/geo"],
+
+    "@platform/jobs": ["@platform/jobs@workspace:gutu-core/framework/core/jobs"],
+
+    "@platform/kernel": ["@platform/kernel@workspace:gutu-core/framework/core/platform-kernel"],
+
+    "@platform/layout": ["@platform/layout@workspace:libraries/gutu-lib-layout/framework/libraries/layout"],
+
+    "@platform/payments-core": ["@platform/payments-core@workspace:libraries/gutu-lib-payments/framework/libraries/payments-core"],
+
+    "@platform/payments-provider-2c2p": ["@platform/payments-provider-2c2p@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-2c2p"],
+
+    "@platform/payments-provider-adyen": ["@platform/payments-provider-adyen@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-adyen"],
+
+    "@platform/payments-provider-airwallex": ["@platform/payments-provider-airwallex@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-airwallex"],
+
+    "@platform/payments-provider-alipay": ["@platform/payments-provider-alipay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-alipay"],
+
+    "@platform/payments-provider-amazon-pay": ["@platform/payments-provider-amazon-pay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-amazon-pay"],
+
+    "@platform/payments-provider-amazon-payment-services": ["@platform/payments-provider-amazon-payment-services@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-amazon-payment-services"],
+
+    "@platform/payments-provider-asiapay-paydollar": ["@platform/payments-provider-asiapay-paydollar@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-asiapay-paydollar"],
+
+    "@platform/payments-provider-authorize-net": ["@platform/payments-provider-authorize-net@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-authorize-net"],
+
+    "@platform/payments-provider-billplz": ["@platform/payments-provider-billplz@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-billplz"],
+
+    "@platform/payments-provider-bluesnap": ["@platform/payments-provider-bluesnap@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-bluesnap"],
+
+    "@platform/payments-provider-braintree": ["@platform/payments-provider-braintree@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-braintree"],
+
+    "@platform/payments-provider-buckaroo": ["@platform/payments-provider-buckaroo@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-buckaroo"],
+
+    "@platform/payments-provider-cashfree-payments": ["@platform/payments-provider-cashfree-payments@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-cashfree-payments"],
+
+    "@platform/payments-provider-ccavenue": ["@platform/payments-provider-ccavenue@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-ccavenue"],
+
+    "@platform/payments-provider-checkout-com": ["@platform/payments-provider-checkout-com@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-checkout-com"],
+
+    "@platform/payments-provider-cloudpayments": ["@platform/payments-provider-cloudpayments@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-cloudpayments"],
+
+    "@platform/payments-provider-conekta": ["@platform/payments-provider-conekta@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-conekta"],
+
+    "@platform/payments-provider-cybersource": ["@platform/payments-provider-cybersource@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-cybersource"],
+
+    "@platform/payments-provider-dlocal": ["@platform/payments-provider-dlocal@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-dlocal"],
+
+    "@platform/payments-provider-doku": ["@platform/payments-provider-doku@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-doku"],
+
+    "@platform/payments-provider-dwolla": ["@platform/payments-provider-dwolla@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-dwolla"],
+
+    "@platform/payments-provider-easebuzz": ["@platform/payments-provider-easebuzz@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-easebuzz"],
+
+    "@platform/payments-provider-ebanx": ["@platform/payments-provider-ebanx@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-ebanx"],
+
+    "@platform/payments-provider-ecommpay": ["@platform/payments-provider-ecommpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-ecommpay"],
+
+    "@platform/payments-provider-eway": ["@platform/payments-provider-eway@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-eway"],
+
+    "@platform/payments-provider-eximbay": ["@platform/payments-provider-eximbay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-eximbay"],
+
+    "@platform/payments-provider-fincode-bygmo": ["@platform/payments-provider-fincode-bygmo@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-fincode-bygmo"],
+
+    "@platform/payments-provider-fiserv": ["@platform/payments-provider-fiserv@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-fiserv"],
+
+    "@platform/payments-provider-fiuu": ["@platform/payments-provider-fiuu@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-fiuu"],
+
+    "@platform/payments-provider-flutterwave": ["@platform/payments-provider-flutterwave@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-flutterwave"],
+
+    "@platform/payments-provider-fondy": ["@platform/payments-provider-fondy@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-fondy"],
+
+    "@platform/payments-provider-forte": ["@platform/payments-provider-forte@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-forte"],
+
+    "@platform/payments-provider-global-payments": ["@platform/payments-provider-global-payments@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-global-payments"],
+
+    "@platform/payments-provider-helcim": ["@platform/payments-provider-helcim@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-helcim"],
+
+    "@platform/payments-provider-hitpay": ["@platform/payments-provider-hitpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-hitpay"],
+
+    "@platform/payments-provider-hyperpay": ["@platform/payments-provider-hyperpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-hyperpay"],
+
+    "@platform/payments-provider-instamojo": ["@platform/payments-provider-instamojo@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-instamojo"],
+
+    "@platform/payments-provider-intasend": ["@platform/payments-provider-intasend@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-intasend"],
+
+    "@platform/payments-provider-ipay88": ["@platform/payments-provider-ipay88@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-ipay88"],
+
+    "@platform/payments-provider-iyzico": ["@platform/payments-provider-iyzico@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-iyzico"],
+
+    "@platform/payments-provider-klarna": ["@platform/payments-provider-klarna@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-klarna"],
+
+    "@platform/payments-provider-komoju": ["@platform/payments-provider-komoju@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-komoju"],
+
+    "@platform/payments-provider-kushki": ["@platform/payments-provider-kushki@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-kushki"],
+
+    "@platform/payments-provider-liqpay": ["@platform/payments-provider-liqpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-liqpay"],
+
+    "@platform/payments-provider-m-pesa-daraja": ["@platform/payments-provider-m-pesa-daraja@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-m-pesa-daraja"],
+
+    "@platform/payments-provider-mercado-pago": ["@platform/payments-provider-mercado-pago@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-mercado-pago"],
+
+    "@platform/payments-provider-midtrans": ["@platform/payments-provider-midtrans@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-midtrans"],
+
+    "@platform/payments-provider-mollie": ["@platform/payments-provider-mollie@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-mollie"],
+
+    "@platform/payments-provider-monei": ["@platform/payments-provider-monei@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-monei"],
+
+    "@platform/payments-provider-moneris": ["@platform/payments-provider-moneris@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-moneris"],
+
+    "@platform/payments-provider-mtn-momo": ["@platform/payments-provider-mtn-momo@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-mtn-momo"],
+
+    "@platform/payments-provider-multisafepay": ["@platform/payments-provider-multisafepay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-multisafepay"],
+
+    "@platform/payments-provider-myfatoorah": ["@platform/payments-provider-myfatoorah@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-myfatoorah"],
+
+    "@platform/payments-provider-nexi-checkout-nets": ["@platform/payments-provider-nexi-checkout-nets@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-nexi-checkout-nets"],
+
+    "@platform/payments-provider-nmi": ["@platform/payments-provider-nmi@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-nmi"],
+
+    "@platform/payments-provider-nuvei": ["@platform/payments-provider-nuvei@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-nuvei"],
+
+    "@platform/payments-provider-openpay": ["@platform/payments-provider-openpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-openpay"],
+
+    "@platform/payments-provider-opn-payments-omise": ["@platform/payments-provider-opn-payments-omise@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-opn-payments-omise"],
+
+    "@platform/payments-provider-ozow": ["@platform/payments-provider-ozow@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-ozow"],
+
+    "@platform/payments-provider-pagar-me": ["@platform/payments-provider-pagar-me@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-pagar-me"],
+
+    "@platform/payments-provider-pagbank-pagseguro": ["@platform/payments-provider-pagbank-pagseguro@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-pagbank-pagseguro"],
+
+    "@platform/payments-provider-pay-jp": ["@platform/payments-provider-pay-jp@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-pay-jp"],
+
+    "@platform/payments-provider-payfast": ["@platform/payments-provider-payfast@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-payfast"],
+
+    "@platform/payments-provider-payjunction": ["@platform/payments-provider-payjunction@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-payjunction"],
+
+    "@platform/payments-provider-paymob": ["@platform/payments-provider-paymob@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paymob"],
+
+    "@platform/payments-provider-paymongo": ["@platform/payments-provider-paymongo@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paymongo"],
+
+    "@platform/payments-provider-paypal-checkout": ["@platform/payments-provider-paypal-checkout@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paypal-checkout"],
+
+    "@platform/payments-provider-payrexx": ["@platform/payments-provider-payrexx@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-payrexx"],
+
+    "@platform/payments-provider-paysafe": ["@platform/payments-provider-paysafe@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paysafe"],
+
+    "@platform/payments-provider-paysera": ["@platform/payments-provider-paysera@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paysera"],
+
+    "@platform/payments-provider-paystack": ["@platform/payments-provider-paystack@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paystack"],
+
+    "@platform/payments-provider-paytabs": ["@platform/payments-provider-paytabs@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paytabs"],
+
+    "@platform/payments-provider-paytm-payment-gateway": ["@platform/payments-provider-paytm-payment-gateway@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paytm-payment-gateway"],
+
+    "@platform/payments-provider-paytrail": ["@platform/payments-provider-paytrail@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-paytrail"],
+
+    "@platform/payments-provider-payu-india": ["@platform/payments-provider-payu-india@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-payu-india"],
+
+    "@platform/payments-provider-peach-payments": ["@platform/payments-provider-peach-payments@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-peach-payments"],
+
+    "@platform/payments-provider-pesapal": ["@platform/payments-provider-pesapal@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-pesapal"],
+
+    "@platform/payments-provider-phonepe-payment-gateway": ["@platform/payments-provider-phonepe-payment-gateway@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-phonepe-payment-gateway"],
+
+    "@platform/payments-provider-placetopay": ["@platform/payments-provider-placetopay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-placetopay"],
+
+    "@platform/payments-provider-przelewy24": ["@platform/payments-provider-przelewy24@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-przelewy24"],
+
+    "@platform/payments-provider-rapyd": ["@platform/payments-provider-rapyd@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-rapyd"],
+
+    "@platform/payments-provider-razorpay": ["@platform/payments-provider-razorpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-razorpay"],
+
+    "@platform/payments-provider-redsys": ["@platform/payments-provider-redsys@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-redsys"],
+
+    "@platform/payments-provider-senangpay": ["@platform/payments-provider-senangpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-senangpay"],
+
+    "@platform/payments-provider-shift4": ["@platform/payments-provider-shift4@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-shift4"],
+
+    "@platform/payments-provider-square": ["@platform/payments-provider-square@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-square"],
+
+    "@platform/payments-provider-stripe": ["@platform/payments-provider-stripe@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-stripe"],
+
+    "@platform/payments-provider-tap-payments": ["@platform/payments-provider-tap-payments@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-tap-payments"],
+
+    "@platform/payments-provider-toss-payments": ["@platform/payments-provider-toss-payments@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-toss-payments"],
+
+    "@platform/payments-provider-toyyibpay": ["@platform/payments-provider-toyyibpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-toyyibpay"],
+
+    "@platform/payments-provider-tpay": ["@platform/payments-provider-tpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-tpay"],
+
+    "@platform/payments-provider-transbank": ["@platform/payments-provider-transbank@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-transbank"],
+
+    "@platform/payments-provider-vipps-mobilepay": ["@platform/payments-provider-vipps-mobilepay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-vipps-mobilepay"],
+
+    "@platform/payments-provider-viva-com": ["@platform/payments-provider-viva-com@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-viva-com"],
+
+    "@platform/payments-provider-wechat-pay": ["@platform/payments-provider-wechat-pay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-wechat-pay"],
+
+    "@platform/payments-provider-wompi": ["@platform/payments-provider-wompi@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-wompi"],
+
+    "@platform/payments-provider-worldline": ["@platform/payments-provider-worldline@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-worldline"],
+
+    "@platform/payments-provider-worldpay": ["@platform/payments-provider-worldpay@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-worldpay"],
+
+    "@platform/payments-provider-xendit": ["@platform/payments-provider-xendit@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-xendit"],
+
+    "@platform/payments-provider-yookassa": ["@platform/payments-provider-yookassa@workspace:libraries/gutu-lib-payments/framework/libraries/payments-provider-yookassa"],
+
+    "@platform/permissions": ["@platform/permissions@workspace:gutu-core/framework/core/permissions"],
+
+    "@platform/plugin-solver": ["@platform/plugin-solver@workspace:gutu-core/framework/core/plugin-solver"],
+
+    "@platform/query": ["@platform/query@workspace:libraries/gutu-lib-query/framework/libraries/query"],
+
+    "@platform/router": ["@platform/router@workspace:libraries/gutu-lib-router/framework/libraries/router"],
+
+    "@platform/schema": ["@platform/schema@workspace:gutu-core/framework/core/schema"],
+
+    "@platform/search": ["@platform/search@workspace:libraries/gutu-lib-search/framework/libraries/search"],
+
+    "@platform/telemetry-ui": ["@platform/telemetry-ui@workspace:libraries/gutu-lib-telemetry-ui/framework/libraries/telemetry-ui"],
+
+    "@platform/ui": ["@platform/ui@workspace:libraries/gutu-lib-ui/framework/libraries/ui"],
+
+    "@platform/ui-editor": ["@platform/ui-editor@workspace:libraries/gutu-lib-ui-editor/framework/libraries/ui-editor"],
+
+    "@platform/ui-form": ["@platform/ui-form@workspace:libraries/gutu-lib-ui-form/framework/libraries/ui-form"],
+
+    "@platform/ui-kit": ["@platform/ui-kit@workspace:libraries/gutu-lib-ui-kit/framework/libraries/ui-kit"],
+
+    "@platform/ui-query": ["@platform/ui-query@workspace:libraries/gutu-lib-ui-query/framework/libraries/ui-query"],
+
+    "@platform/ui-router": ["@platform/ui-router@workspace:libraries/gutu-lib-ui-router/framework/libraries/ui-router"],
+
+    "@platform/ui-shell": ["@platform/ui-shell@workspace:libraries/gutu-lib-ui-shell/framework/libraries/ui-shell"],
+
+    "@platform/ui-table": ["@platform/ui-table@workspace:libraries/gutu-lib-ui-table/framework/libraries/ui-table"],
+
+    "@platform/ui-zone-next": ["@platform/ui-zone-next@workspace:libraries/gutu-lib-ui-zone-next/framework/libraries/ui-zone-next"],
+
+    "@platform/ui-zone-static": ["@platform/ui-zone-static@workspace:libraries/gutu-lib-ui-zone-static/framework/libraries/ui-zone-static"],
+
+    "@plugins/admin-shell-workbench": ["@plugins/admin-shell-workbench@workspace:plugins/gutu-plugin-admin-shell-workbench/framework/builtin-plugins/admin-shell-workbench"],
+
+    "@plugins/ai-core": ["@plugins/ai-core@workspace:plugins/gutu-plugin-ai-core/framework/builtin-plugins/ai-core"],
+
+    "@plugins/ai-evals": ["@plugins/ai-evals@workspace:plugins/gutu-plugin-ai-evals/framework/builtin-plugins/ai-evals"],
+
+    "@plugins/ai-rag": ["@plugins/ai-rag@workspace:plugins/gutu-plugin-ai-rag/framework/builtin-plugins/ai-rag"],
+
+    "@plugins/ai-skills-core": ["@plugins/ai-skills-core@workspace:plugins/gutu-plugin-ai-skills-core/framework/builtin-plugins/ai-skills-core"],
+
+    "@plugins/audit-core": ["@plugins/audit-core@workspace:plugins/gutu-plugin-audit-core/framework/builtin-plugins/audit-core"],
+
+    "@plugins/auth-core": ["@plugins/auth-core@workspace:plugins/gutu-plugin-auth-core/framework/builtin-plugins/auth-core"],
+
+    "@plugins/automation-core": ["@plugins/automation-core@workspace:plugins/gutu-plugin-automation-core/framework/builtin-plugins/automation-core"],
+
+    "@plugins/booking-core": ["@plugins/booking-core@workspace:plugins/gutu-plugin-booking-core/framework/builtin-plugins/booking-core"],
+
+    "@plugins/community-core": ["@plugins/community-core@workspace:plugins/gutu-plugin-community-core/framework/builtin-plugins/community-core"],
+
+    "@plugins/company-builder-core": ["@plugins/company-builder-core@workspace:plugins/gutu-plugin-company-builder-core/framework/builtin-plugins/company-builder-core"],
+
+    "@plugins/content-core": ["@plugins/content-core@workspace:plugins/gutu-plugin-content-core/framework/builtin-plugins/content-core"],
+
+    "@plugins/dashboard-core": ["@plugins/dashboard-core@workspace:plugins/gutu-plugin-dashboard-core/framework/builtin-plugins/dashboard-core"],
+
+    "@plugins/document-core": ["@plugins/document-core@workspace:plugins/gutu-plugin-document-core/framework/builtin-plugins/document-core"],
+
+    "@plugins/execution-workspaces-core": ["@plugins/execution-workspaces-core@workspace:plugins/gutu-plugin-execution-workspaces-core/framework/builtin-plugins/execution-workspaces-core"],
+
+    "@plugins/files-core": ["@plugins/files-core@workspace:plugins/gutu-plugin-files-core/framework/builtin-plugins/files-core"],
+
+    "@plugins/forms-core": ["@plugins/forms-core@workspace:plugins/gutu-plugin-forms-core/framework/builtin-plugins/forms-core"],
+
+    "@plugins/integration-core": ["@plugins/integration-core@workspace:plugins/gutu-plugin-integration-core/framework/builtin-plugins/integration-core"],
+
+    "@plugins/issues-core": ["@plugins/issues-core@workspace:plugins/gutu-plugin-issues-core/framework/builtin-plugins/issues-core"],
+
+    "@plugins/jobs-core": ["@plugins/jobs-core@workspace:plugins/gutu-plugin-jobs-core/framework/builtin-plugins/jobs-core"],
+
+    "@plugins/knowledge-core": ["@plugins/knowledge-core@workspace:plugins/gutu-plugin-knowledge-core/framework/builtin-plugins/knowledge-core"],
+
+    "@plugins/notifications-core": ["@plugins/notifications-core@workspace:plugins/gutu-plugin-notifications-core/framework/builtin-plugins/notifications-core"],
+
+    "@plugins/org-tenant-core": ["@plugins/org-tenant-core@workspace:plugins/gutu-plugin-org-tenant-core/framework/builtin-plugins/org-tenant-core"],
+
+    "@plugins/page-builder-core": ["@plugins/page-builder-core@workspace:plugins/gutu-plugin-page-builder-core/framework/builtin-plugins/page-builder-core"],
+
+    "@plugins/payments-core": ["@plugins/payments-core@workspace:plugins/gutu-plugin-payments-core/framework/builtin-plugins/payments-core"],
+
+    "@plugins/portal-core": ["@plugins/portal-core@workspace:plugins/gutu-plugin-portal-core/framework/builtin-plugins/portal-core"],
+
+    "@plugins/role-policy-core": ["@plugins/role-policy-core@workspace:plugins/gutu-plugin-role-policy-core/framework/builtin-plugins/role-policy-core"],
+
+    "@plugins/runtime-bridge-core": ["@plugins/runtime-bridge-core@workspace:plugins/gutu-plugin-runtime-bridge-core/framework/builtin-plugins/runtime-bridge-core"],
+
+    "@plugins/search-core": ["@plugins/search-core@workspace:plugins/gutu-plugin-search-core/framework/builtin-plugins/search-core"],
+
+    "@plugins/template-core": ["@plugins/template-core@workspace:plugins/gutu-plugin-template-core/framework/builtin-plugins/template-core"],
+
+    "@plugins/user-directory": ["@plugins/user-directory@workspace:plugins/gutu-plugin-user-directory/framework/builtin-plugins/user-directory"],
+
+    "@plugins/workflow-core": ["@plugins/workflow-core@workspace:plugins/gutu-plugin-workflow-core/framework/builtin-plugins/workflow-core"],
+
+    "@popperjs/core": ["@popperjs/core@2.11.8", "", {}, "sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A=="],
+
+    "@radix-ui/primitive": ["@radix-ui/primitive@1.1.3", "", {}, "sha512-JTF99U/6XIjCBo0wqkU5sK10glYe27MRRsfwoiq5zzOEZLHU3A3KCMa5X/azekYRCJ0HlwI0crAXS/5dEHTzDg=="],
+
+    "@radix-ui/react-compose-refs": ["@radix-ui/react-compose-refs@1.1.2", "", { "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-z4eqJvfiNnFMHIIvXP3CY57y2WJs5g2v3X0zm9mEJkrkNv4rDxu+sg9Jh8EkXyeqBkB7SOcboo9dMVqhyrACIg=="],
+
+    "@radix-ui/react-context": ["@radix-ui/react-context@1.1.2", "", { "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-jCi/QKUM2r1Ju5a3J64TH2A5SpKAgh0LpknyqdQ4m6DCV0xJ2HG1xARRwNGPQfi1SLdLWZ1OJz6F4OMBBNiGJA=="],
+
+    "@radix-ui/react-dialog": ["@radix-ui/react-dialog@1.1.15", "", { "dependencies": { "@radix-ui/primitive": "1.1.3", "@radix-ui/react-compose-refs": "1.1.2", "@radix-ui/react-context": "1.1.2", "@radix-ui/react-dismissable-layer": "1.1.11", "@radix-ui/react-focus-guards": "1.1.3", "@radix-ui/react-focus-scope": "1.1.7", "@radix-ui/react-id": "1.1.1", "@radix-ui/react-portal": "1.1.9", "@radix-ui/react-presence": "1.1.5", "@radix-ui/react-primitive": "2.1.3", "@radix-ui/react-slot": "1.2.3", "@radix-ui/react-use-controllable-state": "1.2.2", "aria-hidden": "^1.2.4", "react-remove-scroll": "^2.6.3" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-TCglVRtzlffRNxRMEyR36DGBLJpeusFcgMVD9PZEzAKnUs1lKCgX5u9BmC2Yg+LL9MgZDugFFs1Vl+Jp4t/PGw=="],
+
+    "@radix-ui/react-dismissable-layer": ["@radix-ui/react-dismissable-layer@1.1.11", "", { "dependencies": { "@radix-ui/primitive": "1.1.3", "@radix-ui/react-compose-refs": "1.1.2", "@radix-ui/react-primitive": "2.1.3", "@radix-ui/react-use-callback-ref": "1.1.1", "@radix-ui/react-use-escape-keydown": "1.1.1" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-Nqcp+t5cTB8BinFkZgXiMJniQH0PsUt2k51FUhbdfeKvc4ACcG2uQniY/8+h1Yv6Kza4Q7lD7PQV0z0oicE0Mg=="],
+
+    "@radix-ui/react-focus-guards": ["@radix-ui/react-focus-guards@1.1.3", "", { "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-0rFg/Rj2Q62NCm62jZw0QX7a3sz6QCQU0LpZdNrJX8byRGaGVTqbrW9jAoIAHyMQqsNpeZ81YgSizOt5WXq0Pw=="],
+
+    "@radix-ui/react-focus-scope": ["@radix-ui/react-focus-scope@1.1.7", "", { "dependencies": { "@radix-ui/react-compose-refs": "1.1.2", "@radix-ui/react-primitive": "2.1.3", "@radix-ui/react-use-callback-ref": "1.1.1" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-t2ODlkXBQyn7jkl6TNaw/MtVEVvIGelJDCG41Okq/KwUsJBwQ4XVZsHAVUkK4mBv3ewiAS3PGuUWuY2BoK4ZUw=="],
+
+    "@radix-ui/react-id": ["@radix-ui/react-id@1.1.1", "", { "dependencies": { "@radix-ui/react-use-layout-effect": "1.1.1" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-kGkGegYIdQsOb4XjsfM97rXsiHaBwco+hFI66oO4s9LU+PLAC5oJ7khdOVFxkhsmlbpUqDAvXw11CluXP+jkHg=="],
+
+    "@radix-ui/react-portal": ["@radix-ui/react-portal@1.1.9", "", { "dependencies": { "@radix-ui/react-primitive": "2.1.3", "@radix-ui/react-use-layout-effect": "1.1.1" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-bpIxvq03if6UNwXZ+HTK71JLh4APvnXntDc6XOX8UVq4XQOVl7lwok0AvIl+b8zgCw3fSaVTZMpAPPagXbKmHQ=="],
+
+    "@radix-ui/react-presence": ["@radix-ui/react-presence@1.1.5", "", { "dependencies": { "@radix-ui/react-compose-refs": "1.1.2", "@radix-ui/react-use-layout-effect": "1.1.1" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-/jfEwNDdQVBCNvjkGit4h6pMOzq8bHkopq458dPt2lMjx+eBQUohZNG9A7DtO/O5ukSbxuaNGXMjHicgwy6rQQ=="],
+
+    "@radix-ui/react-primitive": ["@radix-ui/react-primitive@2.1.4", "", { "dependencies": { "@radix-ui/react-slot": "1.2.4" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-9hQc4+GNVtJAIEPEqlYqW5RiYdrr8ea5XQ0ZOnD6fgru+83kqT15mq2OCcbe8KnjRZl5vF3ks69AKz3kh1jrhg=="],
+
+    "@radix-ui/react-slot": ["@radix-ui/react-slot@1.2.4", "", { "dependencies": { "@radix-ui/react-compose-refs": "1.1.2" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-Jl+bCv8HxKnlTLVrcDE8zTMJ09R9/ukw4qBs/oZClOfoQk/cOTbDn+NceXfV7j09YPVQUryJPHurafcSg6EVKA=="],
+
+    "@radix-ui/react-use-callback-ref": ["@radix-ui/react-use-callback-ref@1.1.1", "", { "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-FkBMwD+qbGQeMu1cOHnuGB6x4yzPjho8ap5WtbEJ26umhgqVXbhekKUQO+hZEL1vU92a3wHwdp0HAcqAUF5iDg=="],
+
+    "@radix-ui/react-use-controllable-state": ["@radix-ui/react-use-controllable-state@1.2.2", "", { "dependencies": { "@radix-ui/react-use-effect-event": "0.0.2", "@radix-ui/react-use-layout-effect": "1.1.1" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-BjasUjixPFdS+NKkypcyyN5Pmg83Olst0+c6vGov0diwTEo6mgdqVR6hxcEgFuh4QrAs7Rc+9KuGJ9TVCj0Zzg=="],
+
+    "@radix-ui/react-use-effect-event": ["@radix-ui/react-use-effect-event@0.0.2", "", { "dependencies": { "@radix-ui/react-use-layout-effect": "1.1.1" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-Qp8WbZOBe+blgpuUT+lw2xheLP8q0oatc9UpmiemEICxGvFLYmHm9QowVZGHtJlGbS6A6yJ3iViad/2cVjnOiA=="],
+
+    "@radix-ui/react-use-escape-keydown": ["@radix-ui/react-use-escape-keydown@1.1.1", "", { "dependencies": { "@radix-ui/react-use-callback-ref": "1.1.1" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-Il0+boE7w/XebUHyBjroE+DbByORGR9KKmITzbR7MyQ4akpORYP/ZmbhAr0DG7RmmBqoOnZdy2QlvajJ2QA59g=="],
+
+    "@radix-ui/react-use-layout-effect": ["@radix-ui/react-use-layout-effect@1.1.1", "", { "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-RbJRS4UWQFkzHTTwVymMTUv8EqYhOp8dOOviLj2ugtTiXRaRQS7GLGxZTLL1jWhMeoSCf5zmcZkqTl9IiYfXcQ=="],
+
+    "@react-email/render": ["@react-email/render@1.4.0", "", { "dependencies": { "html-to-text": "^9.0.5", "prettier": "^3.5.3", "react-promise-suspense": "^0.3.4" }, "peerDependencies": { "react": "^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^18.0 || ^19.0 || ^19.0.0-rc" } }, "sha512-ZtJ3noggIvW1ZAryoui95KJENKdCzLmN5F7hyZY1F/17B1vwzuxHB7YkuCg0QqHjDivc5axqYEYdIOw4JIQdUw=="],
+
+    "@remirror/core-constants": ["@remirror/core-constants@3.0.0", "", {}, "sha512-42aWfPrimMfDKDi4YegyS7x+/0tlzaqwPQCULLanv3DMIlu96KTJR0fM5isWX2UViOqlGnX6YFgqWepcX+XMNg=="],
+
+    "@selderee/plugin-htmlparser2": ["@selderee/plugin-htmlparser2@0.11.0", "", { "dependencies": { "domhandler": "^5.0.3", "selderee": "^0.11.0" } }, "sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ=="],
+
+    "@standard-schema/utils": ["@standard-schema/utils@0.3.0", "", {}, "sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g=="],
+
+    "@tanstack/history": ["@tanstack/history@1.161.6", "", {}, "sha512-NaOGLRrddszbQj9upGat6HG/4TKvXLvu+osAIgfxPYA+eIvYKv8GKDJOrY2D3/U9MRnKfMWD7bU4jeD4xmqyIg=="],
+
+    "@tanstack/query-core": ["@tanstack/query-core@5.99.2", "", {}, "sha512-1HunU0bXVsR1ZJMZbcOPE6VtaBJxsW809RE9xPe4Gz7MlB0GWwQvuTPhMoEmQ/hIzFKJ/DWAuttIe7BOaWx0tA=="],
+
+    "@tanstack/react-query": ["@tanstack/react-query@5.99.2", "", { "dependencies": { "@tanstack/query-core": "5.99.2" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-vM91UEe45QUS9ED6OklsVL15i8qKcRqNwpWzPTVWvRPRSEgDudDgHpvyTjcdlwHcrKNa80T+xXYcchT2noPnZA=="],
+
+    "@tanstack/react-router": ["@tanstack/react-router@1.168.23", "", { "dependencies": { "@tanstack/history": "1.161.6", "@tanstack/react-store": "^0.9.3", "@tanstack/router-core": "1.168.15", "isbot": "^5.1.22" }, "peerDependencies": { "react": ">=18.0.0 || >=19.0.0", "react-dom": ">=18.0.0 || >=19.0.0" } }, "sha512-+GblieDnutG6oipJJPNtRJjrWF8QTZEG/l0532+BngFkVK48oHNOcvIkSoAFYftK1egAwM7KBxXsb0Ou+X6/MQ=="],
+
+    "@tanstack/react-store": ["@tanstack/react-store@0.9.3", "", { "dependencies": { "@tanstack/store": "0.9.3", "use-sync-external-store": "^1.6.0" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-y2iHd/N9OkoQbFJLUX1T9vbc2O9tjH0pQRgTcx1/Nz4IlwLvkgpuglXUx+mXt0g5ZDFrEeDnONPqkbfxXJKwRg=="],
+
+    "@tanstack/react-table": ["@tanstack/react-table@8.21.3", "", { "dependencies": { "@tanstack/table-core": "8.21.3" }, "peerDependencies": { "react": ">=16.8", "react-dom": ">=16.8" } }, "sha512-5nNMTSETP4ykGegmVkhjcS8tTLW6Vl4axfEGQN3v0zdHYbK4UfoqfPChclTrJ4EoK9QynqAu9oUf8VEmrpZ5Ww=="],
+
+    "@tanstack/react-virtual": ["@tanstack/react-virtual@3.13.24", "", { "dependencies": { "@tanstack/virtual-core": "3.14.0" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-aIJvz5OSkhNIhZIpYivrxrPTKYsjW9Uzy+sP/mx0S3sev2HyvPb7xmjbYvokzEpfgYHy/HjzJ2zFAETuUfgCpg=="],
+
+    "@tanstack/router-core": ["@tanstack/router-core@1.168.15", "", { "dependencies": { "@tanstack/history": "1.161.6", "cookie-es": "^3.0.0", "seroval": "^1.5.0", "seroval-plugins": "^1.5.0" }, "bin": { "intent": "bin/intent.js" } }, "sha512-Wr0424NDtD8fT/uALobMZ9DdcfsTyXtW5IPR++7zvW8/7RaIOeaqXpVDId8ywaGtqPWLWOfaUg2zUtYtukoXYA=="],
+
+    "@tanstack/store": ["@tanstack/store@0.9.3", "", {}, "sha512-8reSzl/qGWGGVKhBoxXPMWzATSbZLZFWhwBAFO9NAyp0TxzfBP0mIrGb8CP8KrQTmvzXlR/vFPPUrHTLBGyFyw=="],
+
+    "@tanstack/table-core": ["@tanstack/table-core@8.21.3", "", {}, "sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg=="],
+
+    "@tanstack/virtual-core": ["@tanstack/virtual-core@3.14.0", "", {}, "sha512-JLANqGy/D6k4Ujmh8Tr25lGimuOXNiaVyXaCAZS0W+1390sADdGnyUdSWNIfd49gebtIxGMij4IktRVzrdr12Q=="],
+
+    "@tiptap/core": ["@tiptap/core@2.27.2", "", { "peerDependencies": { "@tiptap/pm": "^2.7.0" } }, "sha512-ABL1N6eoxzDzC1bYvkMbvyexHacszsKdVPYqhl5GwHLOvpZcv9VE9QaKwDILTyz5voCA0lGcAAXZp+qnXOk5lQ=="],
+
+    "@tiptap/extension-blockquote": ["@tiptap/extension-blockquote@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-oIGZgiAeA4tG3YxbTDfrmENL4/CIwGuP3THtHsNhwRqwsl9SfMk58Ucopi2GXTQSdYXpRJ0ahE6nPqB5D6j/Zw=="],
+
+    "@tiptap/extension-bold": ["@tiptap/extension-bold@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-bR7J5IwjCGQ0s3CIxyMvOCnMFMzIvsc5OVZKscTN5UkXzFsaY6muUAIqtKxayBUucjtUskm5qZowJITCeCb1/A=="],
+
+    "@tiptap/extension-bubble-menu": ["@tiptap/extension-bubble-menu@2.27.2", "", { "dependencies": { "tippy.js": "^6.3.7" }, "peerDependencies": { "@tiptap/core": "^2.7.0", "@tiptap/pm": "^2.7.0" } }, "sha512-VkwlCOcr0abTBGzjPXklJ92FCowG7InU8+Od9FyApdLNmn0utRYGRhw0Zno6VgE9EYr1JY4BRnuSa5f9wlR72w=="],
+
+    "@tiptap/extension-bullet-list": ["@tiptap/extension-bullet-list@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-gmFuKi97u5f8uFc/GQs+zmezjiulZmFiDYTh3trVoLRoc2SAHOjGEB7qxdx7dsqmMN7gwiAWAEVurLKIi1lnnw=="],
+
+    "@tiptap/extension-code": ["@tiptap/extension-code@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-7X9AgwqiIGXoZX7uvdHQsGsjILnN/JaEVtqfXZnPECzKGaWHeK/Ao4sYvIIIffsyZJA8k5DC7ny2/0sAgr2TuA=="],
+
+    "@tiptap/extension-code-block": ["@tiptap/extension-code-block@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0", "@tiptap/pm": "^2.7.0" } }, "sha512-KgvdQHS4jXr79aU3wZOGBIZYYl9vCB7uDEuRFV4so2rYrfmiYMw3T8bTnlNEEGe4RUeAms1i4fdwwvQp9nR1Dw=="],
+
+    "@tiptap/extension-document": ["@tiptap/extension-document@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-CFhAYsPnyYnosDC4639sCJnBUnYH4Cat9qH5NZWHVvdgtDwu8GZgZn2eSzaKSYXWH1vJ9DSlCK+7UyC3SNXIBA=="],
+
+    "@tiptap/extension-dropcursor": ["@tiptap/extension-dropcursor@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0", "@tiptap/pm": "^2.7.0" } }, "sha512-oEu/OrktNoQXq1x29NnH/GOIzQZm8ieTQl3FK27nxfBPA89cNoH4mFEUmBL5/OFIENIjiYG3qWpg6voIqzswNw=="],
+
+    "@tiptap/extension-floating-menu": ["@tiptap/extension-floating-menu@2.27.2", "", { "dependencies": { "tippy.js": "^6.3.7" }, "peerDependencies": { "@tiptap/core": "^2.7.0", "@tiptap/pm": "^2.7.0" } }, "sha512-GUN6gPIGXS7ngRJOwdSmtBRBDt9Kt9CM/9pSwKebhLJ+honFoNA+Y6IpVyDvvDMdVNgBchiJLs6qA5H97gAePQ=="],
+
+    "@tiptap/extension-gapcursor": ["@tiptap/extension-gapcursor@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0", "@tiptap/pm": "^2.7.0" } }, "sha512-/c9VF1HBxj+AP54XGVgCmD9bEGYc5w5OofYCFQgM7l7PB1J00A4vOke0oPkHJnqnOOyPlFaxO/7N6l3XwFcnKA=="],
+
+    "@tiptap/extension-hard-break": ["@tiptap/extension-hard-break@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-kSRVGKlCYK6AGR0h8xRkk0WOFGXHIIndod3GKgWU49APuIGDiXd8sziXsSlniUsWmqgDmDXcNnSzPcV7AQ8YNg=="],
+
+    "@tiptap/extension-heading": ["@tiptap/extension-heading@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-iM3yeRWuuQR/IRQ1djwNooJGfn9Jts9zF43qZIUf+U2NY8IlvdNsk2wTOdBgh6E0CamrStPxYGuln3ZS4fuglw=="],
+
+    "@tiptap/extension-history": ["@tiptap/extension-history@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0", "@tiptap/pm": "^2.7.0" } }, "sha512-+hSyqERoFNTWPiZx4/FCyZ/0eFqB9fuMdTB4AC/q9iwu3RNWAQtlsJg5230bf/qmyO6bZxRUc0k8p4hrV6ybAw=="],
+
+    "@tiptap/extension-horizontal-rule": ["@tiptap/extension-horizontal-rule@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0", "@tiptap/pm": "^2.7.0" } }, "sha512-WGWUSgX+jCsbtf9Y9OCUUgRZYuwjVoieW5n6mAUohJ9/6gc6sGIOrUpBShf+HHo6WD+gtQjRd+PssmX3NPWMpg=="],
+
+    "@tiptap/extension-italic": ["@tiptap/extension-italic@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-1OFsw2SZqfaqx5Fa5v90iNlPRcqyt+lVSjBwTDzuPxTPFY4Q0mL89mKgkq2gVHYNCiaRkXvFLDxaSvBWbmthgg=="],
+
+    "@tiptap/extension-list-item": ["@tiptap/extension-list-item@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-eJNee7IEGXMnmygM5SdMGDC8m/lMWmwNGf9fPCK6xk0NxuQRgmZHL6uApKcdH6gyNcRPHCqvTTkhEP7pbny/fg=="],
+
+    "@tiptap/extension-ordered-list": ["@tiptap/extension-ordered-list@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-M7A4tLGJcLPYdLC4CI2Gwl8LOrENQW59u3cMVa+KkwG1hzSJyPsbDpa1DI6oXPC2WtYiTf22zrbq3gVvH+KA2w=="],
+
+    "@tiptap/extension-paragraph": ["@tiptap/extension-paragraph@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-elYVn2wHJJ+zB9LESENWOAfI4TNT0jqEN34sMA/hCtA4im1ZG2DdLHwkHIshj/c4H0dzQhmsS/YmNC5Vbqab/A=="],
+
+    "@tiptap/extension-strike": ["@tiptap/extension-strike@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-HHIjhafLhS2lHgfAsCwC1okqMsQzR4/mkGDm4M583Yftyjri1TNA7lzhzXWRFWiiMfJxKtdjHjUAQaHuteRTZw=="],
+
+    "@tiptap/extension-text": ["@tiptap/extension-text@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-Xk7nYcigljAY0GO9hAQpZ65ZCxqOqaAlTPDFcKerXmlkQZP/8ndx95OgUb1Xf63kmPOh3xypurGS2is3v0MXSA=="],
+
+    "@tiptap/extension-text-style": ["@tiptap/extension-text-style@2.27.2", "", { "peerDependencies": { "@tiptap/core": "^2.7.0" } }, "sha512-Omk+uxjJLyEY69KStpCw5fA9asvV+MGcAX2HOxyISDFoLaL49TMrNjhGAuz09P1L1b0KGXo4ml7Q3v/Lfy4WPA=="],
+
+    "@tiptap/pm": ["@tiptap/pm@2.27.2", "", { "dependencies": { "prosemirror-changeset": "^2.3.0", "prosemirror-collab": "^1.3.1", "prosemirror-commands": "^1.6.2", "prosemirror-dropcursor": "^1.8.1", "prosemirror-gapcursor": "^1.3.2", "prosemirror-history": "^1.4.1", "prosemirror-inputrules": "^1.4.0", "prosemirror-keymap": "^1.2.2", "prosemirror-markdown": "^1.13.1", "prosemirror-menu": "^1.2.4", "prosemirror-model": "^1.23.0", "prosemirror-schema-basic": "^1.2.3", "prosemirror-schema-list": "^1.4.1", "prosemirror-state": "^1.4.3", "prosemirror-tables": "^1.6.4", "prosemirror-trailing-node": "^3.0.0", "prosemirror-transform": "^1.10.2", "prosemirror-view": "^1.37.0" } }, "sha512-kaEg7BfiJPDQMKbjVIzEPO3wlcA+pZb2tlcK9gPrdDnEFaec2QTF1sXz2ak2IIb2curvnIrQ4yrfHgLlVA72wA=="],
+
+    "@tiptap/react": ["@tiptap/react@2.27.2", "", { "dependencies": { "@tiptap/extension-bubble-menu": "^2.27.2", "@tiptap/extension-floating-menu": "^2.27.2", "@types/use-sync-external-store": "^0.0.6", "fast-deep-equal": "^3", "use-sync-external-store": "^1" }, "peerDependencies": { "@tiptap/core": "^2.7.0", "@tiptap/pm": "^2.7.0", "react": "^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-0EAs8Cpkfbvben1PZ34JN2Nd79Dhioynm2jML27DBbf1VWPk+FFWFGTMLUT0bu+Np5iVxio8fqV9t0mc4D6thA=="],
+
+    "@tiptap/starter-kit": ["@tiptap/starter-kit@2.27.2", "", { "dependencies": { "@tiptap/core": "^2.27.2", "@tiptap/extension-blockquote": "^2.27.2", "@tiptap/extension-bold": "^2.27.2", "@tiptap/extension-bullet-list": "^2.27.2", "@tiptap/extension-code": "^2.27.2", "@tiptap/extension-code-block": "^2.27.2", "@tiptap/extension-document": "^2.27.2", "@tiptap/extension-dropcursor": "^2.27.2", "@tiptap/extension-gapcursor": "^2.27.2", "@tiptap/extension-hard-break": "^2.27.2", "@tiptap/extension-heading": "^2.27.2", "@tiptap/extension-history": "^2.27.2", "@tiptap/extension-horizontal-rule": "^2.27.2", "@tiptap/extension-italic": "^2.27.2", "@tiptap/extension-list-item": "^2.27.2", "@tiptap/extension-ordered-list": "^2.27.2", "@tiptap/extension-paragraph": "^2.27.2", "@tiptap/extension-strike": "^2.27.2", "@tiptap/extension-text": "^2.27.2", "@tiptap/extension-text-style": "^2.27.2", "@tiptap/pm": "^2.27.2" } }, "sha512-bb0gJvPoDuyRUQ/iuN52j1//EtWWttw+RXAv1uJxfR0uKf8X7uAqzaOOgwjknoCIDC97+1YHwpGdnRjpDkOBxw=="],
+
+    "@types/estree": ["@types/estree@1.0.8", "", {}, "sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w=="],
+
+    "@types/json-schema": ["@types/json-schema@7.0.15", "", {}, "sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA=="],
+
+    "@types/linkify-it": ["@types/linkify-it@5.0.0", "", {}, "sha512-sVDA58zAw4eWAffKOaQH5/5j3XeayukzDk+ewSsnv3p4yJEZHCCzMDiZM8e0OUrRvmpGZ85jf4yDHkHsgBNr9Q=="],
+
+    "@types/markdown-it": ["@types/markdown-it@14.1.2", "", { "dependencies": { "@types/linkify-it": "^5", "@types/mdurl": "^2" } }, "sha512-promo4eFwuiW+TfGxhi+0x3czqTYJkG8qB17ZUJiVF10Xm7NLVRSLUsfRTU/6h1e24VvRnXCx+hG7li58lkzog=="],
+
+    "@types/mdurl": ["@types/mdurl@2.0.0", "", {}, "sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg=="],
+
+    "@types/node": ["@types/node@25.6.0", "", { "dependencies": { "undici-types": "~7.19.0" } }, "sha512-+qIYRKdNYJwY3vRCZMdJbPLJAtGjQBudzZzdzwQYkEPQd+PJGixUL5QfvCLDaULoLv+RhT3LDkwEfKaAkgSmNQ=="],
+
+    "@types/react": ["@types/react@19.2.14", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w=="],
+
+    "@types/react-dom": ["@types/react-dom@19.2.3", "", { "peerDependencies": { "@types/react": "^19.2.0" } }, "sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ=="],
+
+    "@types/use-sync-external-store": ["@types/use-sync-external-store@0.0.6", "", {}, "sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg=="],
+
+    "@typescript-eslint/eslint-plugin": ["@typescript-eslint/eslint-plugin@8.59.0", "", { "dependencies": { "@eslint-community/regexpp": "^4.12.2", "@typescript-eslint/scope-manager": "8.59.0", "@typescript-eslint/type-utils": "8.59.0", "@typescript-eslint/utils": "8.59.0", "@typescript-eslint/visitor-keys": "8.59.0", "ignore": "^7.0.5", "natural-compare": "^1.4.0", "ts-api-utils": "^2.5.0" }, "peerDependencies": { "@typescript-eslint/parser": "^8.59.0", "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0", "typescript": ">=4.8.4 <6.1.0" } }, "sha512-HyAZtpdkgZwpq8Sz3FSUvCR4c+ScbuWa9AksK2Jweub7w4M3yTz4O11AqVJzLYjy/B9ZWPyc81I+mOdJU/bDQw=="],
+
+    "@typescript-eslint/parser": ["@typescript-eslint/parser@8.59.0", "", { "dependencies": { "@typescript-eslint/scope-manager": "8.59.0", "@typescript-eslint/types": "8.59.0", "@typescript-eslint/typescript-estree": "8.59.0", "@typescript-eslint/visitor-keys": "8.59.0", "debug": "^4.4.3" }, "peerDependencies": { "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0", "typescript": ">=4.8.4 <6.1.0" } }, "sha512-TI1XGwKbDpo9tRW8UDIXCOeLk55qe9ZFGs8MTKU6/M08HWTw52DD/IYhfQtOEhEdPhLMT26Ka/x7p70nd3dzDg=="],
+
+    "@typescript-eslint/project-service": ["@typescript-eslint/project-service@8.59.0", "", { "dependencies": { "@typescript-eslint/tsconfig-utils": "^8.59.0", "@typescript-eslint/types": "^8.59.0", "debug": "^4.4.3" }, "peerDependencies": { "typescript": ">=4.8.4 <6.1.0" } }, "sha512-Lw5ITrR5s5TbC19YSvlr63ZfLaJoU6vtKTHyB0GQOpX0W7d5/Ir6vUahWi/8Sps/nOukZQ0IB3SmlxZnjaKVnw=="],
+
+    "@typescript-eslint/scope-manager": ["@typescript-eslint/scope-manager@8.59.0", "", { "dependencies": { "@typescript-eslint/types": "8.59.0", "@typescript-eslint/visitor-keys": "8.59.0" } }, "sha512-UzR16Ut8IpA3Mc4DbgAShlPPkVm8xXMWafXxB0BocaVRHs8ZGakAxGRskF7FId3sdk9lgGD73GSFaWmWFDE4dg=="],
+
+    "@typescript-eslint/tsconfig-utils": ["@typescript-eslint/tsconfig-utils@8.59.0", "", { "peerDependencies": { "typescript": ">=4.8.4 <6.1.0" } }, "sha512-91Sbl3s4Kb3SybliIY6muFBmHVv+pYXfybC4Oolp3dvk8BvIE3wOPc+403CWIT7mJNkfQRGtdqghzs2+Z91Tqg=="],
+
+    "@typescript-eslint/type-utils": ["@typescript-eslint/type-utils@8.59.0", "", { "dependencies": { "@typescript-eslint/types": "8.59.0", "@typescript-eslint/typescript-estree": "8.59.0", "@typescript-eslint/utils": "8.59.0", "debug": "^4.4.3", "ts-api-utils": "^2.5.0" }, "peerDependencies": { "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0", "typescript": ">=4.8.4 <6.1.0" } }, "sha512-3TRiZaQSltGqGeNrJzzr1+8YcEobKH9rHnqIp/1psfKFmhRQDNMGP5hBufanYTGznwShzVLs3Mz+gDN7HkWfXg=="],
+
+    "@typescript-eslint/types": ["@typescript-eslint/types@8.59.0", "", {}, "sha512-nLzdsT1gdOgFxxxwrlNVUBzSNBEEHJ86bblmk4QAS6stfig7rcJzWKqCyxFy3YRRHXDWEkb2NralA1nOYkkm/A=="],
+
+    "@typescript-eslint/typescript-estree": ["@typescript-eslint/typescript-estree@8.59.0", "", { "dependencies": { "@typescript-eslint/project-service": "8.59.0", "@typescript-eslint/tsconfig-utils": "8.59.0", "@typescript-eslint/types": "8.59.0", "@typescript-eslint/visitor-keys": "8.59.0", "debug": "^4.4.3", "minimatch": "^10.2.2", "semver": "^7.7.3", "tinyglobby": "^0.2.15", "ts-api-utils": "^2.5.0" }, "peerDependencies": { "typescript": ">=4.8.4 <6.1.0" } }, "sha512-O9Re9P1BmBLFJyikRbQpLku/QA3/AueZNO9WePLBwQrvkixTmDe8u76B6CYUAITRl/rHawggEqUGn5QIkVRLMw=="],
+
+    "@typescript-eslint/utils": ["@typescript-eslint/utils@8.59.0", "", { "dependencies": { "@eslint-community/eslint-utils": "^4.9.1", "@typescript-eslint/scope-manager": "8.59.0", "@typescript-eslint/types": "8.59.0", "@typescript-eslint/typescript-estree": "8.59.0" }, "peerDependencies": { "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0", "typescript": ">=4.8.4 <6.1.0" } }, "sha512-I1R/K7V07XsMJ12Oaxg/O9GfrysGTmCRhvZJBv0RE0NcULMzjqVpR5kRRQjHsz3J/bElU7HwCO7zkqL+MSUz+g=="],
+
+    "@typescript-eslint/visitor-keys": ["@typescript-eslint/visitor-keys@8.59.0", "", { "dependencies": { "@typescript-eslint/types": "8.59.0", "eslint-visitor-keys": "^5.0.0" } }, "sha512-/uejZt4dSere1bx12WLlPfv8GktzcaDtuJ7s42/HEZ5zGj9oxRaD4bj7qwSunXkf+pbAhFt2zjpHYUiT5lHf0Q=="],
+
+    "acorn": ["acorn@8.16.0", "", { "bin": { "acorn": "bin/acorn" } }, "sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw=="],
+
+    "acorn-jsx": ["acorn-jsx@5.3.2", "", { "peerDependencies": { "acorn": "^6.0.0 || ^7.0.0 || ^8.0.0" } }, "sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ=="],
+
+    "ajv": ["ajv@6.14.0", "", { "dependencies": { "fast-deep-equal": "^3.1.1", "fast-json-stable-stringify": "^2.0.0", "json-schema-traverse": "^0.4.1", "uri-js": "^4.2.2" } }, "sha512-IWrosm/yrn43eiKqkfkHis7QioDleaXQHdDVPKg0FSwwd/DuvyX79TZnFOnYpB7dcsFAMmtFztZuXPDvSePkFw=="],
+
+    "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
+
+    "argparse": ["argparse@2.0.1", "", {}, "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="],
+
+    "aria-hidden": ["aria-hidden@1.2.6", "", { "dependencies": { "tslib": "^2.0.0" } }, "sha512-ik3ZgC9dY/lYVVM++OISsaYDeg1tb0VtP5uL3ouh1koGOaUMDPpbFIei4JkFimWUFPn90sbMNMXQAIVOlnYKJA=="],
+
+    "balanced-match": ["balanced-match@1.0.2", "", {}, "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="],
+
+    "brace-expansion": ["brace-expansion@1.1.14", "", { "dependencies": { "balanced-match": "^1.0.0", "concat-map": "0.0.1" } }, "sha512-MWPGfDxnyzKU7rNOW9SP/c50vi3xrmrua/+6hfPbCS2ABNWfx24vPidzvC7krjU/RTo235sV776ymlsMtGKj8g=="],
+
+    "bun-types": ["bun-types@1.3.13", "", { "dependencies": { "@types/node": "*" } }, "sha512-QXKeHLlOLqQX9LgYaHJfzdBaV21T63HhFJnvuRCcjZiaUDpbs5ED1MgxbMra71CsryN/1dAoXuJJJwIv/2drVA=="],
+
+    "callsites": ["callsites@3.1.0", "", {}, "sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ=="],
+
+    "chalk": ["chalk@4.1.2", "", { "dependencies": { "ansi-styles": "^4.1.0", "supports-color": "^7.1.0" } }, "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="],
+
+    "clsx": ["clsx@2.1.1", "", {}, "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="],
+
+    "cmdk": ["cmdk@1.1.1", "", { "dependencies": { "@radix-ui/react-compose-refs": "^1.1.1", "@radix-ui/react-dialog": "^1.1.6", "@radix-ui/react-id": "^1.1.0", "@radix-ui/react-primitive": "^2.0.2" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc", "react-dom": "^18 || ^19 || ^19.0.0-rc" } }, "sha512-Vsv7kFaXm+ptHDMZ7izaRsP70GgrW9NBNGswt9OZaVBLlE0SNpDq8eu/VGXyF9r7M0azK3Wy7OlYXsuyYLFzHg=="],
+
+    "color-convert": ["color-convert@2.0.1", "", { "dependencies": { "color-name": "~1.1.4" } }, "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ=="],
+
+    "color-name": ["color-name@1.1.4", "", {}, "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA=="],
+
+    "concat-map": ["concat-map@0.0.1", "", {}, "sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg=="],
+
+    "cookie-es": ["cookie-es@3.1.1", "", {}, "sha512-UaXxwISYJPTr9hwQxMFYZ7kNhSXboMXP+Z3TRX6f1/NyaGPfuNUZOWP1pUEb75B2HjfklIYLVRfWiFZJyC6Npg=="],
+
+    "crelt": ["crelt@1.0.6", "", {}, "sha512-VQ2MBenTq1fWZUH9DJNGti7kKv6EeAuYr3cLwxUWhIu1baTaXh4Ib5W2CqHVqib4/MqbYGJqiL3Zb8GJZr3l4g=="],
+
+    "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
+
+    "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
+
+    "date-fns": ["date-fns@4.1.0", "", {}, "sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg=="],
+
+    "debug": ["debug@4.4.3", "", { "dependencies": { "ms": "^2.1.3" } }, "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA=="],
+
+    "deep-is": ["deep-is@0.1.4", "", {}, "sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ=="],
+
+    "deepmerge": ["deepmerge@4.3.1", "", {}, "sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A=="],
+
+    "detect-node-es": ["detect-node-es@1.1.0", "", {}, "sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ=="],
+
+    "dom-serializer": ["dom-serializer@2.0.0", "", { "dependencies": { "domelementtype": "^2.3.0", "domhandler": "^5.0.2", "entities": "^4.2.0" } }, "sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg=="],
+
+    "domelementtype": ["domelementtype@2.3.0", "", {}, "sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw=="],
+
+    "domhandler": ["domhandler@5.0.3", "", { "dependencies": { "domelementtype": "^2.3.0" } }, "sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w=="],
+
+    "domutils": ["domutils@3.2.2", "", { "dependencies": { "dom-serializer": "^2.0.0", "domelementtype": "^2.3.0", "domhandler": "^5.0.3" } }, "sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw=="],
+
+    "drizzle-orm": ["drizzle-orm@0.45.2", "", { "peerDependencies": { "@aws-sdk/client-rds-data": ">=3", "@cloudflare/workers-types": ">=4", "@electric-sql/pglite": ">=0.2.0", "@libsql/client": ">=0.10.0", "@libsql/client-wasm": ">=0.10.0", "@neondatabase/serverless": ">=0.10.0", "@op-engineering/op-sqlite": ">=2", "@opentelemetry/api": "^1.4.1", "@planetscale/database": ">=1.13", "@prisma/client": "*", "@tidbcloud/serverless": "*", "@types/better-sqlite3": "*", "@types/pg": "*", "@types/sql.js": "*", "@upstash/redis": ">=1.34.7", "@vercel/postgres": ">=0.8.0", "@xata.io/client": "*", "better-sqlite3": ">=7", "bun-types": "*", "expo-sqlite": ">=14.0.0", "gel": ">=2", "knex": "*", "kysely": "*", "mysql2": ">=2", "pg": ">=8", "postgres": ">=3", "sql.js": ">=1", "sqlite3": ">=5" }, "optionalPeers": ["@aws-sdk/client-rds-data", "@cloudflare/workers-types", "@electric-sql/pglite", "@libsql/client", "@libsql/client-wasm", "@neondatabase/serverless", "@op-engineering/op-sqlite", "@opentelemetry/api", "@planetscale/database", "@prisma/client", "@tidbcloud/serverless", "@types/better-sqlite3", "@types/pg", "@types/sql.js", "@upstash/redis", "@vercel/postgres", "@xata.io/client", "better-sqlite3", "bun-types", "expo-sqlite", "gel", "knex", "kysely", "mysql2", "pg", "postgres", "sql.js", "sqlite3"] }, "sha512-kY0BSaTNYWnoDMVoyY8uxmyHjpJW1geOmBMdSSicKo9CIIWkSxMIj2rkeSR51b8KAPB7m+qysjuHme5nKP+E5Q=="],
+
+    "echarts": ["echarts@5.6.0", "", { "dependencies": { "tslib": "2.3.0", "zrender": "5.6.1" } }, "sha512-oTbVTsXfKuEhxftHqL5xprgLoc0k7uScAwtryCgWF6hPYFLRwOUHiFmHGCBKP5NPFNkDVopOieyUqYGH8Fa3kA=="],
+
+    "entities": ["entities@4.5.0", "", {}, "sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw=="],
+
+    "escape-string-regexp": ["escape-string-regexp@4.0.0", "", {}, "sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA=="],
+
+    "eslint": ["eslint@9.39.4", "", { "dependencies": { "@eslint-community/eslint-utils": "^4.8.0", "@eslint-community/regexpp": "^4.12.1", "@eslint/config-array": "^0.21.2", "@eslint/config-helpers": "^0.4.2", "@eslint/core": "^0.17.0", "@eslint/eslintrc": "^3.3.5", "@eslint/js": "9.39.4", "@eslint/plugin-kit": "^0.4.1", "@humanfs/node": "^0.16.6", "@humanwhocodes/module-importer": "^1.0.1", "@humanwhocodes/retry": "^0.4.2", "@types/estree": "^1.0.6", "ajv": "^6.14.0", "chalk": "^4.0.0", "cross-spawn": "^7.0.6", "debug": "^4.3.2", "escape-string-regexp": "^4.0.0", "eslint-scope": "^8.4.0", "eslint-visitor-keys": "^4.2.1", "espree": "^10.4.0", "esquery": "^1.5.0", "esutils": "^2.0.2", "fast-deep-equal": "^3.1.3", "file-entry-cache": "^8.0.0", "find-up": "^5.0.0", "glob-parent": "^6.0.2", "ignore": "^5.2.0", "imurmurhash": "^0.1.4", "is-glob": "^4.0.0", "json-stable-stringify-without-jsonify": "^1.0.1", "lodash.merge": "^4.6.2", "minimatch": "^3.1.5", "natural-compare": "^1.4.0", "optionator": "^0.9.3" }, "peerDependencies": { "jiti": "*" }, "optionalPeers": ["jiti"], "bin": { "eslint": "bin/eslint.js" } }, "sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ=="],
+
+    "eslint-scope": ["eslint-scope@8.4.0", "", { "dependencies": { "esrecurse": "^4.3.0", "estraverse": "^5.2.0" } }, "sha512-sNXOfKCn74rt8RICKMvJS7XKV/Xk9kA7DyJr8mJik3S7Cwgy3qlkkmyS2uQB3jiJg6VNdZd/pDBJu0nvG2NlTg=="],
+
+    "eslint-visitor-keys": ["eslint-visitor-keys@4.2.1", "", {}, "sha512-Uhdk5sfqcee/9H/rCOJikYz67o0a2Tw2hGRPOG2Y1R2dg7brRe1uG0yaNQDHu+TO/uQPF/5eCapvYSmHUjt7JQ=="],
+
+    "espree": ["espree@10.4.0", "", { "dependencies": { "acorn": "^8.15.0", "acorn-jsx": "^5.3.2", "eslint-visitor-keys": "^4.2.1" } }, "sha512-j6PAQ2uUr79PZhBjP5C5fhl8e39FmRnOjsD5lGnWrFU8i2G776tBK7+nP8KuQUTTyAZUwfQqXAgrVH5MbH9CYQ=="],
+
+    "esquery": ["esquery@1.7.0", "", { "dependencies": { "estraverse": "^5.1.0" } }, "sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g=="],
+
+    "esrecurse": ["esrecurse@4.3.0", "", { "dependencies": { "estraverse": "^5.2.0" } }, "sha512-KmfKL3b6G+RXvP8N1vr3Tq1kL/oCFgn2NYXEtqP8/L3pKapUA4G8cFVaoF3SU323CD4XypR/ffioHmkti6/Tag=="],
+
+    "estraverse": ["estraverse@5.3.0", "", {}, "sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA=="],
+
+    "esutils": ["esutils@2.0.3", "", {}, "sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g=="],
+
+    "fast-deep-equal": ["fast-deep-equal@3.1.3", "", {}, "sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q=="],
+
+    "fast-json-stable-stringify": ["fast-json-stable-stringify@2.1.0", "", {}, "sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw=="],
+
+    "fast-levenshtein": ["fast-levenshtein@2.0.6", "", {}, "sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw=="],
+
+    "fdir": ["fdir@6.5.0", "", { "peerDependencies": { "picomatch": "^3 || ^4" }, "optionalPeers": ["picomatch"] }, "sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg=="],
+
+    "file-entry-cache": ["file-entry-cache@8.0.0", "", { "dependencies": { "flat-cache": "^4.0.0" } }, "sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ=="],
+
+    "find-up": ["find-up@5.0.0", "", { "dependencies": { "locate-path": "^6.0.0", "path-exists": "^4.0.0" } }, "sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng=="],
+
+    "flat-cache": ["flat-cache@4.0.1", "", { "dependencies": { "flatted": "^3.2.9", "keyv": "^4.5.4" } }, "sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw=="],
+
+    "flatted": ["flatted@3.4.2", "", {}, "sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA=="],
+
+    "fsevents": ["fsevents@2.3.2", "", { "os": "darwin" }, "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="],
+
+    "get-nonce": ["get-nonce@1.0.1", "", {}, "sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q=="],
+
+    "glob-parent": ["glob-parent@6.0.2", "", { "dependencies": { "is-glob": "^4.0.3" } }, "sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A=="],
+
+    "globals": ["globals@16.5.0", "", {}, "sha512-c/c15i26VrJ4IRt5Z89DnIzCGDn9EcebibhAOjw5ibqEHsE1wLUgkPn9RDmNcUKyU87GeaL633nyJ+pplFR2ZQ=="],
+
+    "gutu-ecosystem-integration": ["gutu-ecosystem-integration@workspace:integrations/gutu-ecosystem-integration"],
+
+    "gutu-libraries": ["gutu-libraries@workspace:catalogs/gutu-libraries"],
+
+    "gutu-plugins": ["gutu-plugins@workspace:catalogs/gutu-plugins"],
+
+    "has-flag": ["has-flag@4.0.0", "", {}, "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ=="],
+
+    "html-to-text": ["html-to-text@9.0.5", "", { "dependencies": { "@selderee/plugin-htmlparser2": "^0.11.0", "deepmerge": "^4.3.1", "dom-serializer": "^2.0.0", "htmlparser2": "^8.0.2", "selderee": "^0.11.0" } }, "sha512-qY60FjREgVZL03vJU6IfMV4GDjGBIoOyvuFdpBDIX9yTlDw0TjxVBQp+P8NvpdIXNJvfWBTNul7fsAQJq2FNpg=="],
+
+    "htmlparser2": ["htmlparser2@8.0.2", "", { "dependencies": { "domelementtype": "^2.3.0", "domhandler": "^5.0.3", "domutils": "^3.0.1", "entities": "^4.4.0" } }, "sha512-GYdjWKDkbRLkZ5geuHs5NY1puJ+PXwP7+fHPRz06Eirsb9ugf6d8kkXav6ADhcODhFFPMIXyxkxSuMf3D6NCFA=="],
+
+    "ignore": ["ignore@5.3.2", "", {}, "sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g=="],
+
+    "import-fresh": ["import-fresh@3.3.1", "", { "dependencies": { "parent-module": "^1.0.0", "resolve-from": "^4.0.0" } }, "sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ=="],
+
+    "imurmurhash": ["imurmurhash@0.1.4", "", {}, "sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA=="],
+
+    "is-extglob": ["is-extglob@2.1.1", "", {}, "sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ=="],
+
+    "is-glob": ["is-glob@4.0.3", "", { "dependencies": { "is-extglob": "^2.1.1" } }, "sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg=="],
+
+    "isbot": ["isbot@5.1.39", "", {}, "sha512-obH0yYahGXdzNxo+djmHhBYThUKDkz565cxkIlt2L9hXfv1NlaLKoDBHo6KxXsYrIXx2RK3x5vY36CfZcobxEw=="],
+
+    "isexe": ["isexe@2.0.0", "", {}, "sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw=="],
+
+    "js-yaml": ["js-yaml@4.1.1", "", { "dependencies": { "argparse": "^2.0.1" }, "bin": { "js-yaml": "bin/js-yaml.js" } }, "sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA=="],
+
+    "json-buffer": ["json-buffer@3.0.1", "", {}, "sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ=="],
+
+    "json-schema-traverse": ["json-schema-traverse@0.4.1", "", {}, "sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg=="],
+
+    "json-stable-stringify-without-jsonify": ["json-stable-stringify-without-jsonify@1.0.1", "", {}, "sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw=="],
+
+    "keyv": ["keyv@4.5.4", "", { "dependencies": { "json-buffer": "3.0.1" } }, "sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw=="],
+
+    "leac": ["leac@0.6.0", "", {}, "sha512-y+SqErxb8h7nE/fiEX07jsbuhrpO9lL8eca7/Y1nuWV2moNlXhyd59iDGcRf6moVyDMbmTNzL40SUyrFU/yDpg=="],
+
+    "levn": ["levn@0.4.1", "", { "dependencies": { "prelude-ls": "^1.2.1", "type-check": "~0.4.0" } }, "sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ=="],
+
+    "linkify-it": ["linkify-it@5.0.0", "", { "dependencies": { "uc.micro": "^2.0.0" } }, "sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ=="],
+
+    "locate-path": ["locate-path@6.0.0", "", { "dependencies": { "p-locate": "^5.0.0" } }, "sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw=="],
+
+    "lodash.merge": ["lodash.merge@4.6.2", "", {}, "sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ=="],
+
+    "lucide-react": ["lucide-react@1.8.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-WuvlsjngSk7TnTBJ1hsCy3ql9V9VOdcPkd3PKcSmM34vJD8KG6molxz7m7zbYFgICwsanQWmJ13JlYs4Zp7Arw=="],
+
+    "markdown-it": ["markdown-it@14.1.1", "", { "dependencies": { "argparse": "^2.0.1", "entities": "^4.4.0", "linkify-it": "^5.0.0", "mdurl": "^2.0.0", "punycode.js": "^2.3.1", "uc.micro": "^2.1.0" }, "bin": { "markdown-it": "bin/markdown-it.mjs" } }, "sha512-BuU2qnTti9YKgK5N+IeMubp14ZUKUUw7yeJbkjtosvHiP0AZ5c8IAgEMk79D0eC8F23r4Ac/q8cAIFdm2FtyoA=="],
+
+    "mdurl": ["mdurl@2.0.0", "", {}, "sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w=="],
+
+    "minimatch": ["minimatch@3.1.5", "", { "dependencies": { "brace-expansion": "^1.1.7" } }, "sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w=="],
+
+    "ms": ["ms@2.1.3", "", {}, "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="],
+
+    "natural-compare": ["natural-compare@1.4.0", "", {}, "sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw=="],
+
+    "optionator": ["optionator@0.9.4", "", { "dependencies": { "deep-is": "^0.1.3", "fast-levenshtein": "^2.0.6", "levn": "^0.4.1", "prelude-ls": "^1.2.1", "type-check": "^0.4.0", "word-wrap": "^1.2.5" } }, "sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g=="],
+
+    "orderedmap": ["orderedmap@2.1.1", "", {}, "sha512-TvAWxi0nDe1j/rtMcWcIj94+Ffe6n7zhow33h40SKxmsmozs6dz/e+EajymfoFcHd7sxNn8yHM8839uixMOV6g=="],
+
+    "p-limit": ["p-limit@3.1.0", "", { "dependencies": { "yocto-queue": "^0.1.0" } }, "sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ=="],
+
+    "p-locate": ["p-locate@5.0.0", "", { "dependencies": { "p-limit": "^3.0.2" } }, "sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw=="],
+
+    "parent-module": ["parent-module@1.0.1", "", { "dependencies": { "callsites": "^3.0.0" } }, "sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g=="],
+
+    "parseley": ["parseley@0.12.1", "", { "dependencies": { "leac": "^0.6.0", "peberminta": "^0.9.0" } }, "sha512-e6qHKe3a9HWr0oMRVDTRhKce+bRO8VGQR3NyVwcjwrbhMmFCX9KszEV35+rn4AdilFAq9VPxP/Fe1wC9Qjd2lw=="],
+
+    "path-exists": ["path-exists@4.0.0", "", {}, "sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w=="],
+
+    "path-key": ["path-key@3.1.1", "", {}, "sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q=="],
+
+    "peberminta": ["peberminta@0.9.0", "", {}, "sha512-XIxfHpEuSJbITd1H3EeQwpcZbTLHc+VVr8ANI9t5sit565tsI4/xK3KWTUFE2e6QiangUkh3B0jihzmGnNrRsQ=="],
+
+    "picomatch": ["picomatch@4.0.4", "", {}, "sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A=="],
+
+    "playwright": ["playwright@1.59.1", "", { "dependencies": { "playwright-core": "1.59.1" }, "optionalDependencies": { "fsevents": "2.3.2" }, "bin": { "playwright": "cli.js" } }, "sha512-C8oWjPR3F81yljW9o5OxcWzfh6avkVwDD2VYdwIGqTkl+OGFISgypqzfu7dOe4QNLL2aqcWBmI3PMtLIK233lw=="],
+
+    "playwright-core": ["playwright-core@1.59.1", "", { "bin": { "playwright-core": "cli.js" } }, "sha512-HBV/RJg81z5BiiZ9yPzIiClYV/QMsDCKUyogwH9p3MCP6IYjUFu/MActgYAvK0oWyV9NlwM3GLBjADyWgydVyg=="],
+
+    "postgres": ["postgres@3.4.9", "", {}, "sha512-GD3qdB0x1z9xgFI6cdRD6xu2Sp2WCOEoe3mtnyB5Ee0XrrL5Pe+e4CCnJrRMnL1zYtRDZmQQVbvOttLnKDLnaw=="],
+
+    "prelude-ls": ["prelude-ls@1.2.1", "", {}, "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="],
+
+    "prettier": ["prettier@3.8.3", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw=="],
+
+    "prosemirror-changeset": ["prosemirror-changeset@2.4.1", "", { "dependencies": { "prosemirror-transform": "^1.0.0" } }, "sha512-96WBLhOaYhJ+kPhLg3uW359Tz6I/MfcrQfL4EGv4SrcqKEMC1gmoGrXHecPE8eOwTVCJ4IwgfzM8fFad25wNfw=="],
+
+    "prosemirror-collab": ["prosemirror-collab@1.3.1", "", { "dependencies": { "prosemirror-state": "^1.0.0" } }, "sha512-4SnynYR9TTYaQVXd/ieUvsVV4PDMBzrq2xPUWutHivDuOshZXqQ5rGbZM84HEaXKbLdItse7weMGOUdDVcLKEQ=="],
+
+    "prosemirror-commands": ["prosemirror-commands@1.7.1", "", { "dependencies": { "prosemirror-model": "^1.0.0", "prosemirror-state": "^1.0.0", "prosemirror-transform": "^1.10.2" } }, "sha512-rT7qZnQtx5c0/y/KlYaGvtG411S97UaL6gdp6RIZ23DLHanMYLyfGBV5DtSnZdthQql7W+lEVbpSfwtO8T+L2w=="],
+
+    "prosemirror-dropcursor": ["prosemirror-dropcursor@1.8.2", "", { "dependencies": { "prosemirror-state": "^1.0.0", "prosemirror-transform": "^1.1.0", "prosemirror-view": "^1.1.0" } }, "sha512-CCk6Gyx9+Tt2sbYk5NK0nB1ukHi2ryaRgadV/LvyNuO3ena1payM2z6Cg0vO1ebK8cxbzo41ku2DE5Axj1Zuiw=="],
+
+    "prosemirror-gapcursor": ["prosemirror-gapcursor@1.4.1", "", { "dependencies": { "prosemirror-keymap": "^1.0.0", "prosemirror-model": "^1.0.0", "prosemirror-state": "^1.0.0", "prosemirror-view": "^1.0.0" } }, "sha512-pMdYaEnjNMSwl11yjEGtgTmLkR08m/Vl+Jj443167p9eB3HVQKhYCc4gmHVDsLPODfZfjr/MmirsdyZziXbQKw=="],
+
+    "prosemirror-history": ["prosemirror-history@1.5.0", "", { "dependencies": { "prosemirror-state": "^1.2.2", "prosemirror-transform": "^1.0.0", "prosemirror-view": "^1.31.0", "rope-sequence": "^1.3.0" } }, "sha512-zlzTiH01eKA55UAf1MEjtssJeHnGxO0j4K4Dpx+gnmX9n+SHNlDqI2oO1Kv1iPN5B1dm5fsljCfqKF9nFL6HRg=="],
+
+    "prosemirror-inputrules": ["prosemirror-inputrules@1.5.1", "", { "dependencies": { "prosemirror-state": "^1.0.0", "prosemirror-transform": "^1.0.0" } }, "sha512-7wj4uMjKaXWAQ1CDgxNzNtR9AlsuwzHfdFH1ygEHA2KHF2DOEaXl1CJfNPAKCg9qNEh4rum975QLaCiQPyY6Fw=="],
+
+    "prosemirror-keymap": ["prosemirror-keymap@1.2.3", "", { "dependencies": { "prosemirror-state": "^1.0.0", "w3c-keyname": "^2.2.0" } }, "sha512-4HucRlpiLd1IPQQXNqeo81BGtkY8Ai5smHhKW9jjPKRc2wQIxksg7Hl1tTI2IfT2B/LgX6bfYvXxEpJl7aKYKw=="],
+
+    "prosemirror-markdown": ["prosemirror-markdown@1.13.4", "", { "dependencies": { "@types/markdown-it": "^14.0.0", "markdown-it": "^14.0.0", "prosemirror-model": "^1.25.0" } }, "sha512-D98dm4cQ3Hs6EmjK500TdAOew4Z03EV71ajEFiWra3Upr7diytJsjF4mPV2dW+eK5uNectiRj0xFxYI9NLXDbw=="],
+
+    "prosemirror-menu": ["prosemirror-menu@1.3.2", "", { "dependencies": { "crelt": "^1.0.0", "prosemirror-commands": "^1.0.0", "prosemirror-history": "^1.0.0", "prosemirror-state": "^1.0.0" } }, "sha512-6VgUJTYod0nMBlCaYJGhXGLu7Gt4AvcwcOq0YfJCY/6Uh+3S7UsWhpy6rJFCBFOmonq1hD8KyWOtZhkppd4YPg=="],
+
+    "prosemirror-model": ["prosemirror-model@1.25.4", "", { "dependencies": { "orderedmap": "^2.0.0" } }, "sha512-PIM7E43PBxKce8OQeezAs9j4TP+5yDpZVbuurd1h5phUxEKIu+G2a+EUZzIC5nS1mJktDJWzbqS23n1tsAf5QA=="],
+
+    "prosemirror-schema-basic": ["prosemirror-schema-basic@1.2.4", "", { "dependencies": { "prosemirror-model": "^1.25.0" } }, "sha512-ELxP4TlX3yr2v5rM7Sb70SqStq5NvI15c0j9j/gjsrO5vaw+fnnpovCLEGIcpeGfifkuqJwl4fon6b+KdrODYQ=="],
+
+    "prosemirror-schema-list": ["prosemirror-schema-list@1.5.1", "", { "dependencies": { "prosemirror-model": "^1.0.0", "prosemirror-state": "^1.0.0", "prosemirror-transform": "^1.7.3" } }, "sha512-927lFx/uwyQaGwJxLWCZRkjXG0p48KpMj6ueoYiu4JX05GGuGcgzAy62dfiV8eFZftgyBUvLx76RsMe20fJl+Q=="],
+
+    "prosemirror-state": ["prosemirror-state@1.4.4", "", { "dependencies": { "prosemirror-model": "^1.0.0", "prosemirror-transform": "^1.0.0", "prosemirror-view": "^1.27.0" } }, "sha512-6jiYHH2CIGbCfnxdHbXZ12gySFY/fz/ulZE333G6bPqIZ4F+TXo9ifiR86nAHpWnfoNjOb3o5ESi7J8Uz1jXHw=="],
+
+    "prosemirror-tables": ["prosemirror-tables@1.8.5", "", { "dependencies": { "prosemirror-keymap": "^1.2.3", "prosemirror-model": "^1.25.4", "prosemirror-state": "^1.4.4", "prosemirror-transform": "^1.10.5", "prosemirror-view": "^1.41.4" } }, "sha512-V/0cDCsHKHe/tfWkeCmthNUcEp1IVO3p6vwN8XtwE9PZQLAZJigbw3QoraAdfJPir4NKJtNvOB8oYGKRl+t0Dw=="],
+
+    "prosemirror-trailing-node": ["prosemirror-trailing-node@3.0.0", "", { "dependencies": { "@remirror/core-constants": "3.0.0", "escape-string-regexp": "^4.0.0" }, "peerDependencies": { "prosemirror-model": "^1.22.1", "prosemirror-state": "^1.4.2", "prosemirror-view": "^1.33.8" } }, "sha512-xiun5/3q0w5eRnGYfNlW1uU9W6x5MoFKWwq/0TIRgt09lv7Hcser2QYV8t4muXbEr+Fwo0geYn79Xs4GKywrRQ=="],
+
+    "prosemirror-transform": ["prosemirror-transform@1.12.0", "", { "dependencies": { "prosemirror-model": "^1.21.0" } }, "sha512-GxboyN4AMIsoHNtz5uf2r2Ru551i5hWeCMD6E2Ib4Eogqoub0NflniaBPVQ4MrGE5yZ8JV9tUHg9qcZTTrcN4w=="],
+
+    "prosemirror-view": ["prosemirror-view@1.41.8", "", { "dependencies": { "prosemirror-model": "^1.20.0", "prosemirror-state": "^1.0.0", "prosemirror-transform": "^1.1.0" } }, "sha512-TnKDdohEatgyZNGCDWIdccOHXhYloJwbwU+phw/a23KBvJIR9lWQWW7WHHK3vBdOLDNuF7TaX98GObUZOWkOnA=="],
+
+    "punycode": ["punycode@2.3.1", "", {}, "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg=="],
+
+    "punycode.js": ["punycode.js@2.3.1", "", {}, "sha512-uxFIHU0YlHYhDQtV4R9J6a52SLx28BCjT+4ieh7IGbgwVJWO+km431c4yRlREUAsAmt/uMjQUyQHNEPf0M39CA=="],
+
+    "react": ["react@19.2.5", "", {}, "sha512-llUJLzz1zTUBrskt2pwZgLq59AemifIftw4aB7JxOqf1HY2FDaGDxgwpAPVzHU1kdWabH7FauP4i1oEeer2WCA=="],
+
+    "react-dom": ["react-dom@19.2.5", "", { "dependencies": { "scheduler": "^0.27.0" }, "peerDependencies": { "react": "^19.2.5" } }, "sha512-J5bAZz+DXMMwW/wV3xzKke59Af6CHY7G4uYLN1OvBcKEsWOs4pQExj86BBKamxl/Ik5bx9whOrvBlSDfWzgSag=="],
+
+    "react-hook-form": ["react-hook-form@7.73.1", "", { "peerDependencies": { "react": "^16.8.0 || ^17 || ^18 || ^19" } }, "sha512-VAfVYOPcx3piiEVQy95vyFmBwbVUsP/AUIN+mpFG8h11yshDd444nn0VyfaGWSRnhOLVgiDu7HIuBtAIzxn9dA=="],
+
+    "react-promise-suspense": ["react-promise-suspense@0.3.4", "", { "dependencies": { "fast-deep-equal": "^2.0.1" } }, "sha512-I42jl7L3Ze6kZaq+7zXWSunBa3b1on5yfvUW6Eo/3fFOj6dZ5Bqmcd264nJbTK/gn1HjjILAjSwnZbV4RpSaNQ=="],
+
+    "react-remove-scroll": ["react-remove-scroll@2.7.2", "", { "dependencies": { "react-remove-scroll-bar": "^2.3.7", "react-style-singleton": "^2.2.3", "tslib": "^2.1.0", "use-callback-ref": "^1.3.3", "use-sidecar": "^1.1.3" }, "peerDependencies": { "@types/react": "*", "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-Iqb9NjCCTt6Hf+vOdNIZGdTiH1QSqr27H/Ek9sv/a97gfueI/5h1s3yRi1nngzMUaOOToin5dI1dXKdXiF+u0Q=="],
+
+    "react-remove-scroll-bar": ["react-remove-scroll-bar@2.3.8", "", { "dependencies": { "react-style-singleton": "^2.2.2", "tslib": "^2.0.0" }, "peerDependencies": { "@types/react": "*", "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" }, "optionalPeers": ["@types/react"] }, "sha512-9r+yi9+mgU33AKcj6IbT9oRCO78WriSj6t/cF8DWBZJ9aOGPOTEDvdUDz1FwKim7QXWwmHqtdHnRJfhAxEG46Q=="],
+
+    "react-resizable-panels": ["react-resizable-panels@4.10.0", "", { "peerDependencies": { "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-frjewRQt7TCv/vCH1pJfjZ7RxAhr5pKuqVQtVgzFq/vherxBFOWyC3xMbryx5Ti2wylViGUFc93Etg4rB3E0UA=="],
+
+    "react-style-singleton": ["react-style-singleton@2.2.3", "", { "dependencies": { "get-nonce": "^1.0.0", "tslib": "^2.0.0" }, "peerDependencies": { "@types/react": "*", "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-b6jSvxvVnyptAiLjbkWLE/lOnR4lfTtDAl+eUC7RZy+QQWc6wRzIV2CE6xBuMmDxc2qIihtDCZD5NPOFl7fRBQ=="],
+
+    "resolve-from": ["resolve-from@4.0.0", "", {}, "sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g=="],
+
+    "rope-sequence": ["rope-sequence@1.3.4", "", {}, "sha512-UT5EDe2cu2E/6O4igUr5PSFs23nvvukicWHx6GnOPlHAiiYbzNuCRQCuiUdHJQcqKalLKlrYJnjY0ySGsXNQXQ=="],
+
+    "scheduler": ["scheduler@0.27.0", "", {}, "sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q=="],
+
+    "selderee": ["selderee@0.11.0", "", { "dependencies": { "parseley": "^0.12.0" } }, "sha512-5TF+l7p4+OsnP8BCCvSyZiSPc4x4//p5uPwK8TCnVPJYRmU2aYKMpOXvw8zM5a5JvuuCGN1jmsMwuU2W02ukfA=="],
+
+    "semver": ["semver@7.7.4", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA=="],
+
+    "seroval": ["seroval@1.5.2", "", {}, "sha512-xcRN39BdsnO9Tf+VzsE7b3JyTJASItIV1FVFewJKCFcW4s4haIKS3e6vj8PGB9qBwC7tnuOywQMdv5N4qkzi7Q=="],
+
+    "seroval-plugins": ["seroval-plugins@1.5.2", "", { "peerDependencies": { "seroval": "^1.0" } }, "sha512-qpY0Cl+fKYFn4GOf3cMiq6l72CpuVaawb6ILjubOQ+diJ54LfOWaSSPsaswN8DRPIPW4Yq+tE1k5aKd7ILyaFg=="],
+
+    "shebang-command": ["shebang-command@2.0.0", "", { "dependencies": { "shebang-regex": "^3.0.0" } }, "sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA=="],
+
+    "shebang-regex": ["shebang-regex@3.0.0", "", {}, "sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A=="],
+
+    "sonner": ["sonner@2.0.7", "", { "peerDependencies": { "react": "^18.0.0 || ^19.0.0 || ^19.0.0-rc", "react-dom": "^18.0.0 || ^19.0.0 || ^19.0.0-rc" } }, "sha512-W6ZN4p58k8aDKA4XPcx2hpIQXBRAgyiWVkYhT7CvK6D3iAu7xjvVyhQHg2/iaKJZ1XVJ4r7XuwGL+WGEK37i9w=="],
+
+    "strip-json-comments": ["strip-json-comments@3.1.1", "", {}, "sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig=="],
+
+    "supports-color": ["supports-color@7.2.0", "", { "dependencies": { "has-flag": "^4.0.0" } }, "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw=="],
+
+    "tailwind-merge": ["tailwind-merge@3.5.0", "", {}, "sha512-I8K9wewnVDkL1NTGoqWmVEIlUcB9gFriAEkXkfCjX5ib8ezGxtR3xD7iZIxrfArjEsH7F1CHD4RFUtxefdqV/A=="],
+
+    "tinyglobby": ["tinyglobby@0.2.16", "", { "dependencies": { "fdir": "^6.5.0", "picomatch": "^4.0.4" } }, "sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg=="],
+
+    "tippy.js": ["tippy.js@6.3.7", "", { "dependencies": { "@popperjs/core": "^2.9.0" } }, "sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ=="],
+
+    "ts-api-utils": ["ts-api-utils@2.5.0", "", { "peerDependencies": { "typescript": ">=4.8.4" } }, "sha512-OJ/ibxhPlqrMM0UiNHJ/0CKQkoKF243/AEmplt3qpRgkW8VG7IfOS41h7V8TjITqdByHzrjcS/2si+y4lIh8NA=="],
+
+    "tslib": ["tslib@2.3.0", "", {}, "sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg=="],
+
+    "type-check": ["type-check@0.4.0", "", { "dependencies": { "prelude-ls": "^1.2.1" } }, "sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew=="],
+
+    "typescript": ["typescript@5.8.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ=="],
+
+    "typescript-eslint": ["typescript-eslint@8.59.0", "", { "dependencies": { "@typescript-eslint/eslint-plugin": "8.59.0", "@typescript-eslint/parser": "8.59.0", "@typescript-eslint/typescript-estree": "8.59.0", "@typescript-eslint/utils": "8.59.0" }, "peerDependencies": { "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0", "typescript": ">=4.8.4 <6.1.0" } }, "sha512-BU3ONW9X+v90EcCH9ZS6LMackcVtxRLlI3XrYyqZIwVSHIk7Qf7bFw1z0M9Q0IUxhTMZCf8piY9hTYaNEIASrw=="],
+
+    "uc.micro": ["uc.micro@2.1.0", "", {}, "sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A=="],
+
+    "undici-types": ["undici-types@7.19.2", "", {}, "sha512-qYVnV5OEm2AW8cJMCpdV20CDyaN3g0AjDlOGf1OW4iaDEx8MwdtChUp4zu4H0VP3nDRF/8RKWH+IPp9uW0YGZg=="],
+
+    "uri-js": ["uri-js@4.4.1", "", { "dependencies": { "punycode": "^2.1.0" } }, "sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg=="],
+
+    "use-callback-ref": ["use-callback-ref@1.3.3", "", { "dependencies": { "tslib": "^2.0.0" }, "peerDependencies": { "@types/react": "*", "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-jQL3lRnocaFtu3V00JToYz/4QkNWswxijDaCVNZRiRTO3HQDLsdu1ZtmIUvV4yPp+rvWm5j0y0TG/S61cuijTg=="],
+
+    "use-sidecar": ["use-sidecar@1.1.3", "", { "dependencies": { "detect-node-es": "^1.1.0", "tslib": "^2.0.0" }, "peerDependencies": { "@types/react": "*", "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-Fedw0aZvkhynoPYlA5WXrMCAMm+nSWdZt6lzJQ7Ok8S6Q+VsHmHpRWndVRJ8Be0ZbkfPc5LRYH+5XrzXcEeLRQ=="],
+
+    "use-sync-external-store": ["use-sync-external-store@1.6.0", "", { "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w=="],
+
+    "w3c-keyname": ["w3c-keyname@2.2.8", "", {}, "sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ=="],
+
+    "which": ["which@2.0.2", "", { "dependencies": { "isexe": "^2.0.0" }, "bin": { "node-which": "./bin/node-which" } }, "sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA=="],
+
+    "word-wrap": ["word-wrap@1.2.5", "", {}, "sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA=="],
+
+    "yocto-queue": ["yocto-queue@0.1.0", "", {}, "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="],
+
+    "zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
+
+    "zrender": ["zrender@5.6.1", "", { "dependencies": { "tslib": "2.3.0" } }, "sha512-OFXkDJKcrlx5su2XbzJvj/34Q3m6PvyCZkVPHGYpcCJ52ek4U/ymZyfuV1nKE23AyBJ51E/6Yr0mhZ7xGTO4ag=="],
+
+    "@eslint-community/eslint-utils/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
+
+    "@eslint/eslintrc/globals": ["globals@14.0.0", "", {}, "sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ=="],
+
+    "@platform/admin-reporting/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/contracts/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-2c2p/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-adyen/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-airwallex/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-alipay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-amazon-pay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-amazon-payment-services/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-asiapay-paydollar/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-authorize-net/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-billplz/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-bluesnap/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-braintree/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-buckaroo/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-cashfree-payments/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-ccavenue/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-checkout-com/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-cloudpayments/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-conekta/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-cybersource/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-dlocal/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-doku/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-dwolla/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-easebuzz/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-ebanx/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-ecommpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-eway/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-eximbay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-fincode-bygmo/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-fiserv/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-fiuu/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-flutterwave/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-fondy/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-forte/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-global-payments/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-helcim/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-hitpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-hyperpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-instamojo/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-intasend/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-ipay88/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-iyzico/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-klarna/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-komoju/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-kushki/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-liqpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-m-pesa-daraja/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-mercado-pago/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-midtrans/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-mollie/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-monei/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-moneris/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-mtn-momo/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-multisafepay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-myfatoorah/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-nexi-checkout-nets/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-nmi/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-nuvei/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-openpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-opn-payments-omise/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-ozow/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-pagar-me/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-pagbank-pagseguro/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-pay-jp/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-payfast/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-payjunction/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paymob/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paymongo/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paypal-checkout/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-payrexx/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paysafe/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paysera/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paystack/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paytabs/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paytm-payment-gateway/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-paytrail/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-payu-india/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-peach-payments/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-pesapal/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-phonepe-payment-gateway/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-placetopay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-przelewy24/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-rapyd/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-razorpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-redsys/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-senangpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-shift4/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-square/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-stripe/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-tap-payments/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-toss-payments/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-toyyibpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-tpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-transbank/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-vipps-mobilepay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-viva-com/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-wechat-pay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-wompi/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-worldline/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-worldpay/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-xendit/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/payments-provider-yookassa/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/ui-editor/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@platform/ui-form/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/ai-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/ai-evals/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/ai-rag/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/ai-skills-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/audit-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/auth-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/automation-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/booking-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/community-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/company-builder-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/content-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/dashboard-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/document-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/execution-workspaces-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/files-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/forms-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/integration-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/issues-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/jobs-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/knowledge-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/notifications-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/org-tenant-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/page-builder-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/payments-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/portal-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/role-policy-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/runtime-bridge-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/search-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/template-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/user-directory/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@plugins/workflow-core/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+
+    "@radix-ui/react-dialog/@radix-ui/react-primitive": ["@radix-ui/react-primitive@2.1.3", "", { "dependencies": { "@radix-ui/react-slot": "1.2.3" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-m9gTwRkhy2lvCPe6QJp4d3G1TYEUHn/FzJUtq9MjH46an1wJU+GdoGC5VLof8RX8Ft/DlpshApkhswDLZzHIcQ=="],
+
+    "@radix-ui/react-dialog/@radix-ui/react-slot": ["@radix-ui/react-slot@1.2.3", "", { "dependencies": { "@radix-ui/react-compose-refs": "1.1.2" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-aeNmHnBxbi2St0au6VBVC7JXFlhLlOnvIIlePNniyUNAClzmtAUEY8/pBiK3iHjufOlwA+c20/8jngo7xcrg8A=="],
+
+    "@radix-ui/react-dismissable-layer/@radix-ui/react-primitive": ["@radix-ui/react-primitive@2.1.3", "", { "dependencies": { "@radix-ui/react-slot": "1.2.3" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-m9gTwRkhy2lvCPe6QJp4d3G1TYEUHn/FzJUtq9MjH46an1wJU+GdoGC5VLof8RX8Ft/DlpshApkhswDLZzHIcQ=="],
+
+    "@radix-ui/react-focus-scope/@radix-ui/react-primitive": ["@radix-ui/react-primitive@2.1.3", "", { "dependencies": { "@radix-ui/react-slot": "1.2.3" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-m9gTwRkhy2lvCPe6QJp4d3G1TYEUHn/FzJUtq9MjH46an1wJU+GdoGC5VLof8RX8Ft/DlpshApkhswDLZzHIcQ=="],
+
+    "@radix-ui/react-portal/@radix-ui/react-primitive": ["@radix-ui/react-primitive@2.1.3", "", { "dependencies": { "@radix-ui/react-slot": "1.2.3" }, "peerDependencies": { "@types/react": "*", "@types/react-dom": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc", "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react", "@types/react-dom"] }, "sha512-m9gTwRkhy2lvCPe6QJp4d3G1TYEUHn/FzJUtq9MjH46an1wJU+GdoGC5VLof8RX8Ft/DlpshApkhswDLZzHIcQ=="],
+
+    "@typescript-eslint/eslint-plugin/ignore": ["ignore@7.0.5", "", {}, "sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg=="],
+
+    "@typescript-eslint/typescript-estree/minimatch": ["minimatch@10.2.5", "", { "dependencies": { "brace-expansion": "^5.0.5" } }, "sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg=="],
+
+    "@typescript-eslint/visitor-keys/eslint-visitor-keys": ["eslint-visitor-keys@5.0.1", "", {}, "sha512-tD40eHxA35h0PEIZNeIjkHoDR4YjjJp34biM0mDvplBe//mB+IHCqHDGV7pxF+7MklTvighcCPPZC7ynWyjdTA=="],
+
+    "react-promise-suspense/fast-deep-equal": ["fast-deep-equal@2.0.1", "", {}, "sha512-bCK/2Z4zLidyB4ReuIsvALH6w31YfAQDmXMqMx6FyfHqvBxtjC0eRumeSu4Bs3XtXwpyIywtSTrVT99BxY1f9w=="],
+
+    "@radix-ui/react-dismissable-layer/@radix-ui/react-primitive/@radix-ui/react-slot": ["@radix-ui/react-slot@1.2.3", "", { "dependencies": { "@radix-ui/react-compose-refs": "1.1.2" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-aeNmHnBxbi2St0au6VBVC7JXFlhLlOnvIIlePNniyUNAClzmtAUEY8/pBiK3iHjufOlwA+c20/8jngo7xcrg8A=="],
+
+    "@radix-ui/react-focus-scope/@radix-ui/react-primitive/@radix-ui/react-slot": ["@radix-ui/react-slot@1.2.3", "", { "dependencies": { "@radix-ui/react-compose-refs": "1.1.2" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-aeNmHnBxbi2St0au6VBVC7JXFlhLlOnvIIlePNniyUNAClzmtAUEY8/pBiK3iHjufOlwA+c20/8jngo7xcrg8A=="],
+
+    "@radix-ui/react-portal/@radix-ui/react-primitive/@radix-ui/react-slot": ["@radix-ui/react-slot@1.2.3", "", { "dependencies": { "@radix-ui/react-compose-refs": "1.1.2" }, "peerDependencies": { "@types/react": "*", "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc" }, "optionalPeers": ["@types/react"] }, "sha512-aeNmHnBxbi2St0au6VBVC7JXFlhLlOnvIIlePNniyUNAClzmtAUEY8/pBiK3iHjufOlwA+c20/8jngo7xcrg8A=="],
+
+    "@typescript-eslint/typescript-estree/minimatch/brace-expansion": ["brace-expansion@5.0.5", "", { "dependencies": { "balanced-match": "^4.0.2" } }, "sha512-VZznLgtwhn+Mact9tfiwx64fA9erHH/MCXEUfB/0bX/6Fz6ny5EGTXYltMocqg4xFAQZtnO3DHWWXi8RiuN7cQ=="],
+
+    "@typescript-eslint/typescript-estree/minimatch/brace-expansion/balanced-match": ["balanced-match@4.0.4", "", {}, "sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA=="],
+  }
+}

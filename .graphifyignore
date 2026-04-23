@@ -1,0 +1,15 @@
+# Keep Graphify focused on the actual Framework workspace instead of imported reference corpora.
+ref/
+
+# Avoid indexing Graphify and Codex control files into the graph.
+graphify-out/
+.codex/
+AGENTS.md
+
+# Skip common build and dependency output.
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/coverage/
+**/.turbo/

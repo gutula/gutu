@@ -1,8 +1,0 @@
-{
-  "name": "gutu-plugins",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "validate": "node scripts/validate-catalog.mjs"
-  }
-}

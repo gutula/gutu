@@ -153,6 +153,7 @@ This rollout does not claim full ERP-grade domain depth is complete today. The c
 - the pack artifacts now include starter settings, workflow, report, and automation objects instead of only minimal settings or workflow placeholders
 - the regenerated business plugin scaffolds now persist explicit downstream pending work, dead-letter or replay recovery state, projection summaries, and record revisions through the shared business runtime
 - the master business TODO and business check tooling now perform contract-registry, sample-pack dry-run, lifecycle or recovery scenario verification, stable-channel signature enforcement, 19 direct cross-plugin handoff scenarios, full-suite dead-letter or replay resilience verification, and repo-wide CI fan-out reporting so the workspace can track staged delivery honestly
+- the umbrella workspace now treats extracted apps, libraries, plugins, catalogs, `gutu-core`, and integration harnesses as standalone repos instead of tracking them twice through the root coordination repo
 
 What is still intentionally pending after this scaffold phase:
 

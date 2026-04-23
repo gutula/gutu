@@ -1,8 +1,0 @@
-{
-  "name": "gutu-app-playground",
-  "private": true,
-  "type": "module",
-  "workspaces": [
-    "apps/*"
-  ]
-}

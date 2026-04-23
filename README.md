@@ -82,5 +82,6 @@ bun run doctor
 ## Notes
 
 - The workspace root is a coordination repo, not the canonical publish root of `gutu-core`.
+- Standalone repos under `apps/`, `plugins/`, `libraries/`, `catalogs/`, `gutu-core/`, and `integrations/` are published from their own git roots and are intentionally ignored by the umbrella repo.
 - Mascot assets are synced into every repo root under `docs/assets/gutu-mascot.png` so each extracted repo stays self-contained.
 - The certification workspace under `integrations/gutu-ecosystem-integration/.tmp/` is generated evidence, not a canonical source repo.

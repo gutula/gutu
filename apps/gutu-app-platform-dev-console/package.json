@@ -1,8 +1,0 @@
-{
-  "name": "gutu-app-platform-dev-console",
-  "private": true,
-  "type": "module",
-  "workspaces": [
-    "apps/*"
-  ]
-}

@@ -9,6 +9,7 @@ This board is the workspace-level staged tracker for the Gutu Business OS progra
 - [x] Add `tooling/business-os/scaffold.mjs` to generate the extracted business plugin repos consistently.
 - [x] Add `tooling/business-os/check.mjs` so the business suite has a dedicated verification lane.
 - [x] Add dedicated local promotion entrypoints for business pack signing and stable-channel promotion.
+- [x] Enforce split-repo hygiene in the umbrella workspace so extracted repos publish independently and do not stay double-tracked by the root coordination repo.
 - [ ] Add a dedicated remote release flow for business-suite repo fan-out and publication.
 
 ## Stage 1

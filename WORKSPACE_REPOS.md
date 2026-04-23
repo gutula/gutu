@@ -1,5 +1,9 @@
 # Workspace Repos
 
+The workspace root is a coordination repo only. Every path listed below is expected
+to publish from its own standalone git root rather than being versioned twice by
+the umbrella workspace repository.
+
 ## Core
 
 - `gutu-core`
