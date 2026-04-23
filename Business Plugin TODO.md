@@ -15,6 +15,7 @@ This board is the workspace-level staged tracker for the Gutu Business OS progra
 ## Stage 1
 
 - [x] Expand the package contract work so business plugins can declare richer public commands, queries, events, ownership, and dependency metadata.
+- [x] Add first-class install guidance metadata so business plugins and packs can distinguish required, recommended, capability-enhancing, and integration-only dependencies.
 - [x] Add pack-manifest schema work so JSON packs can carry explicit trust, merge, dependency, and rollback metadata.
 - [x] Add `@platform/business-runtime` with numbering, localization, exchange-rate, tax, import quarantine, traceability, reconciliation, pack preview or apply or rollback, and contract-registry primitives.
 - [x] Add live importer and dry-run execution surfaces for pack payloads instead of schema-only and sample-artifact coverage.
@@ -90,4 +91,5 @@ This board is the workspace-level staged tracker for the Gutu Business OS progra
 
 - The current milestone is to establish truthful structure, contracts, verification lanes, SQL-backed local persistence, downstream recovery semantics, exported ERP parity catalogs, repo-local CI, 11 named cross-plugin flow scenarios, full-suite resilience coverage across 25 plugins, addon scaffolding, and pack-catalog promotion scaffolding for the business suite, with shared business runtime and orchestration primitives now in place.
 - The shared generated lifecycle now goes beyond create or advance or reconcile scaffolds by covering hold or release, amendment, reversal, richer downstream follow-up records, and lifecycle-aware repo-root CI or docs-summary surfaces across the extracted business repos.
+- Generated business plugin and pack manifests now carry explicit install guidance for mandatory, recommended, capability-enhancing, and integration-only dependencies plus suggested packs and standalone-support posture.
 - Domain-complete behavior remains a tracked follow-up across the staged items above and must be implemented repo by repo without violating ownership boundaries.

@@ -19,7 +19,7 @@ export const businessTodoRequiredHeadings = [
 ];
 
 function businessSpec(input) {
-  const normalizedInput = withSharedLifecycleSurface(input);
+  const normalizedInput = withSharedLifecycleSurface(withDependencyGuidance(input));
   return {
     kind: "plugin",
     trustTier: "first-party",
@@ -117,6 +117,332 @@ function mergeDomainCatalog(base = {}, extra = {}) {
     operationalScenarios: dedupeList([...(base.operationalScenarios ?? []), ...(extra.operationalScenarios ?? [])]),
     settingsSurfaces: dedupeList([...(base.settingsSurfaces ?? []), ...(extra.settingsSurfaces ?? [])]),
     edgeCases: dedupeList([...(base.edgeCases ?? []), ...(extra.edgeCases ?? [])])
+  };
+}
+
+const businessDependencyGuidance = {
+  "party-relationships-core": {
+    recommendedPlugins: ["crm-core", "support-service-core", "business-portals-core"],
+    capabilityEnhancingPlugins: ["contracts-core", "analytics-bi-core", "ai-assist-core"],
+    integrationOnlyPlugins: ["e-invoicing-core"],
+    installNotes: [
+      "Standalone-safe as the canonical external identity foundation.",
+      "Best installed early so downstream commercial and service plugins share one party model."
+    ]
+  },
+  "product-catalog-core": {
+    recommendedPlugins: ["pricing-tax-core", "sales-core", "procurement-core"],
+    capabilityEnhancingPlugins: ["inventory-core", "manufacturing-core", "quality-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "Standalone-safe for catalog governance, but richer value appears once commercial or inventory plugins are enabled."
+    ]
+  },
+  "pricing-tax-core": {
+    recommendedPlugins: ["sales-core", "procurement-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["pos-core", "subscriptions-core", "e-invoicing-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "Install with Accounting for production-grade statutory and settlement behavior."
+    ]
+  },
+  "traceability-core": {
+    recommendedPlugins: ["sales-core", "procurement-core", "inventory-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["manufacturing-core", "quality-core", "analytics-bi-core"],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "Provides the shared lineage and reconciliation fabric; it is more valuable as more business domains are enabled."
+    ]
+  },
+  "accounting-core": {
+    recommendedPlugins: ["treasury-core"],
+    capabilityEnhancingPlugins: ["sales-core", "procurement-core", "assets-core", "hr-payroll-core"],
+    integrationOnlyPlugins: ["e-invoicing-core", "analytics-bi-core"],
+    installNotes: [
+      "Can run standalone, but real operational value increases once commercial, treasury, and statutory plugins are composed."
+    ]
+  },
+  "crm-core": {
+    recommendedPlugins: ["sales-core"],
+    capabilityEnhancingPlugins: ["support-service-core", "ai-assist-core", "analytics-bi-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "Useful standalone for pre-sales teams; Sales is the natural next plugin once commercial handoff is needed."
+    ]
+  },
+  "sales-core": {
+    requiredDependencies: [
+      "auth-core",
+      "org-tenant-core",
+      "role-policy-core",
+      "audit-core",
+      "workflow-core",
+      "party-relationships-core",
+      "product-catalog-core",
+      "pricing-tax-core",
+      "traceability-core"
+    ],
+    recommendedPlugins: ["crm-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["inventory-core", "projects-core", "support-service-core", "contracts-core"],
+    integrationOnlyPlugins: ["business-portals-core", "subscriptions-core"],
+    installNotes: [
+      "Service-heavy teams can start without Inventory, but distribution and retail deployments should add Inventory early."
+    ]
+  },
+  "procurement-core": {
+    recommendedPlugins: ["inventory-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["quality-core", "manufacturing-core", "projects-core", "analytics-bi-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "Works without Manufacturing, but operational receiving and bill matching improve significantly once Inventory and Accounting are present."
+    ]
+  },
+  "inventory-core": {
+    recommendedPlugins: ["sales-core", "procurement-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["manufacturing-core", "quality-core", "pos-core", "support-service-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "Treat this as the physical stock truth boundary; pair with Accounting for valuation and with Sales or Procurement for demand and supply execution."
+    ]
+  },
+  "projects-core": {
+    recommendedPlugins: ["sales-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["procurement-core", "support-service-core", "hr-payroll-core", "contracts-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "Standalone-safe for internal delivery teams; add Sales and Accounting for commercialized project-to-bill flows."
+    ]
+  },
+  "support-service-core": {
+    recommendedPlugins: ["contracts-core", "business-portals-core"],
+    capabilityEnhancingPlugins: ["inventory-core", "assets-core", "field-service-core", "ai-assist-core"],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "Can serve as the ticketing truth alone, but entitlements, portals, and field execution become much smoother once the recommended plugins are present."
+    ]
+  },
+  "pos-core": {
+    requiredDependencies: [
+      "auth-core",
+      "org-tenant-core",
+      "role-policy-core",
+      "audit-core",
+      "workflow-core",
+      "sales-core",
+      "pricing-tax-core",
+      "traceability-core"
+    ],
+    recommendedPlugins: ["inventory-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["crm-core", "procurement-core", "analytics-bi-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "POS can operate without Inventory for limited service retail, but physical goods deployments should treat Inventory and Accounting as production recommendations."
+    ]
+  },
+  "manufacturing-core": {
+    recommendedPlugins: ["inventory-core", "quality-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["procurement-core", "projects-core", "assets-core", "maintenance-cmms-core", "hr-payroll-core"],
+    integrationOnlyPlugins: ["analytics-bi-core"],
+    installNotes: [
+      "Manufacturing should not be treated as a first install on its own; it reaches operational usefulness when Inventory, Quality, and Accounting are already in place."
+    ],
+    standaloneSupported: false
+  },
+  "quality-core": {
+    recommendedPlugins: ["inventory-core"],
+    capabilityEnhancingPlugins: ["procurement-core", "manufacturing-core", "sales-core", "support-service-core"],
+    integrationOnlyPlugins: ["analytics-bi-core"],
+    installNotes: [
+      "Most quality flows become meaningful once Inventory or Manufacturing is installed, because hold or release decisions need a physical or process boundary."
+    ]
+  },
+  "assets-core": {
+    recommendedPlugins: ["accounting-core"],
+    capabilityEnhancingPlugins: ["procurement-core", "projects-core", "hr-payroll-core", "maintenance-cmms-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "Fixed asset truth can stand alone, but capitalization and depreciation are strongest with Accounting attached."
+    ]
+  },
+  "hr-payroll-core": {
+    recommendedPlugins: ["accounting-core", "business-portals-core"],
+    capabilityEnhancingPlugins: ["projects-core", "manufacturing-core", "assets-core", "analytics-bi-core"],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "Payroll should be paired with Accounting for real deployments; portals are strongly recommended for ESS or MSS usage."
+    ]
+  },
+  "contracts-core": {
+    recommendedPlugins: ["sales-core", "support-service-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["subscriptions-core", "business-portals-core", "analytics-bi-core"],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "Contracts are most useful when they enrich commercial demand, service entitlements, or recurring billing rather than standing alone."
+    ]
+  },
+  "subscriptions-core": {
+    recommendedPlugins: ["contracts-core", "sales-core", "accounting-core"],
+    capabilityEnhancingPlugins: ["business-portals-core", "support-service-core", "ai-assist-core"],
+    integrationOnlyPlugins: ["analytics-bi-core"],
+    installNotes: [
+      "Recurring commercial models should install Contracts and Accounting alongside this plugin for real-world use."
+    ],
+    standaloneSupported: false
+  },
+  "business-portals-core": {
+    requiredDependencies: [
+      "auth-core",
+      "org-tenant-core",
+      "role-policy-core",
+      "workflow-core",
+      "portal-core",
+      "party-relationships-core",
+      "traceability-core"
+    ],
+    recommendedPlugins: ["support-service-core", "contracts-core", "hr-payroll-core"],
+    capabilityEnhancingPlugins: ["sales-core", "procurement-core", "subscriptions-core", "analytics-bi-core"],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "Portals project other plugins; they should be installed after the source-of-truth plugins users need to see or request against."
+    ],
+    standaloneSupported: false
+  },
+  "field-service-core": {
+    requiredDependencies: [
+      "auth-core",
+      "org-tenant-core",
+      "role-policy-core",
+      "audit-core",
+      "workflow-core",
+      "support-service-core",
+      "party-relationships-core",
+      "traceability-core"
+    ],
+    recommendedPlugins: ["support-service-core", "contracts-core"],
+    capabilityEnhancingPlugins: ["inventory-core", "business-portals-core", "maintenance-cmms-core", "analytics-bi-core"],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "Field execution depends on ticketing or entitlement context; install this as an operational extension, not as a first plugin."
+    ],
+    standaloneSupported: false
+  },
+  "maintenance-cmms-core": {
+    requiredDependencies: [
+      "auth-core",
+      "org-tenant-core",
+      "role-policy-core",
+      "audit-core",
+      "workflow-core",
+      "assets-core",
+      "traceability-core"
+    ],
+    recommendedPlugins: ["assets-core", "inventory-core"],
+    capabilityEnhancingPlugins: ["support-service-core", "field-service-core", "hr-payroll-core", "analytics-bi-core"],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "Maintenance is best introduced once Assets exists, otherwise work orders lack a stable installed-base anchor."
+    ],
+    standaloneSupported: false
+  },
+  "treasury-core": {
+    requiredDependencies: [
+      "auth-core",
+      "org-tenant-core",
+      "role-policy-core",
+      "audit-core",
+      "workflow-core",
+      "accounting-core",
+      "traceability-core"
+    ],
+    recommendedPlugins: ["payments-core"],
+    capabilityEnhancingPlugins: ["e-invoicing-core", "analytics-bi-core"],
+    integrationOnlyPlugins: ["business-portals-core"],
+    installNotes: [
+      "Treasury should usually follow Accounting; payments connectivity is recommended when live payout or collection orchestration is needed."
+    ]
+  },
+  "e-invoicing-core": {
+    recommendedPlugins: ["accounting-core", "pricing-tax-core"],
+    capabilityEnhancingPlugins: ["sales-core", "procurement-core", "pos-core", "treasury-core"],
+    integrationOnlyPlugins: ["analytics-bi-core"],
+    installNotes: [
+      "Treat this as a compliance addon layered onto mature billing and tax flows, not as a standalone first install."
+    ],
+    standaloneSupported: false
+  },
+  "analytics-bi-core": {
+    requiredDependencies: [
+      "auth-core",
+      "org-tenant-core",
+      "role-policy-core",
+      "audit-core",
+      "workflow-core",
+      "dashboard-core",
+      "traceability-core"
+    ],
+    recommendedPlugins: ["accounting-core", "traceability-core"],
+    capabilityEnhancingPlugins: [
+      "sales-core",
+      "procurement-core",
+      "inventory-core",
+      "projects-core",
+      "support-service-core",
+      "manufacturing-core",
+      "hr-payroll-core"
+    ],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "Analytics becomes more valuable as more write-model plugins are present; it should usually be installed after the operational core."
+    ],
+    standaloneSupported: false
+  },
+  "ai-assist-core": {
+    requiredDependencies: [
+      "auth-core",
+      "org-tenant-core",
+      "role-policy-core",
+      "audit-core",
+      "workflow-core",
+      "ai-core",
+      "ai-rag",
+      "traceability-core"
+    ],
+    recommendedPlugins: ["crm-core", "support-service-core"],
+    capabilityEnhancingPlugins: ["projects-core", "analytics-bi-core", "business-portals-core"],
+    integrationOnlyPlugins: [],
+    installNotes: [
+      "AI assist should be layered onto established workflows and kept assistive; it is not a source-of-truth plugin."
+    ],
+    standaloneSupported: false
+  }
+};
+
+function withDependencyGuidance(input) {
+  const guidance = businessDependencyGuidance[input.id] ?? {};
+  const dependsOn = dedupeList(guidance.requiredDependencies ?? input.dependsOn ?? []);
+  const recommendedPlugins = dedupeList(guidance.recommendedPlugins ?? input.recommendedPlugins ?? []).filter(
+    (entry) => !dependsOn.includes(entry)
+  );
+  const capabilityEnhancingPlugins = dedupeList(
+    guidance.capabilityEnhancingPlugins ?? input.capabilityEnhancingPlugins ?? []
+  ).filter((entry) => !dependsOn.includes(entry) && !recommendedPlugins.includes(entry));
+  const integrationOnlyPlugins = dedupeList(guidance.integrationOnlyPlugins ?? input.integrationOnlyPlugins ?? []).filter(
+    (entry) =>
+      !dependsOn.includes(entry) &&
+      !recommendedPlugins.includes(entry) &&
+      !capabilityEnhancingPlugins.includes(entry)
+  );
+  const installNotes = dedupeList(guidance.installNotes ?? input.installNotes ?? []);
+
+  return {
+    ...input,
+    dependsOn,
+    recommendedPlugins,
+    capabilityEnhancingPlugins,
+    integrationOnlyPlugins,
+    optionalWith: recommendedPlugins,
+    standaloneSupported: guidance.standaloneSupported ?? input.standaloneSupported ?? true,
+    installNotes
   };
 }
 
@@ -2156,7 +2482,75 @@ const packDefaultCategory = {
   subcategoryLabel: "Templates"
 };
 
+const businessPackDependencyGuidance = {
+  "localization-global-base": {
+    recommendedPlugins: ["treasury-core", "analytics-bi-core"]
+  },
+  "localization-india": {
+    recommendedPlugins: ["treasury-core", "analytics-bi-core"],
+    capabilityEnhancingPlugins: ["business-portals-core"]
+  },
+  "localization-united-states": {
+    recommendedPlugins: ["analytics-bi-core"],
+    capabilityEnhancingPlugins: ["business-portals-core"]
+  },
+  "sector-manufacturing": {
+    recommendedPlugins: ["hr-payroll-core", "maintenance-cmms-core"],
+    capabilityEnhancingPlugins: ["analytics-bi-core", "business-portals-core"]
+  },
+  "sector-trading-distribution": {
+    recommendedPlugins: ["quality-core", "business-portals-core"],
+    capabilityEnhancingPlugins: ["analytics-bi-core"]
+  },
+  "sector-retail": {
+    recommendedPlugins: ["business-portals-core", "analytics-bi-core"],
+    capabilityEnhancingPlugins: ["ai-assist-core"]
+  },
+  "sector-epc-professional-delivery": {
+    recommendedPlugins: ["hr-payroll-core", "business-portals-core"],
+    capabilityEnhancingPlugins: ["analytics-bi-core"]
+  },
+  "sector-ecommerce": {
+    recommendedPlugins: ["subscriptions-core", "analytics-bi-core"],
+    capabilityEnhancingPlugins: ["ai-assist-core", "e-invoicing-core"]
+  },
+  "sector-education": {
+    recommendedPlugins: ["projects-core", "contracts-core"],
+    capabilityEnhancingPlugins: ["analytics-bi-core", "ai-assist-core"]
+  },
+  "sector-healthcare": {
+    recommendedPlugins: ["contracts-core", "analytics-bi-core"],
+    capabilityEnhancingPlugins: ["e-invoicing-core", "ai-assist-core"]
+  },
+  "sector-professional-services": {
+    recommendedPlugins: ["business-portals-core", "analytics-bi-core"],
+    capabilityEnhancingPlugins: ["ai-assist-core"]
+  },
+  "sector-financial-services-compliance": {
+    recommendedPlugins: ["treasury-core", "analytics-bi-core"],
+    capabilityEnhancingPlugins: ["ai-assist-core"]
+  },
+  "sector-nonprofit": {
+    recommendedPlugins: ["contracts-core", "analytics-bi-core"],
+    capabilityEnhancingPlugins: ["ai-assist-core"]
+  }
+};
+
 function businessPackSpec(input) {
+  const guidance = businessPackDependencyGuidance[input.id] ?? {};
+  const requiredPlugins = dedupeList(input.requiredPlugins ?? []);
+  const recommendedPlugins = dedupeList(guidance.recommendedPlugins ?? input.recommendedPlugins ?? []).filter(
+    (entry) => !requiredPlugins.includes(entry)
+  );
+  const capabilityEnhancingPlugins = dedupeList(
+    guidance.capabilityEnhancingPlugins ?? input.capabilityEnhancingPlugins ?? []
+  ).filter((entry) => !requiredPlugins.includes(entry) && !recommendedPlugins.includes(entry));
+  const integrationOnlyPlugins = dedupeList(guidance.integrationOnlyPlugins ?? input.integrationOnlyPlugins ?? []).filter(
+    (entry) =>
+      !requiredPlugins.includes(entry) &&
+      !recommendedPlugins.includes(entry) &&
+      !capabilityEnhancingPlugins.includes(entry)
+  );
   return {
     version: "0.1.0",
     publisher: "gutula",
@@ -2165,7 +2559,11 @@ function businessPackSpec(input) {
     trustTier: "internal-signed",
     defaultCategory: packDefaultCategory,
     domainGroup: "Business Packs",
-    ...input
+    ...input,
+    requiredPlugins,
+    recommendedPlugins,
+    capabilityEnhancingPlugins,
+    integrationOnlyPlugins
   };
 }
 

@@ -218,6 +218,54 @@ function dedupeList(values) {
   return [...new Set((values ?? []).filter(Boolean))];
 }
 
+function buildDependencyContractsFromLists({
+  required = [],
+  optional = [],
+  capabilityEnhancing = [],
+  integrationOnly = [],
+  displayName
+}) {
+  return [
+    ...required.map((packageId) => ({
+      packageId,
+      class: "required",
+      rationale: `Required for ${displayName} to keep its boundary governed and explicit.`
+    })),
+    ...optional.map((packageId) => ({
+      packageId,
+      class: "optional",
+      rationale: `Recommended with ${displayName} for smoother production adoption and operator experience.`
+    })),
+    ...capabilityEnhancing.map((packageId) => ({
+      packageId,
+      class: "capability-enhancing",
+      rationale: `Improves ${displayName} with deeper downstream automation, visibility, or workflow coverage.`
+    })),
+    ...integrationOnly.map((packageId) => ({
+      packageId,
+      class: "integration-only",
+      rationale: `Only needed when ${displayName} must exchange data or actions with adjacent or external surfaces.`
+    }))
+  ];
+}
+
+function deriveSuggestedPackIds(pluginId) {
+  return businessPackSpecs
+    .filter(
+      (spec) =>
+        spec.requiredPlugins.includes(pluginId) ||
+        (spec.recommendedPlugins ?? []).includes(pluginId) ||
+        (spec.capabilityEnhancingPlugins ?? []).includes(pluginId) ||
+        (spec.integrationOnlyPlugins ?? []).includes(pluginId)
+    )
+    .map((spec) => spec.id)
+    .sort((left, right) => left.localeCompare(right));
+}
+
+function renderDependencyList(values) {
+  return values.length ? values.map((entry) => `\`${entry}\``).join(", ") : "None";
+}
+
 function resolveOrchestrationTargets(spec) {
   const defaults = {
     create: [],
@@ -453,11 +501,14 @@ function renderNestedPackageJson(spec) {
 }
 
 function renderPackageManifest(spec) {
-  const dependencyContracts = spec.dependsOn.map((packageId) => ({
-    packageId,
-    class: "required",
-    rationale: `Required for ${spec.displayName} to keep its boundary governed and explicit.`
-  }));
+  const dependencyContracts = buildDependencyContractsFromLists({
+    required: spec.dependsOn,
+    optional: spec.recommendedPlugins,
+    capabilityEnhancing: spec.capabilityEnhancingPlugins,
+    integrationOnly: spec.integrationOnlyPlugins,
+    displayName: spec.displayName
+  });
+  const suggestedPacks = deriveSuggestedPackIds(spec.id);
 
   return `import { definePackage } from "@platform/kernel";
 
@@ -475,7 +526,13 @@ export default definePackage(${JSON.stringify(
       extends: [],
       dependsOn: spec.dependsOn,
       dependencyContracts,
-      optionalWith: [],
+      recommendedPlugins: spec.recommendedPlugins ?? [],
+      capabilityEnhancingPlugins: spec.capabilityEnhancingPlugins ?? [],
+      integrationOnlyPlugins: spec.integrationOnlyPlugins ?? [],
+      suggestedPacks,
+      standaloneSupported: spec.standaloneSupported ?? true,
+      installNotes: spec.installNotes ?? [],
+      optionalWith: spec.optionalWith ?? spec.recommendedPlugins ?? [],
       conflictsWith: [],
       providesCapabilities: spec.providesCapabilities,
       requestedCapabilities: spec.requestedCapabilities,
@@ -910,7 +967,10 @@ ${spec.description}
 - Kind: \`${spec.kind}\`
 - Pack Type: \`${spec.packType}\`
 - Environment Scope: \`${spec.environmentScope}\`
-- Required Plugins: ${spec.requiredPlugins.map((entry) => `\`${entry}\``).join(", ")}
+- Required Plugins: ${renderDependencyList(spec.requiredPlugins)}
+- Recommended Plugins: ${renderDependencyList(spec.recommendedPlugins ?? [])}
+- Capability Enhancing Plugins: ${renderDependencyList(spec.capabilityEnhancingPlugins ?? [])}
+- Integration-Only Plugins: ${renderDependencyList(spec.integrationOnlyPlugins ?? [])}
 - Depends On Packs: ${spec.dependsOnPacks.length ? spec.dependsOnPacks.map((entry) => `\`${entry}\``).join(", ") : "None"}
 
 ## Included Objects
@@ -925,6 +985,14 @@ ${spec.description}
 }
 
 function renderPackPackageManifest(spec, catalogSpec) {
+  const dependencyContracts = buildDependencyContractsFromLists({
+    required: spec.requiredPlugins,
+    optional: spec.recommendedPlugins ?? [],
+    capabilityEnhancing: spec.capabilityEnhancingPlugins ?? [],
+    integrationOnly: spec.integrationOnlyPlugins ?? [],
+    displayName: spec.displayName
+  });
+
   return `import { definePackage } from "@platform/kernel";
 
 export default definePackage(${JSON.stringify(
@@ -939,11 +1007,15 @@ export default definePackage(${JSON.stringify(
       defaultCategory: spec.defaultCategory,
       description: spec.description,
       dependsOn: spec.requiredPlugins,
-      dependencyContracts: spec.requiredPlugins.map((packageId) => ({
-        packageId,
-        class: "required",
-        rationale: `${spec.displayName} depends on ${packageId} for governed pack installation.`
-      })),
+      dependencyContracts,
+      recommendedPlugins: spec.recommendedPlugins ?? [],
+      capabilityEnhancingPlugins: spec.capabilityEnhancingPlugins ?? [],
+      integrationOnlyPlugins: spec.integrationOnlyPlugins ?? [],
+      suggestedPacks: spec.dependsOnPacks,
+      standaloneSupported: false,
+      installNotes: [
+        `${spec.displayName} is a pack artifact and should be installed into an already-bootstrapped Business OS tenant or workspace.`
+      ],
       providesCapabilities: [`packs.${spec.id}`],
       requestedCapabilities: [],
       ownsData: [`packs.${spec.id}.objects`],
@@ -991,6 +1063,9 @@ function renderBusinessPackDependencies(spec) {
   return `${JSON.stringify(
     {
       requiredPlugins: spec.requiredPlugins,
+      recommendedPlugins: spec.recommendedPlugins ?? [],
+      capabilityEnhancingPlugins: spec.capabilityEnhancingPlugins ?? [],
+      integrationOnlyPlugins: spec.integrationOnlyPlugins ?? [],
       dependsOnPacks: spec.dependsOnPacks,
       pluginConstraints: spec.pluginConstraints
     },
@@ -1086,6 +1161,9 @@ function renderBusinessPackValidation(spec) {
       packId: spec.id,
       packType: spec.packType,
       requiredPlugins: spec.requiredPlugins,
+      recommendedPlugins: spec.recommendedPlugins ?? [],
+      capabilityEnhancingPlugins: spec.capabilityEnhancingPlugins ?? [],
+      integrationOnlyPlugins: spec.integrationOnlyPlugins ?? [],
       expectedObjects: [
         "settings/defaults",
         "workflows/default",
@@ -2584,10 +2662,16 @@ function renderPackManifest(spec) {
 }
 
 function renderPackDependencies(spec) {
+  const suggestedPacks = deriveSuggestedPackIds(spec.id);
   return `${JSON.stringify(
     {
       plugin: spec.packageDir,
       requiredPlugins: spec.dependsOn,
+      recommendedPlugins: spec.recommendedPlugins ?? [],
+      capabilityEnhancingPlugins: spec.capabilityEnhancingPlugins ?? [],
+      integrationOnlyPlugins: spec.integrationOnlyPlugins ?? [],
+      suggestedPacks,
+      standaloneSupported: spec.standaloneSupported ?? true,
       requiredCapabilities: spec.requestedCapabilities
     },
     null,
@@ -2665,6 +2749,11 @@ function renderPackValidation(spec) {
     {
       packageId: spec.id,
       packName: `${spec.packageDir}-${spec.packType}`,
+      requiredPlugins: spec.dependsOn,
+      recommendedPlugins: spec.recommendedPlugins ?? [],
+      capabilityEnhancingPlugins: spec.capabilityEnhancingPlugins ?? [],
+      integrationOnlyPlugins: spec.integrationOnlyPlugins ?? [],
+      suggestedPacks: deriveSuggestedPackIds(spec.id),
       expectedActions: spec.actions.map((entry) => entry.id),
       expectedResources: spec.resources.map((entry) => entry.id),
       expectedReports: spec.domainCatalog.reports,

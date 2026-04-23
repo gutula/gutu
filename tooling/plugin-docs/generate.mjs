@@ -187,6 +187,24 @@ function renderReadme(facts) {
     ["Repo", `[${facts.repoName}](${repoUrl})`],
     ["Depends On", facts.dependsOn.length ? facts.dependsOn.map((entry) => `\`${entry}\``).join(", ") : "None"],
     [
+      "Recommended Plugins",
+      facts.recommendedPlugins.length ? facts.recommendedPlugins.map((entry) => `\`${entry}\``).join(", ") : "None"
+    ],
+    [
+      "Capability Enhancing",
+      facts.capabilityEnhancingPlugins.length
+        ? facts.capabilityEnhancingPlugins.map((entry) => `\`${entry}\``).join(", ")
+        : "None"
+    ],
+    [
+      "Integration Only",
+      facts.integrationOnlyPlugins.length
+        ? facts.integrationOnlyPlugins.map((entry) => `\`${entry}\``).join(", ")
+        : "None"
+    ],
+    ["Suggested Packs", facts.suggestedPacks.length ? facts.suggestedPacks.map((entry) => `\`${entry}\``).join(", ") : "None"],
+    ["Standalone Supported", facts.standaloneSupported === false ? "No" : "Yes"],
+    [
       "Requested Capabilities",
       facts.requestedCapabilities.length
         ? facts.requestedCapabilities.map((entry) => `\`${entry}\``).join(", ")
@@ -242,6 +260,16 @@ ${renderMaturityReason(facts)}
 ## Dependency And Compatibility Summary
 
 ${toMarkdownTable(["Field", "Value"], dependencyRows)}
+
+## Installation Guidance
+
+- Required plugins: ${facts.dependsOn.length ? facts.dependsOn.map((entry) => `\`${entry}\``).join(", ") : "none"}
+- Recommended plugins: ${facts.recommendedPlugins.length ? facts.recommendedPlugins.map((entry) => `\`${entry}\``).join(", ") : "none"}
+- Capability-enhancing plugins: ${facts.capabilityEnhancingPlugins.length ? facts.capabilityEnhancingPlugins.map((entry) => `\`${entry}\``).join(", ") : "none"}
+- Integration-only plugins: ${facts.integrationOnlyPlugins.length ? facts.integrationOnlyPlugins.map((entry) => `\`${entry}\``).join(", ") : "none"}
+- Suggested packs: ${facts.suggestedPacks.length ? facts.suggestedPacks.map((entry) => `\`${entry}\``).join(", ") : "none"}
+- Standalone supported: ${facts.standaloneSupported === false ? "no" : "yes"}
+${facts.installNotes.map((entry) => `- ${entry}`).join("\n")}
 
 ## Capability Matrix
 
@@ -312,6 +340,11 @@ function renderDeveloperDoc(facts) {
 
   const dependencyRows = [
     ["Depends On", renderCodeList(facts.dependsOn)],
+    ["Recommended Plugins", renderCodeList(facts.recommendedPlugins)],
+    ["Capability Enhancing", renderCodeList(facts.capabilityEnhancingPlugins)],
+    ["Integration Only", renderCodeList(facts.integrationOnlyPlugins)],
+    ["Suggested Packs", renderCodeList(facts.suggestedPacks)],
+    ["Standalone Supported", facts.standaloneSupported === false ? "No" : "Yes"],
     ["Requested Capabilities", renderCodeList(facts.requestedCapabilities)],
     ["Provides Capabilities", renderCodeList(facts.providesCapabilities)],
     ["Owns Data", renderCodeList(facts.ownsData)]

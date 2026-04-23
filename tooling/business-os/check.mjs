@@ -42,6 +42,7 @@ const verification = {
     endToEndScenarioCount: businessEndToEndScenarios.length,
     recoveryScenarioCount: 0,
     contractScenarioCount: 0,
+    guidedInstallPluginCount: 0,
     ownedEntityCount: 0,
     reportCount: 0,
     exceptionQueueCount: 0,
@@ -265,12 +266,24 @@ for (const spec of businessPluginSpecs) {
     packageId: packageManifest.id,
     version: packageManifest.version,
     providesCapabilities: packageManifest.providesCapabilities.length,
+    recommendedPlugins: packageManifest.recommendedPlugins?.length ?? 0,
+    capabilityEnhancingPlugins: packageManifest.capabilityEnhancingPlugins?.length ?? 0,
+    integrationOnlyPlugins: packageManifest.integrationOnlyPlugins?.length ?? 0,
+    suggestedPacks: packageManifest.suggestedPacks?.length ?? 0,
     ownsData: packageManifest.ownsData.length,
     ownedEntities: manifestDomainCatalog.ownedEntities?.length ?? 0,
     reports: manifestDomainCatalog.reports?.length ?? 0,
     exceptionQueues: manifestDomainCatalog.exceptionQueues?.length ?? 0,
     operationalScenarios: manifestDomainCatalog.operationalScenarios?.length ?? 0
   });
+  const installGuidanceCount =
+    (packageManifest.recommendedPlugins?.length ?? 0) +
+    (packageManifest.capabilityEnhancingPlugins?.length ?? 0) +
+    (packageManifest.integrationOnlyPlugins?.length ?? 0) +
+    (packageManifest.suggestedPacks?.length ?? 0);
+  if (installGuidanceCount > 0) {
+    verification.summary.guidedInstallPluginCount += 1;
+  }
   verification.summary.ownedEntityCount += manifestDomainCatalog.ownedEntities?.length ?? 0;
   verification.summary.reportCount += manifestDomainCatalog.reports?.length ?? 0;
   verification.summary.exceptionQueueCount += manifestDomainCatalog.exceptionQueues?.length ?? 0;
@@ -286,6 +299,12 @@ for (const spec of businessPluginSpecs) {
   }
   if ((manifestDomainCatalog.operationalScenarios?.length ?? 0) === 0) {
     failures.push(`${spec.repoName}: package manifest is missing operational scenario parity metadata.`);
+  }
+  if (installGuidanceCount === 0) {
+    failures.push(`${spec.repoName}: package manifest is missing install guidance beyond hard dependencies.`);
+  }
+  if ((packageManifest.installNotes?.length ?? 0) === 0) {
+    failures.push(`${spec.repoName}: package manifest is missing install notes for operators and implementers.`);
   }
 
   const packManifest = JSON.parse(readFileSync(join(packRoot, "pack.json"), "utf8"));
@@ -448,7 +467,7 @@ if (failures.length > 0) {
     );
   } else {
     console.log(
-      `Business OS check passed for ${businessPluginSpecs.length} plugin repos, ${businessPackSpecs.length} packs, ${verification.summary.lifecycleScenarioCount} lifecycle scenarios, ${verification.summary.endToEndScenarioCount} named end-to-end scenarios, ${businessContractScenarios.length} direct contract scenarios, ${verification.summary.ownedEntityCount} owned entities, ${verification.summary.reportCount} reports, and ${verification.summary.exceptionQueueCount} exception queues.`
+      `Business OS check passed for ${businessPluginSpecs.length} plugin repos, ${businessPackSpecs.length} packs, ${verification.summary.lifecycleScenarioCount} lifecycle scenarios, ${verification.summary.endToEndScenarioCount} named end-to-end scenarios, ${businessContractScenarios.length} direct contract scenarios, ${verification.summary.guidedInstallPluginCount} plugins with install guidance, ${verification.summary.ownedEntityCount} owned entities, ${verification.summary.reportCount} reports, and ${verification.summary.exceptionQueueCount} exception queues.`
     );
   }
 }
