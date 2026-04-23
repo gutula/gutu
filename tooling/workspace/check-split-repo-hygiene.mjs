@@ -69,6 +69,9 @@ function listVisibleStandaloneStatus() {
     .filter(Boolean);
   const standaloneRoots = listStandaloneRoots();
   return status.filter((entry) => {
+    if (entry.startsWith("!! ")) {
+      return false;
+    }
     const relative = entry.slice(3);
     return standaloneRoots.some(
       (rootPath) => relative === rootPath || relative.startsWith(`${rootPath}/`),
