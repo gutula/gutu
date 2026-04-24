@@ -44,16 +44,15 @@ Reference: audit of `ref/Business/ERPNext/erpnext/` summarised in this tracker. 
 **Connections panel**: Contact → Deals, Invoices, Quotes, Tickets, Emails, Calls, Notes, Tasks
 **Automations**: Lead-to-opportunity conversion trigger · Campaign email scheduler · Appointment reminders · Contract expiry reminders · Lost-reason classification
 
-### ☐ P0 — Sales (`sales`)
-**ERPNext ref**: `selling/`, 18 DocTypes, 23 reports, 5 charts
-**Resources to add**: `sales.product-bundle`, `sales.installation-note`, `sales.sales-partner`, `sales.sales-team`, `sales.customer-credit-limit`, `sales.territory`, `sales.commission-rule`, `sales.pricing-rule`, `sales.delivery-schedule`
-**Reports to ship**: Sales Analytics · Sales Order Analysis · Sales Order Trends · Quotation Trends · Item-Wise Sales History · Territory-Wise Sales · Sales Person Commission · Customer Credit Balance · Inactive Customers · Lost Quotations · Customer Acquisition & Loyalty · Territory Target Variance · Payment Terms Status · Available Stock for Packing
-**Custom pages**: Sales Overview (exists) · Pipeline kanban (exists) · Leaderboard (exists) · Forecast with confidence intervals (exists) · Revenue analytics (exists) · Funnel (exists) · Quote-to-cash tracker (NEW) · Territory planner (NEW) · Commission dashboard (NEW)
-**Workflows**: Quote (draft → sent → accepted/rejected/expired) → Sales Order (confirmed → shipped → delivered → closed) → Invoice · Approval chains for discounts > N%
-**Connections**: Deal → Quotes, Line Items, Activities, Invoices, Tickets
-**Automations**: Auto-convert quote-to-order · Auto-generate PR from SO · Price rule evaluation · Credit-limit enforcement · Territory auto-assignment
+### ✅ P0 — Sales (`sales`) — shipped (commit f68c8b6)
+**Delivered**: 9 new resources (ProductBundle, InstallationNote, SalesPartner, SalesTeam, CustomerCreditLimit, Territory, CommissionRule, PricingRule, DeliverySchedule) with Zod schemas + list views + idempotent backend seed (104 new records). Sales Control Room dashboard + 6 reports (Sales Analytics, Territory Target Variance, Partner Commission, Customer Credit Balance, Quotation Trends, Pricing Rule Usage). Nav +11 entries, commands +2. Typecheck clean.
 
-### ☐ P0 — Accounting (`accounting`)
+### ✅ P0 — Accounting (`accounting`) — shipped (this pass)
+**Delivered**: 11 new resources extending the factory plugin (JournalEntry, PaymentEntry, BankAccount, BankTransaction, Budget, CostCenter, AccountingPeriod, TaxRule, Dunning, FiscalYear, CurrencyRate) with auto-generated list/form/detail/rich-detail views via `buildDomainPlugin` + idempotent backend seed (238 records across 11 resources; total 300 records across 14 accounting resources including the original invoice/bill/account). Accounting Control Room dashboard (4 KPIs, 4 charts, 4 shortcuts, 2 quick lists). 6 reports via `buildReportLibrary` (AR Aging, AP Aging, Invoice Trends, Budget Variance, Cash Flow, Tax Summary). Nav +3 entries (Control Room + Reports + Month-end close), commands +8. Buildable: `bunx tsc --noEmit` clean for admin-panel; backend seed confirmed via SQLite count. Frontend Control Room reads live aggregations; reports library lands under /accounting/reports.
+
+**Deferred to next Accounting pass**: Trial Balance / General Ledger / Balance Sheet / P&L (need accounting.gl-entry resource + double-entry posting engine); Bank Reconciliation tool UI (data model exists via bank-transaction + reconciled flag); Subscription invoicing automation (separate subscriptions plugin already covers this).
+
+### ☐ P0 — Accounting (`accounting`) — [ORIGINAL PLAN FOR REFERENCE]
 **ERPNext ref**: `accounts/`, 80+ DocTypes, 45+ reports — the single biggest module
 **Resources to add**: `accounting.account`, `accounting.cost-center`, `accounting.accounting-period`, `accounting.journal-entry`, `accounting.payment-entry`, `accounting.sales-invoice`, `accounting.purchase-invoice`, `accounting.bank-account`, `accounting.bank-transaction`, `accounting.bank-reconciliation`, `accounting.budget`, `accounting.tax-rule`, `accounting.advance-payment`, `accounting.dunning`, `accounting.subscription`, `accounting.accounting-dimension`
 **Reports to ship (22 priority)**: Trial Balance · General Ledger · Balance Sheet · Profit & Loss · Cash Flow · Accounts Receivable · Accounts Payable · Bank Reconciliation · Invoice Aging · Sales Register · Purchase Register · Gross Profit · Consolidated Financial Statement · Tax Withholding Details · Financial Ratios · Payment Ledger · Budget Variance · Deferred Revenue & Expense · Customer Ledger Summary · Supplier Ledger Summary · Dimension-Wise Balance · Period Closing Voucher

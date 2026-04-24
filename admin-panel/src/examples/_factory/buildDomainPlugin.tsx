@@ -12,6 +12,7 @@ import type { FieldDescriptor, EnumOption } from "@/contracts/fields";
 import type { NavItem, NavSection } from "@/contracts/nav";
 import type { Plugin } from "@/contracts/plugin";
 import type { ActionDescriptor } from "@/contracts/actions";
+import type { CommandDescriptor } from "@/contracts/commands";
 import type {
   DashboardWidget,
   ColumnDescriptor,
@@ -77,7 +78,7 @@ export interface DomainPluginConfig {
   order?: number;
   resources: readonly DomainResourceConfig[];
   /** Extra commands to contribute to the palette. */
-  commands?: Plugin["admin"] extends { commands?: infer C } ? C : never;
+  commands?: readonly CommandDescriptor[];
   /** Custom views (dashboards, kanban, calendar, analytics, settings, etc.) — merged
    *  with the auto-generated list/form/detail views. */
   extraViews?: readonly View[];
@@ -127,7 +128,7 @@ export function buildDomainPlugin(cfg: DomainPluginConfig): Plugin {
       resources,
       views: [...views, ...(cfg.extraViews ?? [])],
       widgets: widgets.length > 0 ? widgets : undefined,
-      commands: cfg.commands as never,
+      commands: cfg.commands,
     },
   });
 }
