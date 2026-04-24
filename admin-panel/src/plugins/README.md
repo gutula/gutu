@@ -1,8 +1,17 @@
-# Plugins — Authoring Guide
+# Plugins — Author Drop-Zone
 
-Drop a folder in this directory to ship a plugin. The shell auto-discovers
-every `src/plugins/*/index.{ts,tsx,js,jsx}` at boot via `import.meta.glob` —
-**no edits to `App.tsx`, `src/examples/index.ts`, or the shell are needed.**
+**This directory is intentionally empty.** It's the filesystem-discovery
+root for plugins authored outside the first-party tree.
+
+Drop a folder in here to ship a plugin. The shell auto-discovers every
+`src/plugins/*/index.{ts,tsx,js,jsx}` at boot via `import.meta.glob` —
+**no edits to `App.tsx`, `src/examples/index.ts`, or the shell are
+needed.**
+
+First-party domain plugins live in [`../examples/`](../examples/) — they
+use the same v2 contract but ship with the shell. This drop-zone is for
+plugins that aren't part of the shell repo (vendored, symlinked, or
+created locally).
 
 ## Quick start
 
