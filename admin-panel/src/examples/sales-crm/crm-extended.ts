@@ -1000,15 +1000,15 @@ const taskListView = defineListView({
   title: "Tasks",
   resource: "crm.task",
   columns: [
-    { id: "title", label: "Task", field: "title" },
-    { id: "status", label: "Status", field: "status", kind: "badge" },
-    { id: "priority", label: "Priority", field: "priority", kind: "badge" },
-    { id: "assignee", label: "Assignee", field: "assignee" },
-    { id: "dueAt", label: "Due", field: "dueAt", kind: "datetime" },
-    { id: "aboutLabel", label: "Linked to", field: "aboutLabel" },
+    { label: "Task", field: "title" },
+    { label: "Status", field: "status", kind: "enum" },
+    { label: "Priority", field: "priority", kind: "enum" },
+    { label: "Assignee", field: "assignee" },
+    { label: "Due", field: "dueAt", kind: "datetime" },
+    { label: "Linked to", field: "aboutLabel" },
   ],
   pageSize: 25,
-  sort: [{ field: "dueAt", dir: "asc" }],
+  defaultSort: { field: "dueAt", dir: "asc" },
 });
 
 const callListView = defineListView({
@@ -1016,15 +1016,15 @@ const callListView = defineListView({
   title: "Calls",
   resource: "crm.call",
   columns: [
-    { id: "subject", label: "Subject", field: "subject" },
-    { id: "direction", label: "Direction", field: "direction", kind: "badge" },
-    { id: "status", label: "Status", field: "status", kind: "badge" },
-    { id: "withContact", label: "With", field: "withContact" },
-    { id: "occurredAt", label: "When", field: "occurredAt", kind: "datetime" },
-    { id: "durationSec", label: "Duration", field: "durationSec" },
+    { label: "Subject", field: "subject" },
+    { label: "Direction", field: "direction", kind: "enum" },
+    { label: "Status", field: "status", kind: "enum" },
+    { label: "With", field: "withContact" },
+    { label: "When", field: "occurredAt", kind: "datetime" },
+    { label: "Duration", field: "durationSec", kind: "number" },
   ],
   pageSize: 25,
-  sort: [{ field: "occurredAt", dir: "desc" }],
+  defaultSort: { field: "occurredAt", dir: "desc" },
 });
 
 export const CRM_EXTENDED_RESOURCES: readonly ResourceDefinition[] = [

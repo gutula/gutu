@@ -51,6 +51,7 @@ import {
   type Role,
 } from "../lib/acl";
 import { emitRecordEvent } from "../lib/event-bus";
+import { validateRecordAgainstFieldMeta } from "../lib/field-metadata";
 import { db } from "../db";
 
 export const resourceRoutes = new Hono();
@@ -109,13 +110,21 @@ function requireRecordRole(
   return { ok: true, rec, role };
 }
 
-/** GET /:resource — list, filtered to records the user can read. */
+/** GET /:resource — list, filtered to records the user can read.
+ *
+ *  Query params:
+ *    page, pageSize, sort, dir, search, filter[<field>], f.<field>
+ *    includeDeleted=1   include status=deleted rows (for "show
+ *                       deleted" toggle in ListView). Default: drop them.
+ *    deletedOnly=1      ONLY status=deleted rows (Twenty-style trash). */
 resourceRoutes.get("/:resource", (c) => {
   const resource = c.req.param("resource");
   const url = new URL(c.req.url);
   const q = parseListQuery(url.searchParams);
   const user = currentUser(c);
   const tenantId = tenantFromCtx();
+  const includeDeleted = url.searchParams.get("includeDeleted") === "1";
+  const deletedOnly = url.searchParams.get("deletedOnly") === "1";
 
   // Compute the set of record IDs this user can READ on this resource.
   // For very large tenants we'd want a SQL JOIN here; with current
@@ -136,7 +145,9 @@ resourceRoutes.get("/:resource", (c) => {
     const rt = (r.tenantId as string | undefined) ?? null;
     if (rt && rt !== "default" && rt !== tenantId) return false;
     if (!accessible.has(rid)) return false;
-    if (r.status === "deleted") return false;
+    const isDeleted = r.status === "deleted";
+    if (deletedOnly) return isDeleted;
+    if (!includeDeleted && isDeleted) return false;
     return true;
   });
   // Annotate with the user's effective role per row so the frontend
@@ -174,12 +185,23 @@ resourceRoutes.post("/:resource", async (c) => {
   const tenantId = tenantFromCtx();
   // Always stamp tenant + creator on the record so list filters and
   // ACL checks work even if the body omits them.
-  const enriched: Record<string, unknown> = {
+  let enriched: Record<string, unknown> = {
     ...body,
     id,
     tenantId,
     createdBy: body.createdBy ?? user.email,
   };
+  // Validate custom fields. Coerces values per kind, applies defaults,
+  // rejects required-missing or wrong-type values. System fields
+  // (Zod-validated by the frontend) pass through untouched.
+  const validated = validateRecordAgainstFieldMeta(tenantId, resource, enriched);
+  if (!validated.ok) {
+    return c.json(
+      { error: "custom field validation failed", code: "invalid-argument", errors: validated.errors },
+      400,
+    );
+  }
+  enriched = validated.record;
   const row = insertRecord(resource, id, enriched);
   // Auto-seed ACL: creator → owner, tenant → editor. Same pattern as
   // editor records — preserves "everyone in the workspace can edit"
@@ -216,7 +238,29 @@ resourceRoutes.patch("/:resource/:id", async (c) => {
   if (!guard.ok) return guard.res;
   const before = guard.rec;
   const body = (await c.req.json().catch(() => ({}))) as Record<string, unknown>;
-  const row = updateRecord(resource, id, body);
+  // Validate any custom fields present in the patch body. PATCH is
+  // partial — we don't enforce `required` on patches (already
+  // enforced on create), but we DO type-check whatever fields are
+  // being changed.
+  const tid = tenantFromCtx();
+  const merged = { ...before, ...body };
+  const validated = validateRecordAgainstFieldMeta(tid, resource, merged);
+  if (!validated.ok) {
+    // Filter to errors that actually concern the patched fields —
+    // don't fail the patch on a `required` violation that pre-existed.
+    const patchedKeys = new Set(Object.keys(body));
+    const relevant = validated.errors.filter((e) => patchedKeys.has(e.field) && e.error !== "required");
+    if (relevant.length > 0) {
+      return c.json(
+        { error: "custom field validation failed", code: "invalid-argument", errors: relevant },
+        400,
+      );
+    }
+  }
+  const sanitized = validated.ok
+    ? Object.fromEntries(Object.entries(validated.record).filter(([k]) => k in body))
+    : body;
+  const row = updateRecord(resource, id, sanitized);
   if (!row) return c.json({ error: "not found" }, 404);
   const user = currentUser(c);
   recordAudit({
