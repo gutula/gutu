@@ -79,12 +79,15 @@ import {
 } from "./lib/yjs-room";
 import { db } from "./db";
 import { startWebhookDispatcher } from "./lib/webhook-dispatcher";
+import { startTimelineWriter } from "./lib/timeline";
 
-// Start the in-process integrations: outbound webhooks and the
-// workflow engine. Both subscribe to the record event bus that the
-// generic resource router emits to. They register handlers; the bus
-// fans events out asynchronously so the request path stays fast.
+// Start the in-process integrations: outbound webhooks, timeline
+// writer, and the workflow engine. All three subscribe to the
+// record event bus that the generic resource router emits to. They
+// register handlers; the bus fans events out asynchronously so the
+// request path stays fast.
 startWebhookDispatcher();
+startTimelineWriter();
 
 /** Resolve a WebSocket upgrade's session + tenant. Returns null if the token
  *  is missing, unknown, or expired — caller refuses the upgrade in that case. */

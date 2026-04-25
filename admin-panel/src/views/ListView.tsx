@@ -3,6 +3,7 @@ import { Layers, Plus, RefreshCw } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ListView as ListViewDef, ColumnDescriptor } from "@/contracts/views";
 import type { FilterTree, SavedView } from "@/contracts/saved-views";
+import { useUrlParam } from "@/runtime/useUrlState";
 import { PageHeader } from "@/admin-primitives/PageHeader";
 import { Toolbar, ToolbarSeparator } from "@/admin-primitives/Toolbar";
 import { FilterBar } from "@/admin-primitives/FilterBar";
@@ -62,11 +63,34 @@ export function ListViewRenderer({ view, basePath }: ListViewRendererProps) {
   const runtime = useRuntime();
   const registries = useRegistries();
 
-  /* ---------------- saved view state ---------------- */
+  /* ---------------- saved view state (URL-synced) ----------------
+   *
+   *  The active saved-view id lives in `?view=<id>` so a user can paste
+   *  the URL into Slack and have a colleague land on the SAME filtered
+   *  view. Falls back to the user's default if no `?view` param is
+   *  present. Updates flow back to the URL via `useUrlParam` so future
+   *  state changes (selecting a different saved view) update the URL.
+   *  Same pattern Twenty / Linear use for shareable views. */
+  const [urlViewId, setUrlViewId] = useUrlParam("view");
   const defaultView = runtime.savedViews.getDefault(view.resource);
-  const [activeSavedViewId, setActiveSavedViewId] = React.useState<string | null>(
-    defaultView?.id ?? null,
+  const initialViewId = urlViewId ?? defaultView?.id ?? null;
+  const [activeSavedViewId, setActiveSavedViewIdState] = React.useState<string | null>(initialViewId);
+  // When the user selects a different saved view, mirror it to the URL.
+  const setActiveSavedViewId = React.useCallback(
+    (id: string | null) => {
+      setActiveSavedViewIdState(id);
+      setUrlViewId(id);
+    },
+    [setUrlViewId],
   );
+  // When the URL ?view= changes externally (back/forward, paste-link),
+  // re-apply it.
+  React.useEffect(() => {
+    if (urlViewId !== activeSavedViewId) {
+      setActiveSavedViewIdState(urlViewId ?? null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlViewId]);
   const activeSavedView = activeSavedViewId
     ? runtime.savedViews.get(activeSavedViewId)
     : null;

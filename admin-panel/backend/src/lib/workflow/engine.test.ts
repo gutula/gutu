@@ -29,6 +29,11 @@ beforeAll(async () => {
 
   // Import after env is set so db.ts opens our tmp file.
   dbModule = await import("../../db");
+  // The legacy `migrate()` references the `tenants` table during its
+  // ACL-backfill step, which lives in the global tenancy migration.
+  // Order matters: tenancy first, legacy second.
+  const tenancyMig = await import("../../tenancy/migrations");
+  await tenancyMig.migrateGlobal();
   const migrations = await import("../../migrations");
   migrations.migrate();
   engine = await import("./engine");
