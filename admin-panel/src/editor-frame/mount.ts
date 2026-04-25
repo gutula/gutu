@@ -26,18 +26,33 @@ export interface MountedAdapter {
  *    - **Default**: a Yjs-backed minimal editor (rich-text page,
  *      shape-canvas whiteboard) that's hardened, tested, fast to load,
  *      and persists through `gutu-lib-storage` like every other editor.
+ *      End-to-end smoke-tested: bold/italic/underline/H1/H2/lists work,
+ *      autosave round-trips through the REST API, snapshot ETag tracks.
  *
  *    - **AFFiNE opt-in** (`?affine=1` in the iframe URL): mounts the
- *      full BlockSuite/AFFiNE 0.22 stack. Architecturally complete:
- *      `effects()` registers, schemas register, the vendored
- *      `<affine-editor-container>` mounts, view + store extension
- *      managers resolve. The remaining gap is a moving target of CJS
- *      interop shims for transitive deps (`extend`, `bind-event-listener`,
- *      …) under Vite dev-mode pre-bundling. Production (rollup) build is
- *      unaffected — `commonjsOptions.transformMixedEsModules` covers it.
+ *      full BlockSuite/AFFiNE 0.22 stack. Trace progression in dev mode:
  *
- *  Tenants that prefer the heavier-weight AFFiNE editor for pages today
- *  can navigate via `…/editor-frame.html?kind=page&id=…&affine=1`. */
+ *        entry → effects-import-ok → container-registered →
+ *        imports-ok → sync-ok → schema-ok → classes-resolved →
+ *        workspace-created → workspace-started → ▢ doc-created (BLOCKED)
+ *
+ *      Last verified state (2026-04-25): mount reaches workspace-started
+ *      after fixing TestWorkspace.meta.initialize(), then the BlockSuite
+ *      DI resolver hits a class-field/constructor-ordering edge case
+ *      under es2021 esbuild lowering (ServiceResolver class field
+ *      `container = this.provider.container` reads param prop before
+ *      assignment). es2021 fixes the symptom but the next layer is a
+ *      dynamic `import()` chain that resolves to non-JS responses for
+ *      reasons the dev-mode browser doesn't surface in console.
+ *
+ *      Production (rollup) build is unaffected — `commonjsOptions.
+ *      transformMixedEsModules` plus Rollup's tree-shaking handle the
+ *      same packages cleanly outside the dev pre-bundle pipeline.
+ *
+ *  Tenants who want the heavier-weight AFFiNE editor for pages today
+ *  can navigate via `…/editor-frame.html?kind=page&id=…&affine=1` after
+ *  a `bun run build` (production bundle). For dev iteration, the
+ *  default Yjs editor is the verified path. */
 
 function affineFlagFromUrl(): boolean {
   if (typeof window === "undefined") return false;
@@ -308,7 +323,7 @@ async function mountBlockSuite(
   const syncMod = await import("@blocksuite/affine/sync").catch((e) => { trace("sync-fail", String(e).slice(0, 200)); return null; });
   trace("sync-ok", { hasSync: !!syncMod });
 
-  let collection: ReturnType<{ TestWorkspace: new (opts: Record<string, unknown>) => { start: () => void; createDoc: (id: string) => { getStore: (opts: { id: string }) => unknown }; getDoc: (id: string) => { getStore: (opts: { id: string }) => unknown } | null; storeExtensions?: unknown; dispose?: () => void } }["TestWorkspace"]>;
+  let collection: ReturnType<{ TestWorkspace: new (opts: Record<string, unknown>) => { start: () => void; createDoc: (id: string) => { getStore: (opts: { id: string }) => unknown }; getDoc: (id: string) => { getStore: (opts: { id: string }) => unknown } | null; storeExtensions?: unknown; dispose?: () => void; meta: { initialize: () => void } } }["TestWorkspace"]>;
   let store: unknown;
   let pageSpecs: unknown[] = [], edgelessSpecs: unknown[] = [];
   try {
@@ -324,6 +339,7 @@ async function mountBlockSuite(
         getDoc: (id: string) => { getStore: (opts: { id: string }) => unknown } | null;
         storeExtensions?: unknown;
         dispose?: () => void;
+        meta: { initialize: () => void };
       };
     }).TestWorkspace;
 
@@ -360,13 +376,22 @@ async function mountBlockSuite(
       (extStoreMod as unknown as { getInternalStoreExtensions: () => unknown[] }).getInternalStoreExtensions(),
     );
     collection.storeExtensions = storeMgr.get("store");
+    // CRITICAL: meta.initialize() seeds an empty Y.Array<DocMeta> on the
+    // workspace's Yjs map under key "pages". TestMeta.addDocMeta() reads
+    // `this._proxy.pages` and BAILS OUT silently if it's undefined — so
+    // without this, createDoc() never actually fires the docMetaAdded
+    // subscription, blockCollections never gets the doc, and getDoc()
+    // returns null. (Took ~30min to track down because the only symptom
+    // is a delayed null deref on getStore.)
+    collection.meta.initialize();
     collection.start();
     trace("workspace-started");
 
     const docId = "page-0";
     let bsDoc = collection.getDoc(docId);
     if (!bsDoc) bsDoc = collection.createDoc(docId);
-    store = bsDoc!.getStore({ id: docId });
+    if (!bsDoc) throw new Error("createDoc returned null after meta.initialize");
+    store = bsDoc.getStore({ id: docId });
     trace("doc-created");
 
     const viewMgr = new ViewExtensionManager(
@@ -376,7 +401,11 @@ async function mountBlockSuite(
     edgelessSpecs = viewMgr.get("edgeless");
     trace("specs-resolved", { page: pageSpecs.length, edgeless: edgelessSpecs.length });
   } catch (e) {
-    trace("setup-fail", String(e).slice(0, 300));
+    // Capture full stack so we can pin down which BlockSuite layer
+    // failed (workspace setup, doc creation, store DI resolution, …).
+    // Shown in `__bsTrace.steps` for the iframe debugger.
+    const stack = (e as Error).stack ?? String(e);
+    trace("setup-fail", stack.slice(0, 1500));
     throw e;
   }
 
