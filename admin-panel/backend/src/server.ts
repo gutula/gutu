@@ -12,6 +12,14 @@ import { tenantRoutes } from "./routes/tenants";
 import { configRoutes } from "./routes/config";
 import { analyticsRoutes } from "./routes/analytics";
 import { analyticsBiRoutes } from "./routes/analytics-bi";
+import { savedViewsRoutes } from "./routes/saved-views";
+import { searchRoutes } from "./routes/search";
+import { webhookRoutes } from "./routes/webhooks";
+import { apiTokenRoutes } from "./routes/api-tokens";
+import { fieldMetadataRoutes } from "./routes/field-metadata";
+import { timelineRoutes } from "./routes/timeline";
+import { recordLinksRoutes } from "./routes/record-links";
+import { favoritesRoutes } from "./routes/favorites";
 import { tenantMiddleware } from "./tenancy/middleware";
 import { loadConfig } from "./config";
 
@@ -62,6 +70,14 @@ export function createApp() {
   app.route("/api/editors", editorRoutes);
   app.route("/api/analytics", analyticsRoutes);
   app.route("/api/analytics-bi", analyticsBiRoutes);
+  app.route("/api/saved-views", savedViewsRoutes);
+  app.route("/api/search", searchRoutes);
+  app.route("/api/webhooks", webhookRoutes);
+  app.route("/api/api-tokens", apiTokenRoutes);
+  app.route("/api/field-metadata", fieldMetadataRoutes);
+  app.route("/api/timeline", timelineRoutes);
+  app.route("/api/record-links", recordLinksRoutes);
+  app.route("/api/favorites", favoritesRoutes);
 
   app.notFound((c) => c.json({ error: "not found" }, 404));
   app.onError((err, c) => {
