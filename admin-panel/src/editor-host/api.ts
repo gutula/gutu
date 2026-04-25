@@ -1,8 +1,10 @@
-/** Thin REST client for `/api/editors/<resource>/...`.
+/** REST client for `/api/editors/<resource>/...`.
  *
- *  Exposes typed wrappers used by `<EditorList>` (list + create + delete) and
- *  `<EditorHost>` (snapshot read/write).
- */
+ *  Hardened with:
+ *    - `Idempotency-Key` on every create
+ *    - `If-Match` on snapshot writes (optimistic locking)
+ *    - cooperative cancel via AbortSignal
+ *    - structured error parsing — server returns `{error, code, ...}` */
 
 import type { EditorKind, EditorRecord } from "./types";
 
@@ -20,19 +22,40 @@ function getAuthHeader(): Record<string, string> {
 }
 
 function apiBase(): string {
-  // VITE_API_BASE may set this; default to same-origin /api for prod, or
-  // localhost:3333 in dev (matched by proxy in vite.config).
-  const base = (typeof import.meta !== "undefined" ? import.meta.env?.VITE_API_BASE : undefined) ??
-    "/api";
+  const base =
+    (typeof import.meta !== "undefined" ? import.meta.env?.VITE_API_BASE : undefined) ?? "/api";
   return base.toString().replace(/\/+$/, "");
 }
 
-export async function listEditorRecords(kind: EditorKind): Promise<EditorRecord[]> {
+function newIdempotencyKey(): string {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+/** Parse `{error, code, ...}` from a non-OK response. */
+async function readErr(res: Response): Promise<Error> {
+  let body: { error?: string; code?: string } | null = null;
+  try { body = (await res.json()) as { error?: string; code?: string }; } catch { /* tolerate */ }
+  const msg = body?.error ?? `HTTP ${res.status}`;
+  const code = body?.code ?? "http-error";
+  const err = new Error(msg) as Error & { code?: string; status?: number };
+  err.code = code;
+  err.status = res.status;
+  return err;
+}
+
+export async function listEditorRecords(
+  kind: EditorKind,
+  signal?: AbortSignal,
+): Promise<EditorRecord[]> {
   const res = await fetch(`${apiBase()}/editors/${RESOURCE_FOR[kind]}`, {
     headers: getAuthHeader(),
     credentials: "include",
+    ...(signal && { signal }),
   });
-  if (!res.ok) throw new Error(`list ${kind} failed: ${res.status}`);
+  if (!res.ok) throw await readErr(res);
   const body = (await res.json()) as { rows: EditorRecord[] };
   return body.rows;
 }
@@ -40,38 +63,65 @@ export async function listEditorRecords(kind: EditorKind): Promise<EditorRecord[
 export async function createEditorRecord(
   kind: EditorKind,
   payload: { title: string; folder?: string; slug?: string; parentId?: string },
+  signal?: AbortSignal,
 ): Promise<EditorRecord> {
   const res = await fetch(`${apiBase()}/editors/${RESOURCE_FOR[kind]}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", ...getAuthHeader() },
+    headers: {
+      "Content-Type": "application/json",
+      "Idempotency-Key": newIdempotencyKey(),
+      ...getAuthHeader(),
+    },
     credentials: "include",
     body: JSON.stringify(payload),
+    ...(signal && { signal }),
   });
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`create ${kind} failed: ${res.status} ${txt}`);
-  }
+  if (!res.ok) throw await readErr(res);
   return (await res.json()) as EditorRecord;
 }
 
-export async function deleteEditorRecord(kind: EditorKind, id: string): Promise<void> {
+export async function updateEditorRecord(
+  kind: EditorKind,
+  id: string,
+  patch: Partial<EditorRecord>,
+  signal?: AbortSignal,
+): Promise<EditorRecord> {
+  const res = await fetch(`${apiBase()}/editors/${RESOURCE_FOR[kind]}/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...getAuthHeader() },
+    credentials: "include",
+    body: JSON.stringify(patch),
+    ...(signal && { signal }),
+  });
+  if (!res.ok) throw await readErr(res);
+  return (await res.json()) as EditorRecord;
+}
+
+export async function deleteEditorRecord(
+  kind: EditorKind,
+  id: string,
+  signal?: AbortSignal,
+): Promise<void> {
   const res = await fetch(`${apiBase()}/editors/${RESOURCE_FOR[kind]}/${id}`, {
     method: "DELETE",
     headers: getAuthHeader(),
     credentials: "include",
+    ...(signal && { signal }),
   });
-  if (!res.ok) throw new Error(`delete ${kind} failed: ${res.status}`);
+  if (!res.ok) throw await readErr(res);
 }
 
 export async function fetchEditorRecord(
   kind: EditorKind,
   id: string,
+  signal?: AbortSignal,
 ): Promise<EditorRecord> {
   const res = await fetch(`${apiBase()}/editors/${RESOURCE_FOR[kind]}/${id}`, {
     headers: getAuthHeader(),
     credentials: "include",
+    ...(signal && { signal }),
   });
-  if (!res.ok) throw new Error(`fetch ${kind} ${id} failed: ${res.status}`);
+  if (!res.ok) throw await readErr(res);
   return (await res.json()) as EditorRecord;
 }
 
@@ -79,15 +129,24 @@ export async function fetchSnapshot(
   kind: EditorKind,
   id: string,
   which: "yjs" | "export",
-): Promise<{ bytes: Uint8Array; contentType: string } | null> {
+  signal?: AbortSignal,
+): Promise<{ bytes: Uint8Array; contentType: string; etag: string | null } | null> {
   const res = await fetch(
     `${apiBase()}/editors/${RESOURCE_FOR[kind]}/${id}/snapshot/${which}`,
-    { headers: getAuthHeader(), credentials: "include" },
+    {
+      headers: getAuthHeader(),
+      credentials: "include",
+      ...(signal && { signal }),
+    },
   );
   if (res.status === 204) return null;
-  if (!res.ok) throw new Error(`fetch snapshot ${kind}/${id}/${which} failed: ${res.status}`);
+  if (!res.ok) throw await readErr(res);
   const buf = new Uint8Array(await res.arrayBuffer());
-  return { bytes: buf, contentType: res.headers.get("content-type") ?? "application/octet-stream" };
+  return {
+    bytes: buf,
+    contentType: res.headers.get("content-type") ?? "application/octet-stream",
+    etag: res.headers.get("etag"),
+  };
 }
 
 export async function postSnapshot(
@@ -96,16 +155,24 @@ export async function postSnapshot(
   which: "yjs" | "export",
   bytes: Uint8Array,
   contentType: string,
+  opts: { ifMatch?: string; signal?: AbortSignal } = {},
 ): Promise<{ size: number; etag: string }> {
+  const headers: Record<string, string> = {
+    "Content-Type": contentType,
+    "Content-Length": String(bytes.byteLength),
+    ...getAuthHeader(),
+  };
+  if (opts.ifMatch) headers["If-Match"] = opts.ifMatch;
   const res = await fetch(
     `${apiBase()}/editors/${RESOURCE_FOR[kind]}/${id}/snapshot/${which}`,
     {
       method: "POST",
-      headers: { "Content-Type": contentType, ...getAuthHeader() },
+      headers,
       credentials: "include",
       body: bytes as BodyInit,
+      ...(opts.signal && { signal: opts.signal }),
     },
   );
-  if (!res.ok) throw new Error(`save snapshot failed: ${res.status}`);
+  if (!res.ok) throw await readErr(res);
   return (await res.json()) as { size: number; etag: string };
 }
