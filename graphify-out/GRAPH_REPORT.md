@@ -1,12 +1,12 @@
-# Graph Report - Framework  (2026-04-25)
+# Graph Report - quirky-meninsky-fa348a  (2026-04-25)
 
 ## Corpus Check
-- 3190 files · ~5,924,431 words
+- 544 files · ~489,717 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 6169 nodes · 7242 edges · 62 communities detected
-- Extraction: 81% EXTRACTED · 19% INFERRED · 0% AMBIGUOUS · INFERRED: 1361 edges (avg confidence: 0.8)
+- 2329 nodes · 3728 edges · 48 communities detected
+- Extraction: 74% EXTRACTED · 26% INFERRED · 0% AMBIGUOUS · INFERRED: 979 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -38,7 +38,6 @@
 - [[_COMMUNITY_Community 25|Community 25]]
 - [[_COMMUNITY_Community 26|Community 26]]
 - [[_COMMUNITY_Community 27|Community 27]]
-- [[_COMMUNITY_Community 28|Community 28]]
 - [[_COMMUNITY_Community 29|Community 29]]
 - [[_COMMUNITY_Community 30|Community 30]]
 - [[_COMMUNITY_Community 31|Community 31]]
@@ -48,349 +47,272 @@
 - [[_COMMUNITY_Community 35|Community 35]]
 - [[_COMMUNITY_Community 36|Community 36]]
 - [[_COMMUNITY_Community 37|Community 37]]
-- [[_COMMUNITY_Community 38|Community 38]]
 - [[_COMMUNITY_Community 39|Community 39]]
 - [[_COMMUNITY_Community 40|Community 40]]
 - [[_COMMUNITY_Community 41|Community 41]]
 - [[_COMMUNITY_Community 42|Community 42]]
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
-- [[_COMMUNITY_Community 45|Community 45]]
-- [[_COMMUNITY_Community 48|Community 48]]
+- [[_COMMUNITY_Community 46|Community 46]]
+- [[_COMMUNITY_Community 47|Community 47]]
 - [[_COMMUNITY_Community 49|Community 49]]
-- [[_COMMUNITY_Community 50|Community 50]]
-- [[_COMMUNITY_Community 51|Community 51]]
-- [[_COMMUNITY_Community 52|Community 52]]
-- [[_COMMUNITY_Community 53|Community 53]]
-- [[_COMMUNITY_Community 54|Community 54]]
 - [[_COMMUNITY_Community 55|Community 55]]
 - [[_COMMUNITY_Community 56|Community 56]]
-- [[_COMMUNITY_Community 58|Community 58]]
-- [[_COMMUNITY_Community 60|Community 60]]
-- [[_COMMUNITY_Community 61|Community 61]]
-- [[_COMMUNITY_Community 64|Community 64]]
-- [[_COMMUNITY_Community 65|Community 65]]
-- [[_COMMUNITY_Community 69|Community 69]]
-- [[_COMMUNITY_Community 70|Community 70]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `normalizePrefix()` - 145 edges
-2. `parse()` - 132 edges
-3. `parseWebhookEvent()` - 102 edges
-4. `normalizeActionInput()` - 101 edges
-5. `verifyWebhookSignature()` - 101 edges
-6. `mapProviderStatus()` - 101 edges
-7. `createProviderAdapter()` - 101 edges
-8. `normalizeIdentifier()` - 92 edges
-9. `replace()` - 68 edges
-10. `requireFile()` - 58 edges
+1. `replace()` - 81 edges
+2. `scaffoldBusinessPlugin()` - 48 edges
+3. `parse()` - 46 edges
+4. `run()` - 43 edges
+5. `useAllRecords()` - 34 edges
+6. `nowIso()` - 32 edges
+7. `MicrosoftDriver` - 30 edges
+8. `GoogleDriver` - 27 edges
+9. `seedAll()` - 26 edges
+10. `scaffoldBusinessPackCatalog()` - 26 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `transitionWorkflowInstance()` --calls--> `getWorkflowTransition()`  [INFERRED]
-  plugins/gutu-plugin-workflow-core/framework/builtin-plugins/workflow-core/src/services/main.service.ts → gutu-core/framework/core/jobs/src/index.ts
-- `chunkMatchesPolicy()` --calls--> `parse()`  [INFERRED]
-  libraries/gutu-lib-ai-memory/framework/libraries/ai-memory/src/index.ts → plugins/gutu-plugin-e-invoicing-core/scripts/docs-summary.mjs
-- `deserializeSavedView()` --calls--> `parse()`  [INFERRED]
-  libraries/gutu-lib-admin-listview/framework/libraries/admin-listview/src/index.ts → plugins/gutu-plugin-e-invoicing-core/scripts/docs-summary.mjs
-- `createFormDefaults()` --calls--> `parse()`  [INFERRED]
-  libraries/gutu-lib-ui-form/framework/libraries/ui-form/src/index.ts → plugins/gutu-plugin-e-invoicing-core/scripts/docs-summary.mjs
-- `loadJsonState()` --calls--> `seedFactory()`  [INFERRED]
-  gutu-core/framework/core/business-runtime/src/index.ts → admin-panel/backend/src/seed/factory.ts
+- `buildBasePathMap()` --calls--> `walk()`  [INFERRED]
+  admin-panel/src/examples/_factory/richDetailFactory.tsx → tooling/library-docs/lib.mjs
+- `walkParts()` --calls--> `walk()`  [INFERRED]
+  admin-panel/backend/src/lib/mail/driver/google.ts → tooling/library-docs/lib.mjs
+- `collectBodies()` --calls--> `walk()`  [INFERRED]
+  admin-panel/backend/src/lib/mail/mime/parser.ts → tooling/library-docs/lib.mjs
+- `log()` --calls--> `main()`  [INFERRED]
+  admin-panel/scripts/gutu-plugin.mjs → tooling/business-os/scaffold.mjs
+- `cmdCreate()` --calls--> `writeFile()`  [INFERRED]
+  admin-panel/scripts/gutu-plugin.mjs → tooling/plugin-docs/generate.mjs
 
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.01
-Nodes (164): bankAccounts(), bankTransactions(), budgets(), costCenters(), count(), currencyRates(), dunning(), fiscalYears() (+156 more)
+Cohesion: 0.02
+Nodes (135): registerAffineEditorContainer(), runOrError(), recordAudit(), createSession(), currentUser(), deleteSession(), getSessionUser(), getUserByEmail() (+127 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.02
-Nodes (201): AgentBuilderPage(), AutomationInboxPage(), assertMemoryAccess(), buildRetrievalPlan(), chunkMatchesPolicy(), chunkMemoryDocument(), collectionMatchesPolicy(), createEventEnvelope() (+193 more)
+Nodes (110): count(), personName(), pick(), seedAssetsExtended(), seedIf(), count(), personEmail(), personName() (+102 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.01
-Nodes (70): fetchAll(), applyEncryption(), bufferUpTo(), concat(), fromS3StorageClass(), S3StorageAdapter, toS3StorageClass(), translateS3Error() (+62 more)
+Nodes (45): fetchAll(), fetchAll(), fetchAll(), fetchAll(), fetchAll(), fetchAll(), fetchAll(), fetchAll() (+37 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.01
-Nodes (109): createActivationEngine(), addLeaf(), emit(), emptyLeaf(), isLeaf(), removeAt(), updateAt(), handleApply() (+101 more)
+Cohesion: 0.04
+Nodes (113): buildImportList(), capitalize(), createDocsCheckScript(), createSummaryScript(), createWorkspaceRunnerScript(), describeUiSurface(), ensureScripts(), hasExportName() (+105 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.02
-Nodes (125): countBadges(), parse(), formatRel(), FreshnessIndicator(), toMillis(), assertRepositoryBoundary(), calculateNextRunAt(), canUseFrameworkSymlink() (+117 more)
+Cohesion: 0.03
+Nodes (70): imageProxyHref(), parseVCard(), toVCard(), findColumn(), handleDragEnd(), handleDragOver(), sanitizeForHeader(), personEmail() (+62 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.02
-Nodes (116): canLaunchZone(), canRunAction(), canSeeField(), canSeeWidget(), canUseBuilder(), canUseCommand(), canViewPage(), canViewReport() (+108 more)
+Cohesion: 0.03
+Nodes (62): createActivationEngine(), apiBase(), createEditorRecord(), deleteEditorRecord(), fetchEditorRecord(), fetchSnapshot(), getAuthHeaders(), listEditorRecords() (+54 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.02
-Nodes (132): buildAccountingCoreMigrationSql(), buildAccountingCoreRollbackSql(), buildAiAssistCoreMigrationSql(), buildAiAssistCoreRollbackSql(), buildAnalyticsBiCoreMigrationSql(), buildAnalyticsBiCoreRollbackSql(), buildAssetsCoreMigrationSql(), buildAssetsCoreRollbackSql() (+124 more)
+Cohesion: 0.03
+Nodes (66): addLeaf(), emit(), emptyLeaf(), isLeaf(), removeAt(), updateAt(), GutuAffineEditorContainer, toggleAll() (+58 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.03
-Nodes (119): buildAccountingCoreSqliteMigrationSql(), buildAccountingCoreSqliteRollbackSql(), buildAiAssistCoreSqliteMigrationSql(), buildAiAssistCoreSqliteRollbackSql(), buildAnalyticsBiCoreSqliteMigrationSql(), buildAnalyticsBiCoreSqliteRollbackSql(), buildAssetsCoreSqliteMigrationSql(), buildAssetsCoreSqliteRollbackSql() (+111 more)
+Cohesion: 0.05
+Nodes (38): send(), decodeKeyMaterial(), decryptBytes(), decryptString(), encryptBytes(), encryptString(), findKey(), getPrimaryKeyVersion() (+30 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.03
-Nodes (120): checkCatalog(), checkPluginDocs(), main(), missingHeadings(), placeholderFailures(), buildImportList(), capitalize(), createDocsCheckScript() (+112 more)
+Cohesion: 0.05
+Nodes (75): buildDependencyContractsFromLists(), dedupeList(), deriveSuggestedPackIds(), main(), renderActions(), renderAdminContributions(), renderAdminPage(), renderBusinessPackAutomation() (+67 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.03
-Nodes (95): cmdCreate(), cmdHelp(), cmdList(), cmdValidate(), die(), exists(), findIndex(), log() (+87 more)
+Cohesion: 0.05
+Nodes (53): handleApply(), checkCatalog(), checkPluginDocs(), main(), missingHeadings(), placeholderFailures(), handler(), cmdCreate() (+45 more)
 
 ### Community 10 - "Community 10"
 Cohesion: 0.04
-Nodes (8): normalizeWebhookStatus(), parseGenericWebhookEvent(), readRecordField(), readStatusField(), readStringField(), safeJsonParse(), parseWebhookEvent(), verifyWebhookSignature()
+Nodes (29): AdminInner(), AppShell(), useLiveAudit(), useRuntime(), detailViewFromZod(), if(), RichZodDetailPage(), formViewFromZod() (+21 more)
 
 ### Community 11 - "Community 11"
-Cohesion: 0.03
-Nodes (81): stripPrefix(), copyRequestId(), sanitizeForHeader(), actionRequiredExample(), buildProviderRecord(), classifySupportLevel(), countSeriousImplementedOperations(), createFirstWaveReadinessReport() (+73 more)
+Cohesion: 0.06
+Nodes (26): decodeEncodedWords(), formatAddress(), isValidEmail(), normalizeSubject(), parseAddress(), parseAddressList(), splitAddressList(), stripComments() (+18 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.03
-Nodes (4): amendRecord(), placeRecordOnHold(), releaseRecordHold(), reverseRecord()
+Cohesion: 0.07
+Nodes (43): bootstrapStorage(), localDefaultConfig(), parseStorageBackendsEnv(), s3DefaultFromEnv(), envEnum(), envFlag(), envInt(), loadConfig() (+35 more)
 
 ### Community 13 - "Community 13"
-Cohesion: 0.02
-Nodes (2): createGeneratedProviderAdapter(), createProviderAdapter()
+Cohesion: 0.06
+Nodes (42): AutomationRunDetailPage(), BookingDashboardKpis(), pct(), create(), addNote(), CrmOverviewPage(), dealBadgeIntent(), useActivities() (+34 more)
 
 ### Community 14 - "Community 14"
-Cohesion: 0.02
-Nodes (1): mapProviderStatus()
+Cohesion: 0.06
+Nodes (30): buildDomainPlugin(), buildResource(), definePlugin(), isV2Plugin(), buildPluginContext(), CapabilityError, createContributionStore(), makeAnalytics() (+22 more)
 
 ### Community 15 - "Community 15"
-Cohesion: 0.06
-Nodes (74): ActiveRunsWidget(), acknowledgeRunnerHandoff(), AgentBudgetExceededError, AgentReplayMismatchError, AgentToolDeniedError, appendAgentStep(), approveCheckpoint(), assertBudgetWithinLimits() (+66 more)
+Cohesion: 0.07
+Nodes (12): AnalyticsEmitterImpl, createAnalytics(), ensureSessionId(), createRuntime(), CapabilityRegistryImpl, createCapabilityRegistry(), createFeatureFlags(), FeatureFlagStoreImpl (+4 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.05
-Nodes (80): main(), read_cell_value(), read_shared_strings(), main(), runScenario(), buildDependencyContractsFromLists(), dedupeList(), deriveSuggestedPackIds() (+72 more)
+Cohesion: 0.11
+Nodes (33): AiProviderError, AiQuotaError, cost(), recordUsage(), redactPII(), runAnthropic(), runChat(), runGroq() (+25 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.04
-Nodes (53): AdminInner(), AppShell(), useLiveAudit(), AutomationRunDetailPage(), BookingDashboardKpis(), pct(), useRuntime(), CrmOverviewPage() (+45 more)
+Cohesion: 0.08
+Nodes (4): ImapClient, ImapDriver, sendSmtp(), startRealtime()
 
 ### Community 18 - "Community 18"
-Cohesion: 0.06
-Nodes (23): existsFile(), LocalStorageAdapter, nodeToWebStream(), renderPrefix(), exists(), findAdminPluginRoots(), walk(), collectStream() (+15 more)
+Cohesion: 0.14
+Nodes (19): batches(), bins(), count(), deliveryNotes(), deliveryTrips(), items(), itemSuppliers(), landedCosts() (+11 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.1
-Nodes (3): checkPlaceholders(), requireFile(), requireHeadings()
+Cohesion: 0.13
+Nodes (11): formatAddresses(), MailAvatar(), appendAlternative(), appendAttachment(), appendBodyPart(), buildMessage(), encodeHeader(), pushHeaders() (+3 more)
 
 ### Community 20 - "Community 20"
-Cohesion: 0.08
-Nodes (49): createPaymentIdempotencyKey(), metricCard(), PaymentsOverviewAdminPage(), PaymentsProvidersAdminPage(), PaymentsRecordsAdminPage(), PaymentsRefundsAdminPage(), PaymentsWebhooksAdminPage(), renderMetricGrid() (+41 more)
+Cohesion: 0.17
+Nodes (14): bankAccounts(), bankTransactions(), budgets(), costCenters(), count(), currencyRates(), dunning(), fiscalYears() (+6 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.09
-Nodes (39): envEnum(), envFlag(), envInt(), loadConfig(), closeDbx(), dbx(), close(), fetch() (+31 more)
+Cohesion: 0.19
+Nodes (17): applyStructuredFilter(), bufferToFloat32(), magnitude(), runFts(), runRecent(), runVector(), search(), compileOperatorTerm() (+9 more)
 
 ### Community 22 - "Community 22"
-Cohesion: 0.05
-Nodes (24): AnalyticsEmitterImpl, createAnalytics(), ensureSessionId(), createRuntime(), CapabilityRegistryImpl, createCapabilityRegistry(), createFeatureFlags(), FeatureFlagStoreImpl (+16 more)
-
-### Community 23 - "Community 23"
-Cohesion: 0.06
-Nodes (39): AiProviderError, convertZodSchema(), createErrorResponse(), createMcpRuntimeOrchestrator(), createMcpRuntimeServer(), createMcpServerFromContracts(), createSchemaCacheEntry(), createSuccessResponse() (+31 more)
-
-### Community 24 - "Community 24"
-Cohesion: 0.05
-Nodes (28): buildDomainPlugin(), buildResource(), detailViewFromZod(), if(), formViewFromZod(), humanize(), inferField(), unwrap() (+20 more)
-
-### Community 25 - "Community 25"
-Cohesion: 0.08
-Nodes (36): ErrorBoundary, compileDraft(), compileEmailDraft(), createCommunicationIdempotencyKey(), createLocalCommunicationProviderRegistry(), createRetryDecision(), defineCommunicationRoute(), defineInAppCompiler() (+28 more)
-
-### Community 26 - "Community 26"
-Cohesion: 0.08
-Nodes (35): factory(), main(), renderMarkdownReport(), tailLines(), writeReports(), buildAdvanceInput(), buildCreateInput(), buildReconcileInput() (+27 more)
-
-### Community 27 - "Community 27"
-Cohesion: 0.1
-Nodes (31): checkRegressionGate(), compareEvalRuns(), createEvalBaseline(), roundMetric(), runEvalDataset(), AiEvalsAdminPage(), buildEvalRunId(), captureEvalBaseline() (+23 more)
-
-### Community 28 - "Community 28"
-Cohesion: 0.15
-Nodes (32): assertAuditHealthy(), assertCertificationHealthy(), assertConsumerSmokeHealthy(), copyCoreRoot(), copyRepoRoots(), createAuditReport(), createFileLockEntry(), discoverCorePackageIds() (+24 more)
-
-### Community 29 - "Community 29"
-Cohesion: 0.12
-Nodes (26): advances(), appraisals(), attendance(), count(), departments(), designations(), employees(), expenseClaims() (+18 more)
-
-### Community 30 - "Community 30"
-Cohesion: 0.11
-Nodes (18): buildPluginContext(), CapabilityError, createContributionStore(), makeAnalytics(), makeAssetResolver(), makeContributions(), makeI18n(), makeLogger() (+10 more)
-
-### Community 31 - "Community 31"
-Cohesion: 0.08
-Nodes (6): cn(), DashboardGrid(), MetricCard(), PageSection(), BuilderCanvas(), StatusBadge()
-
-### Community 32 - "Community 32"
-Cohesion: 0.08
-Nodes (1): seedState()
-
-### Community 33 - "Community 33"
-Cohesion: 0.08
-Nodes (1): BusinessAdminPage()
-
-### Community 34 - "Community 34"
-Cohesion: 0.17
-Nodes (18): createNavigationContract(), findMatchingZone(), isPathPrefixMatch(), listDeepLinks(), matchesRoutePattern(), matchesZone(), normalizeHref(), resolveNavigationTarget() (+10 more)
-
-### Community 35 - "Community 35"
-Cohesion: 0.17
-Nodes (9): AccessDenied, ChecksumMismatch, InvalidKey, isRetryableByDefault(), isStorageError(), ObjectNotFound, PayloadTooLarge, StorageError (+1 more)
-
-### Community 36 - "Community 36"
 Cohesion: 0.2
 Nodes (13): cannedResponses(), count(), csatResponses(), escalations(), kbArticles(), personName(), pick(), seedIf() (+5 more)
 
-### Community 37 - "Community 37"
+### Community 23 - "Community 23"
+Cohesion: 0.12
+Nodes (9): AccessDenied, ChecksumMismatch, InvalidKey, isRetryableByDefault(), isStorageError(), ObjectNotFound, PayloadTooLarge, StorageError (+1 more)
+
+### Community 24 - "Community 24"
 Cohesion: 0.13
 Nodes (5): fmt(), formatValue(), cn(), fmt(), fmt()
 
-### Community 38 - "Community 38"
+### Community 25 - "Community 25"
 Cohesion: 0.26
 Nodes (4): token(), uuid(), MockBackend, sleep()
 
-### Community 39 - "Community 39"
-Cohesion: 0.15
-Nodes (6): ConfigurationError, NotSupportedError, PaymentError, ProviderError, TransportError, WebhookVerificationError
+### Community 26 - "Community 26"
+Cohesion: 0.21
+Nodes (3): PostgresDbx, translateJsonExtract(), translateQmarkToDollar()
 
-### Community 40 - "Community 40"
-Cohesion: 0.18
-Nodes (3): dealStageLabel(), pick(), dealStageIntent()
+### Community 27 - "Community 27"
+Cohesion: 0.33
+Nodes (7): cmp(), eq(), evalFilter(), evalLeaf(), getPath(), relativeRange(), toTime()
 
-### Community 41 - "Community 41"
-Cohesion: 0.22
-Nodes (2): createShellQueryScope(), invalidateShellDeskQueries()
+### Community 29 - "Community 29"
+Cohesion: 0.31
+Nodes (5): formatCurrency(), formatDate(), formatDateTime(), formatNumber(), renderCellValue()
 
-### Community 42 - "Community 42"
+### Community 30 - "Community 30"
+Cohesion: 0.39
+Nodes (6): aggregate(), bucketKey(), computeAggregation(), evalFilter(), evalLeaf(), previousRange()
+
+### Community 31 - "Community 31"
 Cohesion: 0.43
-Nodes (7): createPlatformTableOptions(), createPlatformTableState(), setPlatformColumnVisibility(), setPlatformFilter(), setPlatformSorting(), togglePlatformRowSelection(), usePlatformTable()
+Nodes (4): buildFilterState(), buildFilterTree(), collapse(), toLeaf()
 
-### Community 43 - "Community 43"
-Cohesion: 0.32
-Nodes (3): assertCoordinates(), calculateBoundingBox(), haversineDistanceKm()
+### Community 32 - "Community 32"
+Cohesion: 0.57
+Nodes (6): compareVersions(), expandShorthand(), parseVersion(), satisfies(), satisfiesAnd(), satisfiesComparator()
 
-### Community 44 - "Community 44"
+### Community 33 - "Community 33"
 Cohesion: 0.33
 Nodes (3): loadPersonalization(), saveEdit(), savePersonalization()
 
-### Community 45 - "Community 45"
+### Community 34 - "Community 34"
 Cohesion: 0.52
 Nodes (6): globRoots(), listStandaloneRoots(), listTrackedOffenders(), listVisibleStandaloneStatus(), runGit(), safeList()
 
-### Community 48 - "Community 48"
-Cohesion: 0.43
-Nodes (5): filterCommandPaletteItems(), groupCommandPaletteItems(), normalizeQuery(), PlatformCommandPalette(), rankCommandPaletteItems()
+### Community 35 - "Community 35"
+Cohesion: 0.53
+Nodes (5): containsLookalike(), looksLikeBrandImpersonation(), parseAuthResults(), phishHeuristics(), splitMethods()
 
-### Community 49 - "Community 49"
+### Community 36 - "Community 36"
 Cohesion: 0.33
 Nodes (3): BarChart(), niceScale(), LineChart()
 
-### Community 50 - "Community 50"
+### Community 37 - "Community 37"
 Cohesion: 0.33
 Nodes (1): PluginBoundary
 
-### Community 51 - "Community 51"
+### Community 39 - "Community 39"
 Cohesion: 0.33
-Nodes (1): App()
+Nodes (3): ConnectionsTab(), IdentitiesTab(), useConnections()
 
-### Community 52 - "Community 52"
+### Community 40 - "Community 40"
 Cohesion: 0.47
 Nodes (3): getTheme(), setTheme(), toggleTheme()
 
-### Community 53 - "Community 53"
+### Community 41 - "Community 41"
 Cohesion: 0.4
-Nodes (2): createSplitWorkspaceFixture(), hasDirectorySymlinkSupport()
+Nodes (1): ErrorBoundary
 
-### Community 54 - "Community 54"
-Cohesion: 0.6
-Nodes (5): AdminShell(), getReactRuntime(), PortalShell(), ShellFrame(), SiteShell()
+### Community 42 - "Community 42"
+Cohesion: 0.4
+Nodes (2): ThreadView(), useThread()
 
-### Community 55 - "Community 55"
-Cohesion: 0.47
-Nodes (4): createAdminEditorPreset(), createReadOnlyEditorPreset(), ReadOnlyEditorRenderer(), renderReadOnlyEditorContent()
-
-### Community 56 - "Community 56"
+### Community 43 - "Community 43"
 Cohesion: 0.5
 Nodes (2): post(), setPosts()
 
-### Community 58 - "Community 58"
-Cohesion: 0.6
-Nodes (3): addMoney(), sameCurrency(), subtractMoney()
+### Community 44 - "Community 44"
+Cohesion: 0.83
+Nodes (3): parseMailto(), parseRfcUnsubscribe(), parseUnsubscribe()
 
-### Community 60 - "Community 60"
+### Community 46 - "Community 46"
 Cohesion: 0.67
 Nodes (2): attachRpcHandler(), spawnIframeSandbox()
 
-### Community 61 - "Community 61"
+### Community 47 - "Community 47"
 Cohesion: 0.67
 Nodes (2): attachWorkerRpc(), spawnWorkerSandbox()
 
-### Community 64 - "Community 64"
-Cohesion: 0.83
-Nodes (3): createPlatformEditorConfig(), createPlatformEditorExtensions(), usePlatformEditor()
-
-### Community 65 - "Community 65"
+### Community 49 - "Community 49"
 Cohesion: 1.0
 Nodes (2): isSecretKey(), scrubConfig()
 
-### Community 69 - "Community 69"
+### Community 55 - "Community 55"
 Cohesion: 1.0
 Nodes (2): NavIcon(), toPascal()
 
-### Community 70 - "Community 70"
+### Community 56 - "Community 56"
 Cohesion: 0.67
 Nodes (1): activate()
 
 ## Knowledge Gaps
-- **Thin community `Community 13`** (103 nodes): `createGeneratedProviderAdapter()`, `createProviderAdapter()`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`, `adapter.ts`
+- **4 isolated node(s):** `GoogleAuthError`, `MicrosoftAuthError`, `AiQuotaError`, `AiProviderError`
+  These have ≤1 connection - possible missing edges or undocumented components.
+- **Thin community `Community 37`** (6 nodes): `PluginBoundary.tsx`, `DefaultFallback()`, `PluginBoundary`, `.componentDidCatch()`, `.getDerivedStateFromError()`, `.render()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 14`** (101 nodes): `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mappers.ts`, `mapProviderStatus()`
+- **Thin community `Community 41`** (5 nodes): `ErrorBoundary.tsx`, `ErrorBoundary`, `.componentDidCatch()`, `.getDerivedStateFromError()`, `.render()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (26 nodes): `seedState()`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`, `main.service.ts`
+- **Thin community `Community 42`** (5 nodes): `ThreadView.tsx`, `use-thread.ts`, `async()`, `ThreadView()`, `useThread()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (26 nodes): `BusinessAdminPage()`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`, `main.page.tsx`
+- **Thin community `Community 43`** (5 nodes): `community-pages.tsx`, `action()`, `on()`, `post()`, `setPosts()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 41`** (10 nodes): `createPlatformQueryClient()`, `createPlatformQueryKey()`, `createShellQueryScope()`, `invalidatePlatformScopes()`, `invalidateShellDeskQueries()`, `primePlatformQuery()`, `resetTenantScopedQueries()`, `usePlatformMutation()`, `usePlatformQuery()`, `index.ts`
+- **Thin community `Community 46`** (4 nodes): `iframeSandbox.tsx`, `attachRpcHandler()`, `dispatchRpc()`, `spawnIframeSandbox()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 50`** (6 nodes): `PluginBoundary.tsx`, `DefaultFallback()`, `PluginBoundary`, `.componentDidCatch()`, `.getDerivedStateFromError()`, `.render()`
+- **Thin community `Community 47`** (4 nodes): `workerSandbox.ts`, `attachWorkerRpc()`, `dispatchWorkerRpc()`, `spawnWorkerSandbox()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 51`** (6 nodes): `App.tsx`, `App()`, `App.tsx`, `App.tsx`, `App.tsx`, `App.tsx`
+- **Thin community `Community 49`** (3 nodes): `storage.ts`, `isSecretKey()`, `scrubConfig()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 53`** (6 nodes): `package.test.ts`, `package.test.ts`, `createFrameworkSourceFixture()`, `createIo()`, `createSplitWorkspaceFixture()`, `hasDirectorySymlinkSupport()`
+- **Thin community `Community 55`** (3 nodes): `NavIcon.tsx`, `NavIcon()`, `toPascal()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 56`** (5 nodes): `community-pages.tsx`, `action()`, `on()`, `post()`, `setPosts()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 60`** (4 nodes): `iframeSandbox.tsx`, `attachRpcHandler()`, `dispatchRpc()`, `spawnIframeSandbox()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 61`** (4 nodes): `workerSandbox.ts`, `attachWorkerRpc()`, `dispatchWorkerRpc()`, `spawnWorkerSandbox()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 65`** (3 nodes): `storage.ts`, `isSecretKey()`, `scrubConfig()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 69`** (3 nodes): `NavIcon.tsx`, `NavIcon()`, `toPascal()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 70`** (3 nodes): `plugin.tsx`, `plugin.tsx`, `activate()`
+- **Thin community `Community 56`** (3 nodes): `plugin.tsx`, `plugin.tsx`, `activate()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `parse()` connect `Community 4` to `Community 0`, `Community 1`, `Community 3`, `Community 5`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 44`, `Community 13`, `Community 15`, `Community 18`, `Community 20`, `Community 22`, `Community 23`, `Community 24`, `Community 28`?**
-  _High betweenness centrality (0.072) - this node is a cross-community bridge._
-- **Why does `replace()` connect `Community 11` to `Community 0`, `Community 1`, `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 8`, `Community 9`, `Community 16`, `Community 17`, `Community 18`, `Community 19`, `Community 21`, `Community 24`, `Community 26`, `Community 27`, `Community 28`, `Community 29`, `Community 30`, `Community 38`?**
-  _High betweenness centrality (0.054) - this node is a cross-community bridge._
-- **Why does `normalizeActionInput()` connect `Community 1` to `Community 4`, `Community 5`, `Community 9`, `Community 11`, `Community 15`, `Community 20`, `Community 23`, `Community 27`?**
-  _High betweenness centrality (0.036) - this node is a cross-community bridge._
-- **Are the 75 inferred relationships involving `parse()` (e.g. with `readGutuPlugins()` and `parseStorageBackendsEnv()`) actually correct?**
-  _`parse()` has 75 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 2 inferred relationships involving `parseWebhookEvent()` (e.g. with `ingestWebhookEvent()` and `parseGenericWebhookEvent()`) actually correct?**
-  _`parseWebhookEvent()` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 99 inferred relationships involving `normalizeActionInput()` (e.g. with `parse()` and `publishBusinessMessage()`) actually correct?**
-  _`normalizeActionInput()` has 99 INFERRED edges - model-reasoned connections that need verification._
-- **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.01 - nodes in this community are weakly interconnected._
+- **Why does `replace()` connect `Community 4` to `Community 1`, `Community 3`, `Community 5`, `Community 6`, `Community 7`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 13`, `Community 14`, `Community 16`, `Community 17`, `Community 19`, `Community 21`, `Community 25`, `Community 26`, `Community 32`?**
+  _High betweenness centrality (0.181) - this node is a cross-community bridge._
+- **Why does `seedAll()` connect `Community 1` to `Community 0`, `Community 3`, `Community 7`, `Community 9`, `Community 18`, `Community 20`, `Community 22`?**
+  _High betweenness centrality (0.093) - this node is a cross-community bridge._
+- **Why does `SavedViewManager()` connect `Community 10` to `Community 0`, `Community 2`?**
+  _High betweenness centrality (0.053) - this node is a cross-community bridge._
+- **Are the 79 inferred relationships involving `replace()` (e.g. with `personEmail()` and `personEmail()`) actually correct?**
+  _`replace()` has 79 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 42 inferred relationships involving `parse()` (e.g. with `readGutuPlugins()` and `parseStorageBackendsEnv()`) actually correct?**
+  _`parse()` has 42 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 39 inferred relationships involving `run()` (e.g. with `seedUsers()` and `updateTenant()`) actually correct?**
+  _`run()` has 39 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 32 inferred relationships involving `useAllRecords()` (e.g. with `BookingDashboardKpis()` and `useBookingKpi()`) actually correct?**
+  _`useAllRecords()` has 32 INFERRED edges - model-reasoned connections that need verification._

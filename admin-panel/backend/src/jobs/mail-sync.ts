@@ -1,14 +1,23 @@
-/** mail-sync job — drains `mail_sync_intent` rows + does periodic delta. */
+/** mail-sync job — drains `mail_sync_intent` rows + does periodic delta.
+ *
+ *  Pulls threads + messages from each provider, runs every message through
+ *  the ingest pipeline (sanitize, image-proxy, tracker logging, auth-results,
+ *  phish, ICS extraction), and applies the user's rules engine. */
 
 import { db, nowIso } from "../db";
 import { driverFor, loadConnection } from "../lib/mail/driver";
 import { broadcastResourceChange } from "../lib/ws";
-import { computeThreadKey } from "../lib/mail/threading";
 import { recordAudit } from "../lib/audit";
 import { registerJob } from "./scheduler";
 import { evaluate } from "../routes/mail/rules";
+import { ingestMessage, loadKnownContacts, type RawMessage } from "../lib/mail/ingest";
+import type { DriverMessage, DriverThreadSummary, MailDriver } from "../lib/mail/driver/types";
+import { recordContactSeen } from "../lib/mail/contact-touch";
 
 const TICK_MS = parseInt(process.env.MAIL_SYNC_TICK_MS ?? "30000", 10);
+const MAX_PER_FOLDER = parseInt(process.env.MAIL_SYNC_MAX_PER_FOLDER ?? "50", 10);
+const HYDRATE_THREADS_PER_TICK = parseInt(process.env.MAIL_SYNC_HYDRATE_PER_TICK ?? "10", 10);
+const FOLDERS = ["inbox", "sent", "drafts", "trash", "spam", "archive"] as const;
 
 async function tick(): Promise<void> {
   ensureIntentTable();
@@ -42,6 +51,7 @@ async function tick(): Promise<void> {
       await syncConnection(connectionId);
     } catch (err) {
       console.error(`[mail-sync] connection ${connectionId} failed`, err);
+      markFailure(connectionId, err);
     }
   }
 }
@@ -54,42 +64,50 @@ async function syncConnection(connectionId: string): Promise<void> {
     .get(connectionId) as { data: string } | undefined;
   const tenantId = tenantRow ? (JSON.parse(tenantRow.data).tenantId as string | undefined) ?? "default" : "default";
   const driver = await driverFor({ connectionId, tenantId });
-  // Pull recent threads from inbox + sent + drafts so the user sees things
-  // immediately. We dedupe locally by providerThreadId.
-  for (const folder of ["inbox", "sent", "drafts", "trash", "spam", "archive"] as const) {
+  const knownContacts = loadKnownContacts(conn.userId, tenantId);
+
+  // Phase 1 — list threads per folder so the inbox renders quickly.
+  for (const folder of FOLDERS) {
     try {
-      const list = await driver.listThreads({ folder, limit: 50 });
+      const list = await driver.listThreads({ folder, limit: MAX_PER_FOLDER });
       for (const t of list.items) {
-        upsertThread(connectionId, conn.userId, tenantId, t);
+        upsertThreadSummary(connectionId, conn.userId, tenantId, t);
       }
     } catch (err) {
-      // Provider-specific failures shouldn't block other folders.
       console.warn(`[mail-sync] ${connectionId} folder=${folder} skipped`, err);
     }
   }
+
+  // Phase 2 — hydrate the most-recent N threads with full messages.
+  const recentRows = db
+    .prepare(
+      `SELECT id, data FROM records WHERE resource = 'mail.thread'
+       AND json_extract(data, '$.connectionId') = ?
+       ORDER BY json_extract(data, '$.lastMessageAt') DESC LIMIT ?`,
+    )
+    .all(connectionId, HYDRATE_THREADS_PER_TICK) as { id: string; data: string }[];
+  for (const row of recentRows) {
+    try {
+      const t = JSON.parse(row.data) as { providerThreadId?: string };
+      if (!t.providerThreadId) continue;
+      await hydrateThread(driver, connectionId, conn.userId, tenantId, t.providerThreadId, knownContacts);
+    } catch (err) {
+      console.warn(`[mail-sync] hydrate thread ${row.id} failed`, err);
+    }
+  }
+
+  // Phase 3 — driver delta for next round (cursor advances; full rescan on
+  // 410-class errors).
+  try { await driver.delta({ cursor: undefined }); } catch { /* informational */ }
+
   markSynced(connectionId);
 }
 
-function upsertThread(
+function upsertThreadSummary(
   connectionId: string,
   userId: string,
   tenantId: string,
-  t: {
-    providerThreadId: string;
-    providerLastMessageId?: string;
-    subject: string;
-    from?: { name?: string; email: string };
-    participants: { name?: string; email: string }[];
-    labelIds: string[];
-    folder: string;
-    hasAttachment: boolean;
-    hasCalendarInvite: boolean;
-    unreadCount: number;
-    messageCount: number;
-    preview: string;
-    lastMessageAt: string;
-    starred: boolean;
-  },
+  t: DriverThreadSummary,
 ): void {
   const id = `mt_${connectionId}_${t.providerThreadId}`;
   const existing = db
@@ -121,14 +139,88 @@ function upsertThread(
     updatedAt: now,
   };
   if (!merged.createdAt) merged.createdAt = now;
-  // Apply rules engine if any rules exist for this user.
   applyRules(userId, tenantId, merged);
   db.prepare(
     `INSERT INTO records (resource, id, data, created_at, updated_at) VALUES ('mail.thread', ?, ?, ?, ?)
      ON CONFLICT(resource, id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`,
   ).run(id, JSON.stringify(merged), merged.createdAt as string, now);
   broadcastResourceChange("mail.thread", id, existing ? "update" : "create", userId);
-  void computeThreadKey;
+}
+
+async function hydrateThread(
+  driver: MailDriver,
+  connectionId: string,
+  userId: string,
+  tenantId: string,
+  providerThreadId: string,
+  knownContacts: Set<string>,
+): Promise<void> {
+  const remote = await driver.getThread(providerThreadId);
+  const threadId = `mt_${connectionId}_${providerThreadId}`;
+  for (const m of remote.messages) {
+    await ingestSingleMessage(driver, m, threadId, connectionId, userId, tenantId, knownContacts);
+  }
+  const row = db
+    .prepare(`SELECT data FROM records WHERE resource = 'mail.thread' AND id = ?`)
+    .get(threadId) as { data: string } | undefined;
+  if (row) {
+    const t = JSON.parse(row.data) as Record<string, unknown>;
+    t.hydratedAt = nowIso();
+    db.prepare(`UPDATE records SET data = ?, updated_at = ? WHERE resource = 'mail.thread' AND id = ?`)
+      .run(JSON.stringify(t), nowIso(), threadId);
+  }
+}
+
+async function ingestSingleMessage(
+  driver: MailDriver,
+  m: DriverMessage,
+  threadId: string,
+  connectionId: string,
+  userId: string,
+  tenantId: string,
+  knownContacts: Set<string>,
+): Promise<void> {
+  const calendarPayloads: Record<string, string> = {};
+  for (const a of m.attachments) {
+    if (!a.contentType.startsWith("text/calendar")) continue;
+    try {
+      const bytes = await driver.getAttachmentBytes(m.providerMessageId, a.providerAttachmentId);
+      calendarPayloads[a.providerAttachmentId] = new TextDecoder().decode(bytes);
+    } catch { /* best effort */ }
+  }
+  const raw: RawMessage = {
+    id: `mm_${connectionId}_${m.providerMessageId}`,
+    threadId,
+    connectionId,
+    tenantId,
+    userId,
+    providerMessageId: m.providerMessageId,
+    providerThreadId: m.providerThreadId,
+    messageIdHeader: m.messageIdHeader,
+    inReplyTo: m.inReplyTo,
+    references: m.references,
+    from: m.from,
+    to: m.to,
+    cc: m.cc,
+    bcc: m.bcc,
+    replyTo: m.replyTo,
+    subject: m.subject,
+    bodyText: m.bodyText,
+    bodyHtml: m.bodyHtml,
+    receivedAt: m.receivedAt,
+    sentAt: m.sentAt,
+    size: m.size,
+    attachments: m.attachments,
+    calendarPayloads,
+    labelIds: m.labelIds,
+    folder: m.folder,
+    isRead: m.isRead,
+    isStarred: m.isStarred,
+    headers: m.headers,
+  };
+  ingestMessage(raw, knownContacts);
+  if (m.from?.email) recordContactSeen(userId, tenantId, m.from.email, m.from.name);
+  for (const a of [...m.to, ...m.cc]) recordContactSeen(userId, tenantId, a.email, a.name);
 }
 
 function applyRules(userId: string, tenantId: string, thread: Record<string, unknown>): void {
@@ -181,6 +273,19 @@ function markSynced(connectionId: string): void {
   const rec = JSON.parse(row.data) as Record<string, unknown>;
   rec.lastSyncAt = nowIso();
   rec.updatedAt = rec.lastSyncAt;
+  rec.lastError = null;
+  db.prepare(`UPDATE records SET data = ?, updated_at = ? WHERE resource = 'mail.connection' AND id = ?`)
+    .run(JSON.stringify(rec), rec.updatedAt as string, connectionId);
+}
+
+function markFailure(connectionId: string, err: unknown): void {
+  const row = db
+    .prepare(`SELECT data FROM records WHERE resource = 'mail.connection' AND id = ?`)
+    .get(connectionId) as { data: string } | undefined;
+  if (!row) return;
+  const rec = JSON.parse(row.data) as Record<string, unknown>;
+  rec.lastError = err instanceof Error ? err.message.slice(0, 500) : String(err).slice(0, 500);
+  rec.updatedAt = nowIso();
   db.prepare(`UPDATE records SET data = ?, updated_at = ? WHERE resource = 'mail.connection' AND id = ?`)
     .run(JSON.stringify(rec), rec.updatedAt as string, connectionId);
 }

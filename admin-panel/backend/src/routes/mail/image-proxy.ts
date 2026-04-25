@@ -8,6 +8,7 @@
  *    when no adapter). */
 
 import { Hono } from "hono";
+import dns from "node:dns/promises";
 import { requireAuth } from "../../middleware/auth";
 import { db, nowIso } from "../../db";
 import { hmacHex } from "../../lib/mail/crypto/at-rest";
@@ -66,11 +67,17 @@ imageProxyRoutes.get("/", async (c) => {
     }
   }
 
-  // SSRF guard.
+  // SSRF guard — hostname check + post-DNS resolved-IP allow-list.
   let parsed: URL;
   try { parsed = new URL(decoded); }
   catch { return errorResponse(c, 400, "bad-url", "invalid url"); }
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return errorResponse(c, 403, "bad-protocol", "protocol not allowed");
   if (!isHostAllowed(parsed.host)) return errorResponse(c, 403, "blocked-host", "host not allowed");
+  const resolvedOk = await isResolvedIpAllowed(parsed.hostname);
+  if (!resolvedOk) {
+    upsertCache(hash, decoded, null, null, null, "ssrf-blocked");
+    return errorResponse(c, 403, "ssrf-blocked", "resolved IP is not routable for proxying");
+  }
 
   // Tracker classification.
   const verdict = classifyTracker(decoded);
@@ -125,6 +132,54 @@ function safeDecode(u: string): string | null {
 
 function hashUrl(u: string): string {
   return hmacHex(u, "image-proxy-hash");
+}
+
+async function isResolvedIpAllowed(hostname: string): Promise<boolean> {
+  try {
+    const records = await Promise.all([
+      dns.resolve4(hostname).catch(() => [] as string[]),
+      dns.resolve6(hostname).catch(() => [] as string[]),
+    ]);
+    const all = [...records[0], ...records[1]];
+    if (all.length === 0) {
+      // Some DNS resolvers return nothing for `host` style — fall back to a
+      // synthesized lookup. We err on the side of allow only for public-
+      // looking hostnames.
+      return !/^(localhost|.*\.local|.*\.internal|.*\.lan|.*\.corp)$/i.test(hostname);
+    }
+    for (const ip of all) {
+      if (!isPublicIp(ip)) return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function isPublicIp(ip: string): boolean {
+  if (ip.includes(".")) {
+    const parts = ip.split(".").map((s) => parseInt(s, 10));
+    if (parts.length !== 4 || parts.some((n) => Number.isNaN(n))) return false;
+    const [a, b] = parts;
+    if (a === 0) return false;
+    if (a === 10) return false;
+    if (a === 127) return false;
+    if (a === 169 && b === 254) return false;
+    if (a === 172 && b >= 16 && b <= 31) return false;
+    if (a === 192 && b === 168) return false;
+    if (a === 100 && b >= 64 && b <= 127) return false; // CGNAT
+    if (a >= 224) return false; // multicast / reserved
+    return true;
+  }
+  // IPv6 — block ::1, fe80::/10, fc00::/7, ::ffff:* private mappings.
+  const lower = ip.toLowerCase();
+  if (lower === "::1") return false;
+  if (lower.startsWith("fe80")) return false;
+  if (lower.startsWith("fc") || lower.startsWith("fd")) return false;
+  if (lower.startsWith("::ffff:")) {
+    return isPublicIp(lower.slice(7));
+  }
+  return true;
 }
 
 function isHostAllowed(host: string): boolean {

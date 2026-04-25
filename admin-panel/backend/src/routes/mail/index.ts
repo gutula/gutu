@@ -21,11 +21,14 @@ import { icalRoutes } from "./ical";
 import { imageProxyRoutes } from "./image-proxy";
 import { googleWebhookRoutes } from "./webhooks/google";
 import { microsoftWebhookRoutes } from "./webhooks/microsoft";
+import { attachmentsRoutes } from "./attachments";
+import { pushRoutes } from "./push";
 
 export const mailRoutes = new Hono();
 
 mailRoutes.route("/connections", connectionsRoutes);
 mailRoutes.route("/threads", threadsRoutes);
+mailRoutes.route("/messages/attachments", attachmentsRoutes);
 mailRoutes.route("/messages", messagesRoutes);
 mailRoutes.route("/labels", labelsRoutes);
 mailRoutes.route("/search", searchRoutes);
@@ -40,6 +43,7 @@ mailRoutes.route("/contacts", contactsRoutes);
 mailRoutes.route("/unsubscribe", unsubscribeRoutes);
 mailRoutes.route("/ical", icalRoutes);
 mailRoutes.route("/image-proxy", imageProxyRoutes);
+mailRoutes.route("/push", pushRoutes);
 mailRoutes.route("/webhooks/google", googleWebhookRoutes);
 mailRoutes.route("/webhooks/microsoft", microsoftWebhookRoutes);
 

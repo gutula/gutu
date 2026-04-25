@@ -9,6 +9,8 @@ import { registerMailCleanup } from "./mail-cleanup";
 import { registerMailIndex } from "./mail-index";
 import { registerMailSubscription } from "./mail-subscription";
 import { registerOauthRefresh } from "./oauth-refresh";
+import { registerMailReconcile } from "./mail-reconcile";
+import { registerMailPush } from "./mail-push";
 
 export function bootstrapMailJobs(): void {
   registerMailSync();
@@ -19,5 +21,7 @@ export function bootstrapMailJobs(): void {
   registerMailIndex();
   registerMailSubscription();
   registerOauthRefresh();
+  registerMailReconcile();
+  registerMailPush();
   startScheduler();
 }

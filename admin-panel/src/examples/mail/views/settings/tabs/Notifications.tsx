@@ -2,6 +2,7 @@ import * as React from "react";
 import { Button } from "@/primitives/Button";
 import { Switch } from "@/primitives/Switch";
 import type { MailSettings } from "../../../lib/api";
+import { subscribeToPush, unsubscribeFromPush } from "../../../lib/push";
 
 export function NotificationsTab({ settings, save }: { settings: MailSettings; save: (s: MailSettings) => Promise<void> }): React.ReactElement {
   const [push, setPush] = React.useState(settings.notifications?.push ?? true);
@@ -19,20 +20,25 @@ export function NotificationsTab({ settings, save }: { settings: MailSettings; s
         </select>
       } />
       <Button onClick={() => void save({ ...settings, notifications: { push, inApp, emailDigest: digest } })}>Save</Button>
-      <Button variant="ghost" onClick={() => void requestPushPermission()}>Enable browser push</Button>
+      <div className="flex flex-wrap gap-2">
+        <Button variant="ghost" onClick={() => void enableBrowserPush()}>Enable browser push</Button>
+        <Button variant="ghost" onClick={() => void unsubscribeFromPush()}>Disable browser push</Button>
+      </div>
     </section>
   );
 }
 
-function Row({ label, right }: { label: string; right: React.ReactNode }): React.ReactElement {
-  return (<div className="flex items-center justify-between gap-2"><span className="text-sm">{label}</span>{right}</div>);
+async function enableBrowserPush(): Promise<void> {
+  const r = await subscribeToPush();
+  if ("error" in r) {
+    // eslint-disable-next-line no-alert
+    alert(r.error);
+  } else {
+    // eslint-disable-next-line no-alert
+    alert("Browser push enabled.");
+  }
 }
 
-async function requestPushPermission(): Promise<void> {
-  if (!("Notification" in window)) {
-    // eslint-disable-next-line no-alert
-    alert("This browser does not support notifications.");
-    return;
-  }
-  await Notification.requestPermission();
+function Row({ label, right }: { label: string; right: React.ReactNode }): React.ReactElement {
+  return (<div className="flex items-center justify-between gap-2"><span className="text-sm">{label}</span>{right}</div>);
 }

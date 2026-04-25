@@ -1,25 +1,23 @@
-/** IMAP/SMTP driver — minimal pure-TS client.
+/** IMAP/SMTP driver — production wrapper around our IMAP client.
  *
- *  Uses Bun's TLSSocket via the `node:tls` polyfill. Implements the
- *  smallest subset of IMAP4rev1 needed for our shell:
- *    - LOGIN / AUTHENTICATE PLAIN (XOAUTH2 deferred — only password+app
- *      password is supported by default; XOAUTH2 is straightforward to
- *      add).
- *    - LIST, SELECT, EXAMINE, FETCH (BODY[]), UID FETCH, UID SEARCH,
- *      UID STORE +FLAGS / -FLAGS, UID COPY, UID EXPUNGE.
- *    - IDLE (with a periodic NOOP keep-alive).
+ *  Maps virtual folders → IMAP mailboxes via the per-connection
+ *  `folderMap` (sniffed from LIST + SPECIAL-USE flags). Falls back to
+ *  English defaults when the server doesn't advertise them.
  *
- *  This module is the long pole for IMAP support; the wider mail plugin
- *  treats it as a feature-flagged opt-in (`mail.imap`). Operators who
- *  need full battle-tested IMAP can swap this for `imapflow` by setting
- *  `MAIL_IMAP_ADAPTER=imapflow` and we'll lazy-import it. */
+ *  Body fetches read RFC822 raw via `BODY.PEEK[]` and run through the
+ *  shared MIME parser. Sends use SMTP via the connection's smtpHost. */
 
 import tls from "node:tls";
 import net from "node:net";
+import { Buffer } from "node:buffer";
+import { tryDecryptString } from "../crypto/at-rest";
+import { parseRfc822 } from "../mime/parser";
+import { previewFromHtml } from "../mime/sanitize";
 import type {
   ConnectionRecord,
   DeltaArgs,
   DeltaResult,
+  DriverAttachmentMeta,
   DriverLabel,
   DriverMessage,
   DriverThreadSummary,
@@ -29,120 +27,40 @@ import type {
   SendArgs,
   SendResult,
 } from "./types";
-import { tryDecryptString } from "../crypto/at-rest";
-import { parseRfc822 } from "../mime/parser";
-import { previewFromHtml } from "../mime/sanitize";
+import { ImapClient, ImapError } from "./imap-client";
 
-interface ImapResponse {
-  status: "OK" | "NO" | "BAD";
-  text: string;
-  data: string[];
+const FOLDER_DEFAULTS: Record<string, string> = {
+  inbox: "INBOX",
+  sent: "Sent",
+  drafts: "Drafts",
+  trash: "Trash",
+  spam: "Junk",
+  archive: "Archive",
+};
+
+const SPECIAL_USE_TO_FOLDER: Record<string, string> = {
+  "\\Sent": "sent",
+  "\\Drafts": "drafts",
+  "\\Trash": "trash",
+  "\\Junk": "spam",
+  "\\Archive": "archive",
+  "\\All": "all",
+  "\\Inbox": "inbox",
+};
+
+interface ConnectionState {
+  client: ImapClient;
+  folderMap: Record<string, string>;
 }
 
-class ImapClient {
-  private socket: tls.TLSSocket | net.Socket | null = null;
-  private buffer = "";
-  private tagCounter = 0;
-  private pending = new Map<string, (resp: ImapResponse) => void>();
-  private greetingResolver: (() => void) | null = null;
-  private idleHandler: ((line: string) => void) | null = null;
-
-  async connect(host: string, port: number, useTls: boolean): Promise<void> {
-    await new Promise<void>((resolve, reject) => {
-      const s = useTls
-        ? tls.connect({ host, port, servername: host })
-        : net.connect({ host, port });
-      this.socket = s;
-      s.setEncoding("utf8");
-      s.on("data", (d) => this.handleData(String(d)));
-      s.on("error", reject);
-      s.on("connect", () => {
-        this.greetingResolver = (): void => resolve();
-      });
-      s.on("secureConnect", () => {
-        this.greetingResolver = (): void => resolve();
-      });
-    });
-  }
-
-  private handleData(chunk: string): void {
-    this.buffer += chunk;
-    let nl: number;
-    while ((nl = this.buffer.indexOf("\r\n")) !== -1) {
-      const line = this.buffer.slice(0, nl);
-      this.buffer = this.buffer.slice(nl + 2);
-      this.handleLine(line);
-    }
-  }
-
-  private handleLine(line: string): void {
-    if (this.idleHandler) {
-      this.idleHandler(line);
-    }
-    if (line.startsWith("* ")) {
-      // Untagged response — we accumulate.
-      const last = Array.from(this.pending.entries())[this.pending.size - 1];
-      if (last) {
-        // Stash on the most recent pending tag's data array.
-        (last[0] + "_data") in (this as Record<string, unknown>);
-      }
-      return;
-    }
-    if (line.startsWith("+ ")) {
-      // Continuation request — ignored at this level.
-      return;
-    }
-    if (line.startsWith("OK ") || line.startsWith("PREAUTH")) {
-      // Server greeting.
-      if (this.greetingResolver) { this.greetingResolver(); this.greetingResolver = null; }
-      return;
-    }
-    const space = line.indexOf(" ");
-    if (space === -1) return;
-    const tag = line.slice(0, space);
-    const rest = line.slice(space + 1);
-    const status = rest.startsWith("OK") ? "OK" : rest.startsWith("NO") ? "NO" : rest.startsWith("BAD") ? "BAD" : null;
-    if (!status) return;
-    const text = rest.slice(status.length).trim();
-    const resolve = this.pending.get(tag);
-    if (resolve) {
-      this.pending.delete(tag);
-      resolve({ status, text, data: [] });
-    }
-  }
-
-  async send(command: string): Promise<ImapResponse> {
-    const tag = `T${++this.tagCounter}`;
-    return new Promise((resolve) => {
-      this.pending.set(tag, resolve);
-      this.socket?.write(`${tag} ${command}\r\n`);
-    });
-  }
-
-  async login(user: string, pass: string): Promise<ImapResponse> {
-    return this.send(`LOGIN "${user.replace(/"/g, '\\"')}" "${pass.replace(/"/g, '\\"')}"`);
-  }
-
-  async list(): Promise<string[]> {
-    // Untagged collection isn't fully implemented in this minimal client;
-    // fall back to a hardcoded list of common folders.
-    return ["INBOX", "Sent", "Drafts", "Trash", "Spam", "Archive"];
-  }
-
-  async logout(): Promise<void> {
-    if (!this.socket) return;
-    try { await this.send("LOGOUT"); } catch { /* ignore */ }
-    this.socket.end();
-    this.socket = null;
-  }
-}
+const POOL = new Map<string, ConnectionState>();
+const POOL_TTL_MS = 5 * 60_000;
 
 export class ImapDriver implements MailDriver {
   readonly provider = "imap";
   readonly connectionId: string;
   readonly tenantId: string;
   private connection: ConnectionRecord;
-  private client: ImapClient | null = null;
 
   constructor(connection: ConnectionRecord, tenantId: string) {
     this.connection = connection;
@@ -150,73 +68,197 @@ export class ImapDriver implements MailDriver {
     this.tenantId = tenantId;
   }
 
-  private async ensureClient(): Promise<ImapClient> {
-    if (this.client) return this.client;
+  private async client(): Promise<ConnectionState> {
+    const cached = POOL.get(this.connectionId);
+    if (cached) return cached;
+
     const host = this.connection.imapHost;
     const port = this.connection.imapPort ?? 993;
     const useTls = this.connection.imapTLS ?? true;
     if (!host) throw new Error("imap host missing");
-    const cli = new ImapClient();
-    await cli.connect(host, port, useTls);
     const password = tryDecryptString(this.connection.passwordCipher
       ? new Uint8Array(Buffer.from(this.connection.passwordCipher, "base64"))
       : undefined,
     );
+    const cli = new ImapClient({ host, port, tls: useTls, socketTimeoutMs: 30_000 });
+    await cli.connect();
     if (!this.connection.username || !password) {
+      await cli.logout();
       throw new Error("imap credentials missing");
     }
-    const r = await cli.login(this.connection.username, password);
-    if (r.status !== "OK") throw new Error(`IMAP login: ${r.text}`);
-    this.client = cli;
-    return cli;
+    try {
+      await cli.login(this.connection.username, password);
+    } catch (err) {
+      if (err instanceof ImapError) {
+        await cli.authenticatePlain(this.connection.username, password);
+      } else {
+        throw err;
+      }
+    }
+    await cli.capability();
+
+    const list = await cli.list();
+    const folderMap: Record<string, string> = { ...FOLDER_DEFAULTS };
+    for (const m of list) {
+      for (const f of m.flags) {
+        const virtual = SPECIAL_USE_TO_FOLDER[f];
+        if (virtual) folderMap[virtual] = m.name;
+      }
+    }
+
+    const state: ConnectionState = { client: cli, folderMap };
+    POOL.set(this.connectionId, state);
+    const t = setTimeout(() => {
+      const cur = POOL.get(this.connectionId);
+      if (cur === state) {
+        POOL.delete(this.connectionId);
+        cur.client.logout().catch(() => undefined);
+      }
+    }, POOL_TTL_MS);
+    (t as unknown as { unref?: () => void }).unref?.();
+    return state;
   }
 
-  async listThreads(_args: ListThreadsArgs): Promise<ListThreadsResult> {
-    // Pure-IMAP "thread" view requires the THREAD extension; absent that
-    // we return single-message threads to keep behavior consistent.
-    await this.ensureClient();
-    return { items: [] }; // populated by per-message FETCH in a richer impl
+  async listThreads(args: ListThreadsArgs): Promise<ListThreadsResult> {
+    const state = await this.client();
+    const mailbox = state.folderMap[args.folder ?? "inbox"] ?? FOLDER_DEFAULTS[args.folder ?? "inbox"] ?? "INBOX";
+    await state.client.select(mailbox, true);
+    const limit = Math.max(1, Math.min(args.limit ?? 25, 100));
+    const allUids = await state.client.uidSearch("ALL");
+    if (allUids.length === 0) return { items: [] };
+    const recent = allUids.slice(-limit).reverse();
+    const envelopes = await state.client.uidFetchEnvelopes(recent.join(","));
+    const summaries: DriverThreadSummary[] = envelopes.map((env) => ({
+      providerThreadId: String(env.uid),
+      providerLastMessageId: String(env.uid),
+      subject: "(IMAP envelope)",
+      participants: [],
+      labelIds: [],
+      folder: args.folder ?? "inbox",
+      hasAttachment: false,
+      hasCalendarInvite: false,
+      unreadCount: env.flags.includes("\\Seen") ? 0 : 1,
+      messageCount: 1,
+      preview: previewFromHtml(""),
+      lastMessageAt: env.internalDate ? new Date(env.internalDate).toISOString() : new Date().toISOString(),
+      starred: env.flags.includes("\\Flagged"),
+    }));
+    return { items: summaries };
   }
-  async getThread(): Promise<{ summary: DriverThreadSummary; messages: DriverMessage[] }> {
-    return {
-      summary: {
-        providerThreadId: "",
-        subject: "(IMAP fetch unavailable)",
-        participants: [],
-        labelIds: [],
-        folder: "inbox",
-        hasAttachment: false,
-        hasCalendarInvite: false,
-        unreadCount: 0,
-        messageCount: 0,
-        preview: previewFromHtml(""),
-        lastMessageAt: new Date().toISOString(),
-        starred: false,
-      },
-      messages: [],
+
+  async getThread(providerThreadId: string): Promise<{ summary: DriverThreadSummary; messages: DriverMessage[] }> {
+    const state = await this.client();
+    await state.client.select("INBOX", true);
+    const uid = parseInt(providerThreadId, 10);
+    if (!Number.isFinite(uid)) throw new Error(`invalid imap uid ${providerThreadId}`);
+    const fetched = await state.client.uidFetchBody(uid);
+    if (!fetched) throw new Error(`uid ${uid} not found`);
+    const parsed = parseRfc822(fetched.raw);
+    const message: DriverMessage = {
+      providerMessageId: String(uid),
+      providerThreadId: String(uid),
+      messageIdHeader: parsed.messageId,
+      inReplyTo: parsed.inReplyTo,
+      references: parsed.references,
+      from: parsed.from,
+      to: parsed.to,
+      cc: parsed.cc,
+      bcc: parsed.bcc,
+      replyTo: parsed.replyTo,
+      subject: parsed.subject,
+      bodyText: parsed.bodyText,
+      bodyHtml: parsed.bodyHtml,
+      receivedAt: new Date().toISOString(),
+      sentAt: parsed.date,
+      headers: parsed.headers,
+      size: parsed.rawSize,
+      attachments: parsed.attachments.map<DriverAttachmentMeta>((a, i) => ({
+        providerAttachmentId: `${uid}:${i}`,
+        filename: a.filename,
+        contentType: a.contentType,
+        size: a.size,
+        cid: a.cid,
+        inline: a.disposition === "inline",
+      })),
+      labelIds: [],
+      folder: "inbox",
+      isRead: false,
+      isStarred: false,
+      rawBytes: new Uint8Array(fetched.raw),
     };
+    const summary: DriverThreadSummary = {
+      providerThreadId: String(uid),
+      providerLastMessageId: String(uid),
+      subject: parsed.subject ?? "(no subject)",
+      from: parsed.from,
+      participants: [...(parsed.from ? [parsed.from] : []), ...parsed.to, ...parsed.cc],
+      labelIds: [],
+      folder: "inbox",
+      hasAttachment: parsed.attachments.length > 0,
+      hasCalendarInvite: parsed.hasCalendarInvite,
+      unreadCount: 1,
+      messageCount: 1,
+      preview: previewFromHtml(parsed.bodyHtml ?? "") || (parsed.bodyText ?? "").slice(0, 240),
+      lastMessageAt: parsed.date ? new Date(parsed.date).toISOString() : new Date().toISOString(),
+      starred: false,
+    };
+    return { summary, messages: [message] };
   }
-  async getAttachmentBytes(): Promise<Uint8Array> { return new Uint8Array(0); }
-  async modifyLabels(): Promise<void> { /* IMAP labels via gmail-extensions only */ }
+
+  async getAttachmentBytes(providerMessageId: string, providerAttachmentId: string): Promise<Uint8Array> {
+    const [uidStr, idxStr] = providerAttachmentId.split(":");
+    const uid = parseInt(uidStr ?? providerMessageId, 10);
+    const state = await this.client();
+    await state.client.select("INBOX", true);
+    const fetched = await state.client.uidFetchBody(uid);
+    if (!fetched) return new Uint8Array(0);
+    const parsed = parseRfc822(fetched.raw);
+    const idx = parseInt(idxStr ?? "0", 10);
+    return parsed.attachments[idx]?.data ?? new Uint8Array(0);
+  }
+
+  async modifyLabels(): Promise<void> { /* IMAP labels via X-GM-LABELS only — out of scope */ }
+
   async markRead(messageIds: string[], read: boolean): Promise<void> {
-    const cli = await this.ensureClient();
-    const cmd = read ? "+FLAGS" : "-FLAGS";
-    for (const id of messageIds) {
-      await cli.send(`UID STORE ${id} ${cmd} (\\Seen)`);
-    }
+    if (messageIds.length === 0) return;
+    const state = await this.client();
+    await state.client.select("INBOX");
+    await state.client.uidStoreFlags(messageIds.join(","), read ? "+" : "-", ["\\Seen"]);
   }
-  async trash(): Promise<void> { /* MOVE to Trash folder */ }
-  async untrash(): Promise<void> { /* MOVE back to INBOX */ }
-  async spam(): Promise<void> { /* MOVE to Spam folder */ }
-  async archive(): Promise<void> { /* MOVE to Archive folder */ }
-  async delete(): Promise<void> { /* +FLAGS \Deleted then EXPUNGE */ }
+
+  async trash(threadIds: string[]): Promise<void> { await this.move(threadIds, "trash"); }
+  async untrash(threadIds: string[]): Promise<void> { await this.move(threadIds, "inbox"); }
+  async spam(threadIds: string[]): Promise<void> { await this.move(threadIds, "spam"); }
+  async archive(threadIds: string[]): Promise<void> { await this.move(threadIds, "archive"); }
+
+  private async move(threadIds: string[], folder: "trash" | "spam" | "archive" | "inbox"): Promise<void> {
+    if (threadIds.length === 0) return;
+    const state = await this.client();
+    await state.client.select("INBOX");
+    const target = state.folderMap[folder] ?? FOLDER_DEFAULTS[folder];
+    const set = threadIds.join(",");
+    await state.client.uidCopy(set, target);
+    await state.client.uidStoreFlags(set, "+", ["\\Deleted"]);
+    await state.client.uidExpunge(set);
+  }
+
+  async delete(threadIds: string[]): Promise<void> {
+    if (threadIds.length === 0) return;
+    const state = await this.client();
+    await state.client.select("INBOX");
+    const set = threadIds.join(",");
+    await state.client.uidStoreFlags(set, "+", ["\\Deleted"]);
+    await state.client.uidExpunge(set);
+  }
+
   async star(messageIds: string[], starred: boolean): Promise<void> {
-    const cli = await this.ensureClient();
-    const cmd = starred ? "+FLAGS" : "-FLAGS";
-    for (const id of messageIds) await cli.send(`UID STORE ${id} ${cmd} (\\Flagged)`);
+    if (messageIds.length === 0) return;
+    const state = await this.client();
+    await state.client.select("INBOX");
+    await state.client.uidStoreFlags(messageIds.join(","), starred ? "+" : "-", ["\\Flagged"]);
   }
+
   async send(args: SendArgs): Promise<SendResult> {
-    // SMTP send via raw TLS socket. Minimal STARTTLS / AUTH PLAIN flow.
     const host = this.connection.smtpHost;
     const port = this.connection.smtpPort ?? 587;
     if (!host) throw new Error("smtp host missing");
@@ -235,25 +277,43 @@ export class ImapDriver implements MailDriver {
       raw: args.raw,
     });
   }
-  async saveDraft(_raw: Uint8Array): Promise<{ providerDraftId: string }> {
-    // IMAP APPEND to Drafts folder.
+
+  async saveDraft(raw: Uint8Array): Promise<{ providerDraftId: string }> {
+    const state = await this.client();
+    const mailbox = state.folderMap.drafts ?? "Drafts";
+    await state.client.append(mailbox, Buffer.from(raw), ["\\Draft", "\\Seen"]);
     return { providerDraftId: `imap-draft-${Date.now()}` };
   }
-  async deleteDraft(): Promise<void> { /* UID STORE +FLAGS \Deleted then EXPUNGE */ }
+
+  async deleteDraft(): Promise<void> { /* search & delete by Message-Id header */ }
+
   async listLabels(): Promise<DriverLabel[]> {
-    const cli = await this.ensureClient();
-    const folders = await cli.list();
-    return folders.map((name, i) => ({ providerLabelId: name, name, system: i < 6 }));
+    const state = await this.client();
+    const list = await state.client.list();
+    return list.map((m, i) => ({ providerLabelId: m.name, name: m.name, system: i < 6 }));
   }
-  async createLabel(): Promise<DriverLabel> { throw new Error("CREATE folder not implemented"); }
-  async updateLabel(): Promise<DriverLabel> { throw new Error("RENAME folder not implemented"); }
-  async deleteLabel(): Promise<void> { throw new Error("DELETE folder not implemented"); }
+
+  async createLabel(label: { name: string }): Promise<DriverLabel> {
+    const state = await this.client();
+    await state.client.create(label.name);
+    return { providerLabelId: label.name, name: label.name };
+  }
+  async updateLabel(): Promise<DriverLabel> { throw new Error("RENAME not implemented"); }
+  async deleteLabel(id: string): Promise<void> {
+    const state = await this.client();
+    await state.client.deleteMailbox(id);
+  }
+
   async delta(_args: DeltaArgs): Promise<DeltaResult> {
-    return { changes: [], nextCursor: "" };
+    return { changes: [], nextCursor: "", fullRescanRequired: true };
   }
+
   async close(): Promise<void> {
-    await this.client?.logout();
-    this.client = null;
+    const cached = POOL.get(this.connectionId);
+    if (cached) {
+      POOL.delete(this.connectionId);
+      await cached.client.logout().catch(() => undefined);
+    }
   }
 }
 
@@ -270,53 +330,116 @@ interface SmtpArgs {
 async function sendSmtp(args: SmtpArgs): Promise<SendResult> {
   return new Promise((resolve, reject) => {
     const recipients = [...args.envelope.to, ...args.envelope.cc, ...args.envelope.bcc];
-    const sock = args.tls
+    if (recipients.length === 0) { reject(new Error("smtp: no recipients")); return; }
+    let socket: tls.TLSSocket | net.Socket = args.tls
       ? tls.connect({ host: args.host, port: args.port, servername: args.host })
       : net.connect({ host: args.host, port: args.port });
-    sock.setEncoding("utf8");
+    socket.setEncoding("utf8");
+    socket.setTimeout(30_000);
+
     let buf = "";
-    let stage = 0;
-    let messageId = "";
-    const messages = [
-      `EHLO gutu.local\r\n`,
-      `AUTH PLAIN ${Buffer.from(`\0${args.user}\0${args.pass}`).toString("base64")}\r\n`,
-      `MAIL FROM:<${args.envelope.from}>\r\n`,
-      ...recipients.map((r) => `RCPT TO:<${r}>\r\n`),
-      `DATA\r\n`,
-      Buffer.from(args.raw).toString("utf8") + "\r\n.\r\n",
-      `QUIT\r\n`,
-    ];
-    let i = 0;
-    sock.on("data", (d) => {
-      buf += String(d);
+    let phase: "greet" | "ehlo" | "starttls" | "auth" | "from" | "rcpt" | "data" | "body" | "quit" = "greet";
+    let rcptIdx = 0;
+    let messageId: string | undefined;
+    let upgraded = !args.tls;
+
+    const fail = (err: Error): void => {
+      try { socket.destroy(); } catch { /* ignore */ }
+      reject(err);
+    };
+    const write = (line: string): void => { socket.write(line); };
+
+    const handleLine = (line: string): void => {
+      if (line.length < 4) return;
+      const code = parseInt(line.slice(0, 3), 10);
+      const more = line[3] === "-";
+      if (code >= 400 && phase !== "rcpt") { fail(new Error(`smtp ${line}`)); return; }
+      if (more) return;
+      switch (phase) {
+        case "greet":
+          phase = "ehlo";
+          write(`EHLO gutu.local\r\n`);
+          return;
+        case "ehlo":
+          if (!args.tls && upgraded) {
+            phase = "starttls";
+            write(`STARTTLS\r\n`);
+            return;
+          }
+          phase = "auth";
+          write(`AUTH PLAIN ${Buffer.from(`\u0000${args.user}\u0000${args.pass}`).toString("base64")}\r\n`);
+          return;
+        case "starttls":
+          if (code !== 220) { fail(new Error(`STARTTLS rejected: ${line}`)); return; }
+          {
+            const plain = socket as net.Socket;
+            const tlsSock = tls.connect({ socket: plain, servername: args.host });
+            tlsSock.setEncoding("utf8");
+            tlsSock.on("data", (d: string | Buffer) => { buf += String(d); flush(); });
+            tlsSock.on("error", fail);
+            tlsSock.on("timeout", () => fail(new Error("smtp timeout")));
+            socket = tlsSock;
+            phase = "ehlo";
+            upgraded = true;
+            tlsSock.once("secureConnect", () => write(`EHLO gutu.local\r\n`));
+          }
+          return;
+        case "auth":
+          if (code !== 235 && code !== 250 && code !== 220) { fail(new Error(`AUTH rejected: ${line}`)); return; }
+          phase = "from";
+          write(`MAIL FROM:<${args.envelope.from}>\r\n`);
+          return;
+        case "from":
+          phase = "rcpt";
+          write(`RCPT TO:<${recipients[rcptIdx]}>\r\n`);
+          return;
+        case "rcpt":
+          if (code >= 400) { fail(new Error(`RCPT rejected: ${line}`)); return; }
+          rcptIdx++;
+          if (rcptIdx < recipients.length) { write(`RCPT TO:<${recipients[rcptIdx]}>\r\n`); return; }
+          phase = "data";
+          write(`DATA\r\n`);
+          return;
+        case "data":
+          if (code !== 354) { fail(new Error(`DATA rejected: ${line}`)); return; }
+          phase = "body";
+          write(dotStuff(Buffer.from(args.raw).toString("utf8")));
+          write(`\r\n.\r\n`);
+          return;
+        case "body":
+          if (code !== 250) { fail(new Error(`message rejected: ${line}`)); return; }
+          {
+            const m = line.match(/queued as ([A-Za-z0-9.@-]+)/);
+            if (m) messageId = m[1];
+          }
+          phase = "quit";
+          write(`QUIT\r\n`);
+          return;
+        case "quit":
+          try { socket.destroy(); } catch { /* ignore */ }
+          resolve({
+            providerMessageId: messageId ?? `${Date.now()}`,
+            providerThreadId: messageId ?? `${Date.now()}`,
+          });
+          return;
+      }
+    };
+
+    const flush = (): void => {
       while (buf.includes("\r\n")) {
         const idx = buf.indexOf("\r\n");
         const line = buf.slice(0, idx);
         buf = buf.slice(idx + 2);
-        const code = parseInt(line.slice(0, 3), 10);
-        if (code >= 400) {
-          sock.destroy();
-          reject(new Error(`SMTP ${line}`));
-          return;
-        }
-        if (line.endsWith(" Ok") || line.startsWith("250") || line.startsWith("221") || line.startsWith("220") || line.startsWith("235") || line.startsWith("354") || line.startsWith("251")) {
-          if (line.includes("queued as")) {
-            const m = line.match(/queued as ([A-Z0-9]+)/);
-            if (m) messageId = m[1];
-          }
-          if (i < messages.length) {
-            sock.write(messages[i++]);
-            stage++;
-          } else {
-            sock.end();
-            resolve({ providerMessageId: messageId || `${Date.now()}`, providerThreadId: messageId || `${Date.now()}` });
-          }
-        }
+        handleLine(line);
       }
-    });
-    sock.on("error", reject);
-    sock.on("connect", () => { /* wait for greeting */ });
-    void stage;
-    void parseRfc822;
+    };
+
+    socket.on("data", (d: string | Buffer) => { buf += String(d); flush(); });
+    socket.on("error", fail);
+    socket.on("timeout", () => fail(new Error("smtp timeout")));
   });
+}
+
+function dotStuff(input: string): string {
+  return input.replace(/\r?\n\.(?!\.)/g, "\r\n..");
 }

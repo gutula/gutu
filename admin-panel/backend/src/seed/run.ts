@@ -20,11 +20,14 @@ import { seedCmmsExtended } from "./cmms-extended";
 import { seedProcurementExtended } from "./procurement-extended";
 import { seedManufacturingExtended } from "./manufacturing-extended";
 import { seedAuthExtended } from "./auth-extended";
+import { migrateMail } from "../lib/mail/migrations";
+import { seedMail } from "./mail";
 
 /** Idempotent: if the records table already has data, do nothing unless
  *  `force: true` is passed. Auth users are seeded when empty regardless. */
 export async function seedAll(opts: { force?: boolean } = {}): Promise<void> {
   migrate();
+  migrateMail();
 
   const userCount = await seedUsers();
   if (userCount > 0) console.log(`[seed] users: ${userCount}`);
@@ -61,7 +64,8 @@ export async function seedAll(opts: { force?: boolean } = {}): Promise<void> {
     const procExt = seedProcurementExtended();
     const mfgExt = seedManufacturingExtended();
     const authExt = seedAuthExtended();
-    const combined = { ...crmExt, ...salesExt, ...acctExt, ...invExt, ...hrExt, ...supExt, ...bookExt, ...fsExt, ...prjExt, ...issExt, ...qExt, ...astExt, ...cmmsExt, ...procExt, ...mfgExt, ...authExt };
+    const mailDemo = Object.fromEntries(seedMail().map((s) => [s.resource, s.n]));
+    const combined = { ...crmExt, ...salesExt, ...acctExt, ...invExt, ...hrExt, ...supExt, ...bookExt, ...fsExt, ...prjExt, ...issExt, ...qExt, ...astExt, ...cmmsExt, ...procExt, ...mfgExt, ...authExt, ...mailDemo };
     const extTotal = Object.values(combined).reduce((a, b) => a + b, 0);
     if (extTotal > 0) {
       console.log(
