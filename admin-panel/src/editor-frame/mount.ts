@@ -52,13 +52,14 @@ export async function mountAdapter(
   container: HTMLDivElement,
   doc: Y.Doc,
   initialBytes: Uint8Array | undefined,
+  recordId?: string,
 ): Promise<MountedAdapter> {
   switch (kind) {
     case "spreadsheet": return mountUniverSheet(container, doc, initialBytes);
     case "document":    return mountUniverDoc(container, doc, initialBytes);
     case "slides":      return mountUniverSlides(container, doc, initialBytes);
-    case "page":        return mountBlockEditor(container, doc);
-    case "whiteboard":  return mountWhiteboard(container, doc);
+    case "page":        return mountBlockEditor(container, doc, recordId);
+    case "whiteboard":  return mountWhiteboard(container, doc, recordId);
   }
 }
 
@@ -244,12 +245,22 @@ async function mountUniverSlides(
 async function mountBlockEditor(
   container: HTMLDivElement,
   doc: Y.Doc,
+  recordId?: string,
 ): Promise<MountedAdapter> {
-  const [{ createRoot }, React, { BlockEditor }] = await Promise.all([
+  const [{ createRoot }, React, { BlockEditor }, { connectCollab }] = await Promise.all([
     import("react-dom/client"),
     import("react"),
     import("./BlockEditor"),
+    import("./collab"),
   ]);
+
+  // Establish the real-time collaboration channel. Only if we have a
+  // recordId (we always do in the iframe path; pre-launch may not).
+  // The handle returns peers + status so we can render presence in
+  // the editor's status bar.
+  const collab = recordId
+    ? connectCollab({ doc, kind: "page", id: recordId })
+    : null;
 
   // Mounted via a child root that renders into a wrapper so we can
   // unmount cleanly without disturbing the parent root's DOM tree.
@@ -302,11 +313,27 @@ async function mountBlockEditor(
       doc,
       status: holder.status,
       errorMsg: holder.error,
+      provider: collab?.provider,
       ref: (h: Handle | null) => setHandle(h),
     });
   };
 
   root.render(React.createElement(Shell));
+
+  // Bridge collab connection-info → window so the parent (EditorHost)
+  // can show presence avatars without each layer holding its own
+  // state. We use postMessage so the iframe ↔ parent boundary stays
+  // clean. Updates fan out only when peers/status actually change.
+  if (collab) {
+    collab.subscribe((info) => {
+      try {
+        window.parent?.postMessage(
+          { type: "editor-frame-presence", peers: info.peers, status: info.status },
+          window.location.origin,
+        );
+      } catch { /* tolerate */ }
+    });
+  }
 
   return {
     async exportSnapshot(_format) {
@@ -315,6 +342,7 @@ async function mountBlockEditor(
       return h.exportSnapshot();
     },
     async destroy() {
+      try { collab?.destroy(); } catch { /* ignore */ }
       try { root.unmount(); } catch { /* ignore */ }
       try { wrap.remove(); } catch { /* ignore */ }
     },
@@ -355,7 +383,11 @@ interface Shape {
 
 type Tool = "select" | Shape["kind"];
 
-function mountWhiteboard(container: HTMLDivElement, doc: Y.Doc): MountedAdapter {
+function mountWhiteboard(
+  container: HTMLDivElement,
+  doc: Y.Doc,
+  recordId?: string,
+): MountedAdapter {
   const yShapes = doc.getArray<Shape>("whiteboard-shapes");
 
   // Y.UndoManager scopes undo/redo to JUST our shapes — won't undo
@@ -367,6 +399,29 @@ function mountWhiteboard(container: HTMLDivElement, doc: Y.Doc): MountedAdapter 
     const Y = await import("yjs");
     undoManager = new Y.UndoManager(yShapes, { captureTimeout: 500 });
   })();
+
+  // Connect to the per-doc Yjs WebSocket room so multiple users on
+  // the same whiteboard see each other's strokes / shapes in real
+  // time. Awareness states aren't visualised on the canvas yet (no
+  // remote cursor markers) but the connection still feeds the parent
+  // EditorHost's presence avatar list via the same postMessage bridge
+  // the page editor uses.
+  let collab: { destroy: () => void } | null = null;
+  if (recordId) {
+    void (async () => {
+      const { connectCollab } = await import("./collab");
+      const handle = connectCollab({ doc, kind: "whiteboard", id: recordId });
+      collab = handle;
+      handle.subscribe((info) => {
+        try {
+          window.parent?.postMessage(
+            { type: "editor-frame-presence", peers: info.peers, status: info.status },
+            window.location.origin,
+          );
+        } catch { /* tolerate */ }
+      });
+    })();
+  }
 
   /* ---- DOM scaffolding ---- */
   const wrap = document.createElement("div");
@@ -851,6 +906,7 @@ function mountWhiteboard(container: HTMLDivElement, doc: Y.Doc): MountedAdapter 
     async destroy() {
       yShapes.unobserve(yObserver);
       undoManager?.destroy();
+      try { collab?.destroy(); } catch { /* ignore */ }
       ro.disconnect();
       canvas.removeEventListener("mousedown", md);
       canvas.removeEventListener("mousemove", mm);

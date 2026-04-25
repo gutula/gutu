@@ -58,6 +58,13 @@ export default defineConfig({
         changeOrigin: true,
         ws: true,
       },
+      // Real-time editor sync (Yjs over WebSocket) — must proxy ws so
+      // the upgrade reaches the backend's per-doc room handler.
+      "/api/yjs": {
+        target: process.env.VITE_API_TARGET ?? "http://127.0.0.1:3333",
+        changeOrigin: true,
+        ws: true,
+      },
       "/api": {
         target: process.env.VITE_API_TARGET ?? "http://127.0.0.1:3333",
         changeOrigin: true,

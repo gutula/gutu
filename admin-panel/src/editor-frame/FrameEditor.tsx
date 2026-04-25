@@ -85,7 +85,7 @@ export function FrameEditor({ kind, id }: Props): React.JSX.Element {
       if (cancelled || !containerRef.current) return;
 
       try {
-        adapterRef.current = await mountAdapter(kind, containerRef.current, doc, initialBytes);
+        adapterRef.current = await mountAdapter(kind, containerRef.current, doc, initialBytes, id);
         // Sync the adapter's internal status with our state. The page
         // editor renders this; Univer ignores. (No-op if the adapter
         // didn't implement setStatus.)

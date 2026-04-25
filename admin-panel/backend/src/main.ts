@@ -57,6 +57,14 @@ console.log(
 
 import { resolveTenant } from "./tenancy/resolver";
 import { dbx } from "./dbx";
+import { effectiveRole } from "./lib/acl";
+import {
+  yjsOnOpen,
+  yjsOnMessage,
+  yjsOnClose,
+  type YjsSocketData,
+} from "./lib/yjs-room";
+import { db } from "./db";
 
 /** Resolve a WebSocket upgrade's session + tenant. Returns null if the token
  *  is missing, unknown, or expired — caller refuses the upgrade in that case. */
@@ -97,11 +105,103 @@ async function resolveWsSession(req: Request): Promise<{
   return { userId: row.user_id, tenantId: tenant.id };
 }
 
+/** Match `/api/yjs/<resource>/<recordId>` for the editor sync upgrade. */
+const YJS_PATH_RE = /^\/api\/yjs\/([^/]+)\/([^/]+)\/?$/;
+
+/** Resolve a session for the Yjs upgrade, then verify the user has at
+ *  least viewer role on the document. We also fetch a display name +
+ *  email so the room's awareness tracks who's editing. */
+async function resolveYjsSession(req: Request): Promise<
+  | { ok: true; data: YjsSocketData }
+  | { ok: false; status: number; body: string }
+> {
+  const url = new URL(req.url);
+  const m = YJS_PATH_RE.exec(url.pathname);
+  if (!m) return { ok: false, status: 404, body: "not found" };
+  const resourceSlug = decodeURIComponent(m[1]);
+  const recordId = decodeURIComponent(m[2]);
+  // Resource slug is one of "spreadsheet" / "document" / "slides" /
+  // "page" / "whiteboard". Map to the canonical resourceId we use in
+  // editor_acl + records (e.g. "collab.page").
+  const RESOURCE_MAP: Record<string, string> = {
+    spreadsheet: "spreadsheet.workbook",
+    document: "document.page",
+    slides: "slides.deck",
+    page: "collab.page",
+    whiteboard: "whiteboard.canvas",
+  };
+  const resource = RESOURCE_MAP[resourceSlug];
+  if (!resource) return { ok: false, status: 400, body: "unknown resource" };
+
+  const session = await resolveWsSession(req);
+  if (!session) return { ok: false, status: 401, body: "unauthorized" };
+
+  const role = effectiveRole({
+    resource,
+    recordId,
+    userId: session.userId,
+    tenantId: session.tenantId,
+  });
+  if (!role) return { ok: false, status: 403, body: "forbidden" };
+
+  // Look up display fields for awareness.
+  const userRow = db
+    .prepare(`SELECT id, email, name FROM users WHERE id = ?`)
+    .get(session.userId) as { id: string; email: string; name: string } | undefined;
+  const name = userRow?.name ?? userRow?.email ?? "User";
+  const email = userRow?.email ?? "";
+
+  return {
+    ok: true,
+    data: {
+      userId: session.userId,
+      tenantId: session.tenantId,
+      resource,
+      recordId,
+      role,
+      user: {
+        id: session.userId,
+        name,
+        email,
+        color: pickColor(session.userId),
+      },
+    },
+  };
+}
+
+/** Stable color per user id — used to paint that user's awareness
+ *  cursor on every other client. Hash → palette index. */
+const COLOR_PALETTE = [
+  "#ef4444", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6",
+  "#ec4899", "#06b6d4", "#84cc16", "#f97316", "#a855f7",
+];
+function pickColor(userId: string): string {
+  let h = 0;
+  for (let i = 0; i < userId.length; i++) {
+    h = (h * 31 + userId.charCodeAt(i)) >>> 0;
+  }
+  return COLOR_PALETTE[h % COLOR_PALETTE.length];
+}
+
 Bun.serve({
   port,
   hostname: "127.0.0.1",
   async fetch(req, server) {
     const url = new URL(req.url);
+
+    // Editor real-time sync (Yjs) — per-document WebSocket rooms with
+    // ACL enforcement at upgrade time.
+    if (YJS_PATH_RE.test(url.pathname)) {
+      const session = await resolveYjsSession(req);
+      if (!session.ok) {
+        return new Response(session.body, { status: session.status });
+      }
+      const upgraded = server.upgrade(req, { data: session.data });
+      if (upgraded) return;
+      return new Response("WebSocket upgrade failed", { status: 400 });
+    }
+
+    // Shell-level realtime (resource.changed events).
     if (url.pathname === "/api/ws") {
       const session = await resolveWsSession(req);
       if (!session) {
@@ -116,14 +216,30 @@ Bun.serve({
     return app.fetch(req, { server });
   },
   websocket: {
-    open(ws) {
-      registerSocket(ws as never);
+    async open(ws) {
+      // Discriminate by socket data shape — Yjs sockets carry resource+
+      // recordId, shell sockets don't.
+      const data = ws.data as { resource?: string };
+      if (data && typeof data.resource === "string") {
+        await yjsOnOpen(ws as never);
+      } else {
+        registerSocket(ws as never);
+      }
     },
-    close(ws) {
-      unregisterSocket(ws as never);
+    async close(ws) {
+      const data = ws.data as { resource?: string };
+      if (data && typeof data.resource === "string") {
+        await yjsOnClose(ws as never);
+      } else {
+        unregisterSocket(ws as never);
+      }
     },
-    message() {
-      // client-initiated messages are currently ignored
+    message(ws, message) {
+      const data = ws.data as { resource?: string };
+      if (data && typeof data.resource === "string") {
+        yjsOnMessage(ws as never, message);
+      }
+      // Shell sockets don't accept inbound messages.
     },
   },
 });

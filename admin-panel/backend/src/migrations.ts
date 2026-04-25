@@ -82,6 +82,33 @@ export function migrate(): void {
       payload     TEXT
     );
     CREATE INDEX IF NOT EXISTS audit_occurred_idx ON audit_events(occurred_at DESC);
+
+    -- Per-document access control list. Each row grants a SUBJECT a
+    -- ROLE on a specific (resource, record_id). The subject is one of:
+    --   user        — a single user id; row created on every share
+    --   tenant      — every member of a tenant gets the role; default
+    --                 row created on doc creation so existing UX (every
+    --                 tenant member sees every doc) keeps working
+    --   public-link — anyone holding the link token, scoped to a role
+    --                 (typically "viewer")
+    --   public      — unauthenticated read (anonymous web; we don't
+    --                 expose this in the UI yet but the row format is
+    --                 ready for it)
+    -- Roles: 'owner' > 'editor' > 'viewer' (ordering enforced in code).
+    CREATE TABLE IF NOT EXISTS editor_acl (
+      resource     TEXT NOT NULL,
+      record_id    TEXT NOT NULL,
+      subject_kind TEXT NOT NULL,
+      subject_id   TEXT NOT NULL,
+      role         TEXT NOT NULL,
+      granted_by   TEXT NOT NULL,
+      granted_at   TEXT NOT NULL,
+      PRIMARY KEY (resource, record_id, subject_kind, subject_id)
+    );
+    CREATE INDEX IF NOT EXISTS editor_acl_subject_idx
+      ON editor_acl(subject_kind, subject_id);
+    CREATE INDEX IF NOT EXISTS editor_acl_record_idx
+      ON editor_acl(resource, record_id);
   `);
 
   // Backfill-style ALTERs for columns added after the initial schema.
@@ -96,4 +123,69 @@ export function migrate(): void {
     db.exec("ALTER TABLE users ADD COLUMN mfa_secret TEXT");
   if (!userCols.has("mfa_enabled"))
     db.exec("ALTER TABLE users ADD COLUMN mfa_enabled INTEGER NOT NULL DEFAULT 0");
+
+  // One-time backfill: any editor record that pre-dates the ACL
+  // schema has zero rows in editor_acl, which would make it invisible
+  // to every user (the list endpoint joins on accessible IDs). Seed a
+  // tenant-editor row so existing docs keep behaving like before
+  // (every member of the tenant can edit) and a user-owner row for the
+  // creator if we know who created it. The "have we backfilled?"
+  // marker is stored in `meta`. Idempotent.
+  const backfilled = db
+    .prepare(`SELECT value FROM meta WHERE key = ?`)
+    .get("editor_acl_backfilled") as { value: string } | undefined;
+  if (!backfilled) {
+    const editorResources = [
+      "spreadsheet.workbook",
+      "document.page",
+      "slides.deck",
+      "collab.page",
+      "whiteboard.canvas",
+    ];
+    const records = db
+      .prepare(
+        `SELECT resource, id, data FROM records
+         WHERE resource IN (${editorResources.map(() => "?").join(",")})`,
+      )
+      .all(...editorResources) as { resource: string; id: string; data: string }[];
+    let inserted = 0;
+    const insertStmt = db.prepare(
+      `INSERT OR IGNORE INTO editor_acl
+         (resource, record_id, subject_kind, subject_id, role, granted_by, granted_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    );
+    const now = new Date().toISOString();
+    for (const row of records) {
+      let parsed: { tenantId?: string; createdBy?: string };
+      try {
+        parsed = JSON.parse(row.data) as { tenantId?: string; createdBy?: string };
+      } catch {
+        continue;
+      }
+      const tenantId = parsed.tenantId;
+      const creator = parsed.createdBy;
+      if (tenantId) {
+        insertStmt.run(row.resource, row.id, "tenant", tenantId, "editor", "system:backfill", now);
+        inserted++;
+      }
+      if (creator) {
+        // Resolve email → user id (creator is stored as email).
+        const userRow = db
+          .prepare("SELECT id FROM users WHERE LOWER(email) = LOWER(?)")
+          .get(creator) as { id: string } | undefined;
+        if (userRow) {
+          insertStmt.run(row.resource, row.id, "user", userRow.id, "owner", "system:backfill", now);
+          inserted++;
+        }
+      }
+    }
+    db.prepare(
+      `INSERT INTO meta (key, value) VALUES (?, ?)
+       ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+    ).run("editor_acl_backfilled", new Date().toISOString());
+    if (inserted > 0) {
+      // eslint-disable-next-line no-console
+      console.log(`[migrate] backfilled ${inserted} editor_acl rows for ${records.length} pre-existing records`);
+    }
+  }
 }

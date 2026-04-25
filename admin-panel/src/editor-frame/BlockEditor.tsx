@@ -45,7 +45,9 @@ import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import Typography from "@tiptap/extension-typography";
+import type { WebsocketProvider } from "y-websocket";
 import CharacterCount from "@tiptap/extension-character-count";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
@@ -97,6 +99,12 @@ interface Props {
   placeholder?: string;
   /** Read-only mode (no toolbar, no edits). */
   readOnly?: boolean;
+  /** When provided, enables real-time multi-user editing. The provider
+   *  comes from `connectCollab()` — it owns the WebSocket transport
+   *  and the awareness instance shared across `Collaboration` + the
+   *  cursor extension. When omitted, the editor still runs but only
+   *  stores changes locally → server via the REST snapshot pipe. */
+  provider?: WebsocketProvider;
 }
 
 /* ------------------------------------------------------------------ */
@@ -243,7 +251,7 @@ const FormatBubble: React.FC<{ editor: ReturnType<typeof useEditor> }> = ({ edit
 /* ------------------------------------------------------------------ */
 
 export const BlockEditor = forwardRef<BlockEditorHandle, Props>(
-  ({ doc, fragment = "page-tree", status, errorMsg, placeholder, readOnly }, ref) => {
+  ({ doc, fragment = "page-tree", status, errorMsg, placeholder, readOnly, provider }, ref) => {
     /* eslint-disable react-hooks/exhaustive-deps */
     // The editor is intentionally created once per doc/fragment combo.
     // Recreating it would lose cursor + collab state. The `extensions`
@@ -295,6 +303,23 @@ export const BlockEditor = forwardRef<BlockEditorHandle, Props>(
             showOnlyCurrent: true,
           }),
           Collaboration.configure({ fragment: xmlFragment }),
+          // CollaborationCursor only mounts when a y-websocket provider
+          // is supplied — otherwise we'd be writing awareness updates
+          // into a doc that isn't being shared, which is harmless but
+          // wasteful. The cursor extension reads each peer's `user`
+          // field from awareness state and paints a colored caret +
+          // a labeled chip.
+          ...(provider
+            ? [
+                CollaborationCursor.configure({
+                  provider,
+                  user: (provider.awareness.getLocalState() as { user?: { name: string; color: string } } | null)?.user ?? {
+                    name: "User",
+                    color: "#3b82f6",
+                  },
+                }),
+              ]
+            : []),
           createSlashSuggestion(),
         ],
         editorProps: {
@@ -304,7 +329,7 @@ export const BlockEditor = forwardRef<BlockEditorHandle, Props>(
           },
         },
       },
-      [xmlFragment, readOnly],
+      [xmlFragment, readOnly, provider],
     );
 
     /* expose imperative API to the host iframe */

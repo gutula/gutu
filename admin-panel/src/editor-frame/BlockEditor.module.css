@@ -409,3 +409,33 @@
   border-top: 1px solid #fecaca;
   font-size: 13px;
 }
+
+/* Remote cursors painted by @tiptap/extension-collaboration-cursor.
+ * The extension applies inline styles for the per-user color but the
+ * caret + label structure needs CSS. */
+.editor :global(.collaboration-cursor__caret) {
+  position: relative;
+  margin-left: -1px;
+  margin-right: -1px;
+  border-left: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  word-break: normal;
+  pointer-events: none;
+}
+.editor :global(.collaboration-cursor__label) {
+  position: absolute;
+  top: -1.4em;
+  left: -1px;
+  font-size: 11px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 3px 3px 3px 0;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  /* Background color comes from inline style set by the extension. */
+}
+
