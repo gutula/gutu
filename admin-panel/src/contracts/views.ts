@@ -109,6 +109,27 @@ export interface DashboardView extends ViewBase {
 export interface CustomView extends ViewBase {
   readonly type: "custom";
   readonly render: () => ReactNode;
+  /** Page archetype — propagates from the plugin descriptor. The shell
+   *  uses this to apply a `data-archetype` on the outer container and
+   *  to decide whether to skip the max-width wrapper (when archetype is
+   *  `editor-canvas` or `fullBleed === true`). Optional. */
+  readonly archetype?:
+    | "dashboard"
+    | "workspace-hub"
+    | "smart-list"
+    | "kanban"
+    | "calendar"
+    | "tree"
+    | "graph"
+    | "split-inbox"
+    | "timeline"
+    | "map"
+    | "editor-canvas"
+    | "detail-rich";
+  /** When true, the shell skips the max-width wrapper for this view. */
+  readonly fullBleed?: boolean;
+  /** Default density for this view. User pref still wins. */
+  readonly density?: "comfortable" | "cozy" | "compact";
 }
 
 /** KanbanView — live drag-and-drop board bound to a resource. */

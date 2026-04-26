@@ -72,6 +72,7 @@ Complete end-to-end documentation lives in `docs/`:
 | [docs/HOST-SDK-REFERENCE.md](./docs/HOST-SDK-REFERENCE.md) | Every export from `@gutu-host` and sub-paths documented with type signatures and usage notes |
 | [docs/UI-UX-GUIDELINES.md](./docs/UI-UX-GUIDELINES.md) | Design principles, layout, typography, color tokens, density, motion, components, forms, empty/loading/error states, accessibility, the polish checklist |
 | [docs/PAGE-DESIGN-SYSTEM.md](./docs/PAGE-DESIGN-SYSTEM.md) | The 12 page archetypes, slot grid, widget catalog, tokens, performance contract, archetype wireframes, polish checklist |
+| [docs/PAGE-DESIGN-IMPLEMENTATION.md](./docs/PAGE-DESIGN-IMPLEMENTATION.md) | Runtime API + recipes for the `admin-archetypes` library that implements the design contract |
 | [docs/page-design/](./docs/page-design/README.md) | Per-plugin page design briefs (75 plugins) — 8 flagship full-depth + 67 short-form |
 | [docs/SECURITY.md](./docs/SECURITY.md) | Threat model, auth flow, RBAC, ACL, GDPR, audit hash chain, secrets, headers, rate limiting, tenancy isolation, plugin permissions, defense-in-depth checklist |
 | [docs/OBSERVABILITY.md](./docs/OBSERVABILITY.md) | Liveness/readiness probes, structured logs, metrics, plugin status, leases, audit verification, alert recipes, troubleshooting flow |

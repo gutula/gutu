@@ -78,6 +78,12 @@ interface ResolvedAdminUi {
     description?: string;
     resourceId: string;
     Component: React.ComponentType;
+    /** Page archetype, propagated from the plugin descriptor. */
+    archetype?: PluginPageDescriptor["archetype"];
+    /** Skip max-width wrapper. */
+    fullBleed?: boolean;
+    /** Page default density. */
+    density?: PluginPageDescriptor["density"];
   }>;
   resources: ReadonlyArray<{ id: string; singular: string; plural: string; icon?: string }>;
 }
@@ -109,6 +115,9 @@ function resolve(plugins: readonly AdminUiContribution[]): ResolvedAdminUi {
         description: p.description,
         resourceId: pageResourceId(p),
         Component: Wrapped,
+        archetype: p.archetype,
+        fullBleed: p.fullBleed,
+        density: p.density,
       });
       resources.push({
         id: pageResourceId(p),
@@ -162,6 +171,9 @@ const pluginViews = resolved.views.map((v) =>
     description: v.description,
     resource: v.resourceId,
     render: () => <v.Component />,
+    archetype: v.archetype,
+    fullBleed: v.fullBleed,
+    density: v.density,
   }),
 );
 

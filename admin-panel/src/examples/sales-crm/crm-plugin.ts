@@ -1,5 +1,6 @@
+import * as React from "react";
 import { z } from "zod";
-import { defineResource } from "@/builders";
+import { defineResource, defineCustomView } from "@/builders";
 import { definePlugin } from "@/contracts/plugin-v2";
 import {
   crmActivityView,
@@ -12,7 +13,30 @@ import {
 import { CRM_EXTENDED_RESOURCES, CRM_EXTENDED_VIEWS } from "./crm-extended";
 import { crmControlRoomView } from "./crm-control-room";
 import { crmReportsIndexView, crmReportDetailView } from "./crm-reports";
+import CrmArchetypeDashboard from "./crm-archetype-dashboard";
+import CrmArchetypeList from "./crm-archetype-list";
 import { CONTACTS } from "./data";
+
+// Reference pages using the new admin-archetypes runtime end-to-end.
+const crmArchetypeDashboardView = defineCustomView({
+  id: "crm.archetype-dashboard.view",
+  title: "Sales overview (archetype)",
+  description: "Reference Intelligent Dashboard built on the design system.",
+  resource: "crm.contact",
+  archetype: "dashboard",
+  density: "comfortable",
+  render: () => React.createElement(CrmArchetypeDashboard),
+});
+
+const crmArchetypeListView = defineCustomView({
+  id: "crm.archetype-list.view",
+  title: "People (archetype)",
+  description: "Reference SmartList with filter chips, bulk actions, density toggle, keyboard.",
+  resource: "crm.contact",
+  archetype: "smart-list",
+  density: "comfortable",
+  render: () => React.createElement(CrmArchetypeList),
+});
 
 const ContactSchema = z.object({
   id: z.string(),
@@ -47,6 +71,8 @@ const contactResource = defineResource({
 
 const crmNavSections = [{ id: "sales", label: "Sales & CRM", order: 10 }];
 const crmNav = [
+  { id: "crm.archetype-dashboard", label: "Sales overview (new)", icon: "Activity", path: "/crm/archetype-dashboard", view: "crm.archetype-dashboard.view", section: "sales", order: 9.5 },
+  { id: "crm.archetype-list", label: "People (new)", icon: "Users", path: "/crm/archetype-list", view: "crm.archetype-list.view", section: "sales", order: 9.6 },
   { id: "crm.overview", label: "Overview", icon: "LayoutDashboard", path: "/contacts/overview", view: "crm.overview.view", section: "sales", order: 10 },
   { id: "crm.control-room", label: "CRM Control Room", icon: "Gauge", path: "/crm/control-room", view: "crm.control-room.view", section: "sales", order: 10.5 },
   { id: "crm.contacts", label: "Contacts", icon: "Users", path: "/contacts", view: "crm.contacts.view", section: "sales", order: 11 },
@@ -67,6 +93,8 @@ const crmNav = [
 ];
 const crmResources = [contactResource, ...CRM_EXTENDED_RESOURCES];
 const crmViews = [
+  crmArchetypeDashboardView,
+  crmArchetypeListView,
   crmOverviewView,
   crmContactsView,
   crmPipelineView,

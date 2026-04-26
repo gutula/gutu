@@ -204,26 +204,11 @@ export function AppShell({ registry }: AppShellProps) {
               crumbs.length > 0 ? <Breadcrumbs items={crumbs} /> : null
             }
           />
-          <main
-            role="main"
-            className="flex-1 min-w-0 overflow-auto"
-            aria-live="polite"
-          >
-            <div className="max-w-[1400px] mx-auto px-6 py-6">
-              <ErrorBoundary key={hash}>
-                <PluginBoundary
-                  pluginId={
-                    route?.view && "resource" in route.view
-                      ? registry.pluginByResource[route.view.resource as string] ?? "shell"
-                      : "shell"
-                  }
-                  label={route?.view?.title}
-                >
-                  <RouteView route={route} registry={registry} />
-                </PluginBoundary>
-              </ErrorBoundary>
-            </div>
-          </main>
+          <ArchetypeAwareMain
+            hash={hash}
+            route={route}
+            registry={registry}
+          />
         </div>
 
         <CommandPalette
@@ -241,6 +226,73 @@ export function AppShell({ registry }: AppShellProps) {
       </div>
     </TooltipProvider>
     </RegistryContext.Provider>
+  );
+}
+
+/** Archetype-aware page wrapper. Reads `archetype` / `fullBleed` /
+ *  `density` from the resolved route's view (when it's a CustomView)
+ *  and:
+ *
+ *    - tags the outer container with `data-archetype` for analytics +
+ *      theme overrides;
+ *    - skips the `max-w-[1400px] px-6 py-6` wrapper when `fullBleed`
+ *      is true (used by editor canvases, full-bleed dashboards, POS);
+ *    - sets `data-density` so descendants can react via CSS var.
+ *
+ *  When the view is not a CustomView (built-in list/form/detail/dashboard/
+ *  kanban modes), the wrapper falls back to the standard padded container. */
+function ArchetypeAwareMain({
+  hash,
+  route,
+  registry,
+}: {
+  hash: string;
+  route: ReturnType<typeof resolveRoute>;
+  registry: AdminRegistry;
+}) {
+  const view = route?.view;
+  const isCustom = view?.type === "custom";
+  const archetype = isCustom
+    ? (view as { archetype?: string }).archetype
+    : undefined;
+  const fullBleed = isCustom
+    ? Boolean((view as { fullBleed?: boolean }).fullBleed) ||
+      archetype === "editor-canvas"
+    : false;
+  const density = isCustom
+    ? (view as { density?: string }).density
+    : undefined;
+  const pluginId =
+    view && "resource" in view
+      ? registry.pluginByResource[view.resource as string] ?? "shell"
+      : "shell";
+  return (
+    <main
+      role="main"
+      className="flex-1 min-w-0 overflow-auto"
+      aria-live="polite"
+      data-archetype={archetype ?? null}
+      data-full-bleed={fullBleed ? "true" : "false"}
+      data-density={density ?? null}
+    >
+      {fullBleed ? (
+        <div className="h-full">
+          <ErrorBoundary key={hash}>
+            <PluginBoundary pluginId={pluginId} label={view?.title}>
+              <RouteView route={route} registry={registry} />
+            </PluginBoundary>
+          </ErrorBoundary>
+        </div>
+      ) : (
+        <div className="max-w-[1400px] mx-auto px-6 py-6">
+          <ErrorBoundary key={hash}>
+            <PluginBoundary pluginId={pluginId} label={view?.title}>
+              <RouteView route={route} registry={registry} />
+            </PluginBoundary>
+          </ErrorBoundary>
+        </div>
+      )}
+    </main>
   );
 }
 

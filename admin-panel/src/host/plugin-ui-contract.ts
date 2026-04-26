@@ -17,6 +17,58 @@
 
 import type { ComponentType, ReactNode } from "react";
 
+/** Page archetype identifiers — see docs/PAGE-DESIGN-SYSTEM.md.
+ *  The shell uses this for analytics + theme overrides (data-archetype
+ *  attribute). Plugins compose their content from primitives. */
+export type PluginPageArchetype =
+  | "dashboard"
+  | "workspace-hub"
+  | "smart-list"
+  | "kanban"
+  | "calendar"
+  | "tree"
+  | "graph"
+  | "split-inbox"
+  | "timeline"
+  | "map"
+  | "editor-canvas"
+  | "detail-rich";
+
+/** Density modes — page default; user pref still wins.
+ *  See docs/UI-UX-GUIDELINES.md §4.1. */
+export type PluginPageDensity = "comfortable" | "cozy" | "compact";
+
+/** Searchable schema registered via `awesome-search-core`. The shell
+ *  forwards this to the search plugin if present. */
+export interface PluginPageSearchable {
+  /** Resource id this page is the canonical view of (e.g. "crm.deal"). */
+  resource: string;
+  /** Field paths searched by global search (in priority order). */
+  fields: readonly string[];
+}
+
+/** Saved-views schema registered via `saved-views-core`. */
+export interface PluginPageSavedViews {
+  resource: string;
+  /** Filter fields a user can save in a view. */
+  filterFields?: readonly string[];
+  /** Group/sort fields a user can save. */
+  groupFields?: readonly string[];
+  sortFields?: readonly string[];
+}
+
+/** Quick action surfaced in Cmd-K palette + erp-actions-core. */
+export interface PluginPageQuickAction {
+  id: string;
+  label: string;
+  /** Optional Lucide icon name. */
+  icon?: string;
+  /** Search keywords for fuzzy match. */
+  keywords?: readonly string[];
+  /** Run handler. May be async. */
+  run: () => void | Promise<void>;
+}
+
 export interface PluginPageDescriptor {
   /** Stable id, namespaced to the plugin (e.g. `forms-core.custom-fields`). */
   id: string;
@@ -30,6 +82,20 @@ export interface PluginPageDescriptor {
   Component: ComponentType;
   /** Optional Lucide icon name shown in nav + command palette. */
   icon?: string;
+  /** Page archetype — drives `data-archetype` attribute and shell hints
+   *  like `fullBleed`. Defaults to `detail-rich`-equivalent layout. */
+  archetype?: PluginPageArchetype;
+  /** When true, the shell skips the outer `max-w-[1400px] px-6 py-6`
+   *  wrapper. Used by editor canvases, full-bleed dashboards, POS. */
+  fullBleed?: boolean;
+  /** Default density for this page. User preference still wins. */
+  density?: PluginPageDensity;
+  /** Searchable fields registered with `awesome-search-core`. */
+  searchable?: PluginPageSearchable;
+  /** Saved-views schema registered with `saved-views-core`. */
+  savedViews?: PluginPageSavedViews;
+  /** Quick actions surfaced in Cmd-K palette + `erp-actions-core`. */
+  quickActions?: readonly PluginPageQuickAction[];
 }
 
 export interface PluginNavEntry {
