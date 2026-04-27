@@ -9,6 +9,7 @@ import {
   User,
   Settings,
   LogOut,
+  Menu,
 } from "lucide-react";
 import { Button } from "@/primitives/Button";
 import {
@@ -32,9 +33,12 @@ export interface TopbarProps {
   onOpenCommand: () => void;
   onOpenShortcuts?: () => void;
   breadcrumbs?: React.ReactNode;
+  /** Mobile-only: opens the sidebar drawer. The button is hidden at md+
+   *  because the sidebar is always visible on those breakpoints. */
+  onOpenSidebar?: () => void;
 }
 
-export function Topbar({ onOpenCommand, onOpenShortcuts, breadcrumbs }: TopbarProps) {
+export function Topbar({ onOpenCommand, onOpenShortcuts, breadcrumbs, onOpenSidebar }: TopbarProps) {
   const [, force] = React.useReducer((x: number) => x + 1, 0);
   const theme: Theme = getTheme();
   const density: Density = getDensity();
@@ -44,6 +48,16 @@ export function Topbar({ onOpenCommand, onOpenShortcuts, breadcrumbs }: TopbarPr
       className="flex items-center gap-3 h-topbar-h px-4 bg-surface-0 border-b border-border sticky top-0 z-20"
       role="banner"
     >
+      {onOpenSidebar && (
+        <button
+          type="button"
+          onClick={onOpenSidebar}
+          className="md:hidden -ml-1 inline-flex items-center justify-center h-8 w-8 rounded-md text-text-muted hover:bg-surface-1 hover:text-text-primary transition-colors"
+          aria-label="Open navigation"
+        >
+          <Menu className="h-4 w-4" aria-hidden />
+        </button>
+      )}
       <div className="flex-1 min-w-0 flex items-center gap-3">
         <WorkspaceSwitcher />
         {breadcrumbs ?? <div />}
@@ -52,11 +66,11 @@ export function Topbar({ onOpenCommand, onOpenShortcuts, breadcrumbs }: TopbarPr
       <button
         type="button"
         onClick={onOpenCommand}
-        className="inline-flex items-center gap-2 h-8 px-2.5 rounded-md border border-border bg-surface-1 text-sm text-text-muted hover:bg-surface-2 transition-colors min-w-[240px]"
+        className="inline-flex items-center gap-2 h-8 px-2.5 rounded-md border border-border bg-surface-1 text-sm text-text-muted hover:bg-surface-2 transition-colors w-9 sm:min-w-[200px] md:min-w-[240px] sm:w-auto"
         aria-label="Open command palette"
       >
-        <Search className="h-3.5 w-3.5" />
-        <span className="flex-1 text-left">Search…</span>
+        <Search className="h-3.5 w-3.5 shrink-0" />
+        <span className="flex-1 text-left hidden sm:inline">Search…</span>
         <kbd className="text-[10px] px-1 py-0.5 rounded bg-surface-3 text-text-secondary border border-border-subtle font-mono">
           ⌘K
         </kbd>

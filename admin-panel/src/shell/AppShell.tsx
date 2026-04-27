@@ -199,15 +199,40 @@ export function AppShell({ registry }: AppShellProps) {
 
   const crumbs = route ? buildCrumbs(route.path, registry) : [];
 
+  // Mobile drawer state. The sidebar uses inline column layout at md+
+  // (this state has no visible effect there). Closing on hash change
+  // is intentional: tapping a nav item should drop the drawer the same
+  // way it would on a real native app.
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  React.useEffect(() => {
+    setSidebarOpen(false);
+  }, [hash]);
+  // Close on Escape so keyboard users don't get trapped behind the
+  // backdrop. Listener is no-op when the drawer is closed.
+  React.useEffect(() => {
+    if (!sidebarOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSidebarOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [sidebarOpen]);
+
   return (
     <RegistryContext.Provider value={registry}>
     <TooltipProvider delayDuration={200}>
       <div className="flex h-full w-full bg-surface-1 text-text-primary">
-        <Sidebar registry={registry} currentPath={hash} />
+        <Sidebar
+          registry={registry}
+          currentPath={hash}
+          mobileOpen={sidebarOpen}
+          onMobileClose={() => setSidebarOpen(false)}
+        />
         <div className="flex-1 min-w-0 flex flex-col h-full">
           <Topbar
             onOpenCommand={() => setPaletteOpen(true)}
             onOpenShortcuts={() => setShortcutsOpen(true)}
+            onOpenSidebar={() => setSidebarOpen(true)}
             breadcrumbs={
               crumbs.length > 0 ? <Breadcrumbs items={crumbs} /> : null
             }

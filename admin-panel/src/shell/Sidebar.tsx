@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronDown, Search, Star } from "lucide-react";
+import { ChevronDown, Search, Star, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { NavIcon } from "./NavIcon";
 import type { AdminRegistry } from "./registry";
@@ -10,9 +10,14 @@ import { useFavorites, type Favorite } from "@/runtime/useFavorites";
 export interface SidebarProps {
   registry: AdminRegistry;
   currentPath: string;
+  /** Mobile drawer state. When `mobileOpen` is true on a < md viewport,
+   *  the sidebar slides in over the page. At md+ the sidebar is always
+   *  visible inline regardless of this value. */
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }
 
-export function Sidebar({ registry, currentPath }: SidebarProps) {
+export function Sidebar({ registry, currentPath, mobileOpen = false, onMobileClose }: SidebarProps) {
   const grouped = groupBySection(registry.nav, registry.navSections);
   const [filter, setFilter] = React.useState("");
 
@@ -31,10 +36,28 @@ export function Sidebar({ registry, currentPath }: SidebarProps) {
     : grouped;
 
   return (
-    <aside
-      className="w-sidebar-w shrink-0 h-full bg-surface-1 border-r border-border flex flex-col"
-      aria-label="Primary navigation"
-    >
+    <>
+      {/* Mobile backdrop — only renders below md AND when the drawer
+       *  is open. Clicking it closes the drawer the same way the X
+       *  button does. Escape key is handled at the AppShell level. */}
+      {mobileOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+          onClick={onMobileClose}
+          aria-hidden
+        />
+      )}
+      <aside
+        className={cn(
+          "w-sidebar-w shrink-0 h-full bg-surface-1 border-r border-border flex flex-col",
+          // Below md: drawer behaviour. Slides in from the left; absent
+          // by default. Above md: inline column, always visible.
+          "md:static md:translate-x-0 md:z-auto",
+          "fixed left-0 top-0 z-50 transition-transform duration-200 motion-reduce:transition-none",
+          mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
+        )}
+        aria-label="Primary navigation"
+      >
       <div className="flex items-center gap-2 px-4 h-topbar-h border-b border-border shrink-0">
         <div
           className="w-7 h-7 rounded-md bg-accent text-accent-fg flex items-center justify-center text-xs font-bold"
@@ -42,12 +65,23 @@ export function Sidebar({ registry, currentPath }: SidebarProps) {
         >
           G
         </div>
-        <div className="flex flex-col leading-tight">
+        <div className="flex flex-col leading-tight flex-1 min-w-0">
           <span className="text-sm font-semibold text-text-primary">Gutu</span>
           <span className="text-[10px] text-text-muted uppercase tracking-wider">
             Admin
           </span>
         </div>
+        {/* Close button only renders at < md */}
+        {onMobileClose && (
+          <button
+            type="button"
+            onClick={onMobileClose}
+            className="md:hidden inline-flex items-center justify-center h-7 w-7 rounded-md text-text-muted hover:bg-surface-2 hover:text-text-primary"
+            aria-label="Close navigation"
+          >
+            <X className="h-4 w-4" aria-hidden />
+          </button>
+        )}
       </div>
 
       <div className="px-2 pt-2 shrink-0">
@@ -92,7 +126,8 @@ export function Sidebar({ registry, currentPath }: SidebarProps) {
           ))
         )}
       </nav>
-    </aside>
+      </aside>
+    </>
   );
 }
 

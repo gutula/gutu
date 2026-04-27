@@ -25,6 +25,7 @@ import { Input } from "@/primitives/Input";
 import { Label } from "@/primitives/Label";
 import { Textarea } from "@/primitives/Textarea";
 import { cn } from "@/lib/cn";
+import { normalizeDkimPublicKey } from "../../../lib/dkim";
 
 interface SelfHostedConfig {
   configured: boolean;
@@ -36,9 +37,17 @@ interface SelfHostedConfig {
 
 interface ProbeResult {
   ok: boolean;
+  /** Which step failed: bootstrap (`session`) or `Mailbox/get`. */
+  stage?: "session" | "mailbox";
   apiUrl?: string;
   hasMailAccount?: boolean;
   capabilities?: string[];
+  mailboxCount?: number;
+  hasInbox?: boolean;
+  hasSent?: boolean;
+  hasDrafts?: boolean;
+  /** True when the base URL is plain HTTP and not localhost. */
+  insecure?: boolean;
   status?: number;
   body?: string;
   error?: string;
@@ -132,6 +141,20 @@ export function SelfHostedTab(): React.ReactElement {
     setSaving(true);
     setError(undefined);
     try {
+      // Auto-probe on save so the operator never persists a config that
+      // the live pipeline can't actually use. Skips when probe already
+      // succeeded against the same URL/token combo (probe stays in
+      // state across re-renders).
+      if (!probe || !probe.ok) {
+        const r = await api<ProbeResult>("/mail/self-hosted/probe", {
+          method: "POST",
+          body: JSON.stringify({ baseUrl, token }),
+        });
+        setProbe(r);
+        if (!r.ok) {
+          throw new Error("Probe failed — fix the connection before saving");
+        }
+      }
       await api("/mail/self-hosted", {
         method: "POST",
         body: JSON.stringify({ baseUrl, token, defaultEmail, displayName: displayName || undefined }),
@@ -145,6 +168,36 @@ export function SelfHostedTab(): React.ReactElement {
       setSaving(false);
     }
   };
+
+  const handleDisconnect = async (): Promise<void> => {
+    if (!window.confirm(
+      "Disconnect the self-hosted mail server?\n\n" +
+      "Inbound + outbound mail through this server stops immediately. The Stalwart " +
+      "instance keeps running — the framework just forgets about it.",
+    )) return;
+    setSaving(true);
+    setError(undefined);
+    try {
+      await api("/mail/self-hosted", { method: "DELETE" });
+      setBaseUrl("");
+      setToken("");
+      setDefaultEmail("");
+      setDisplayName("");
+      setProbe(null);
+      setSavedAt(undefined);
+      await refreshConfig();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Soft warning: the form blocks neither a non-https URL nor a
+  // missing-domain entry, but flags both inline so the operator can fix
+  // them before save. `isInsecure` lights up only for non-localhost
+  // http URLs (docker-compose on localhost is fine).
+  const isInsecure = baseUrl.startsWith("http://") && !/^http:\/\/(localhost|127\.|0\.0\.0\.0)/.test(baseUrl);
 
   return (
     <section className="max-w-3xl space-y-6">
@@ -178,16 +231,33 @@ export function SelfHostedTab(): React.ReactElement {
                 type="url"
                 placeholder="https://mail.example.com"
                 value={baseUrl}
-                onChange={(e) => setBaseUrl(e.target.value)}
+                onChange={(e) => {
+                  setBaseUrl(e.target.value);
+                  setProbe(null); // any URL change invalidates the previous probe result
+                }}
               />
             </Field>
+
+            {isInsecure && (
+              <div
+                role="alert"
+                className="rounded-md border border-warning-strong/30 bg-warning-soft/50 p-2.5 text-xs text-warning-strong"
+              >
+                <strong>Insecure URL</strong>: <code className="font-mono">http://</code> traffic is unencrypted.
+                Use <code className="font-mono">https://</code> for any production mail server. The framework will
+                still try to connect, but auth tokens travel in plaintext over the wire.
+              </div>
+            )}
 
             <Field label="Admin / API token" hint="Stored encrypted at rest. Stalwart issues tokens via its admin UI.">
               <Input
                 type="password"
                 placeholder={config?.configured ? "••••• (saved — paste a new token to rotate)" : "Bearer …"}
                 value={token}
-                onChange={(e) => setToken(e.target.value)}
+                onChange={(e) => {
+                  setToken(e.target.value);
+                  setProbe(null);
+                }}
               />
             </Field>
 
@@ -226,11 +296,22 @@ export function SelfHostedTab(): React.ReactElement {
               >
                 {saving ? "Saving…" : config?.configured ? "Update" : "Save"}
               </Button>
+              {config?.configured && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDisconnect}
+                  disabled={saving}
+                  className="text-danger hover:text-danger-strong"
+                >
+                  Disconnect
+                </Button>
+              )}
               {savedAt && (
-                <span className="text-xs text-text-muted">Saved at {savedAt}</span>
+                <span className="text-xs text-text-muted ml-auto">Saved at {savedAt}</span>
               )}
               {error && (
-                <span className="text-xs text-danger">{error}</span>
+                <span className="text-xs text-danger" role="alert">{error}</span>
               )}
             </div>
 
@@ -247,19 +328,48 @@ export function SelfHostedTab(): React.ReactElement {
               >
                 {probe.ok ? (
                   <>
-                    <div className="font-semibold">✓ Reachable</div>
-                    <div className="text-text-primary">API URL: <code className="font-mono text-[11px]">{probe.apiUrl}</code></div>
+                    <div className="font-semibold">✓ Reachable + authenticated</div>
                     <div className="text-text-primary">
-                      Mail account: {probe.hasMailAccount ? "yes" : "missing — token might lack mail scope"}
+                      API URL: <code className="font-mono text-[11px]">{probe.apiUrl}</code>
                     </div>
-                    <div className="text-text-primary">Capabilities: {(probe.capabilities ?? []).join(", ") || "none"}</div>
+                    <div className="text-text-primary">
+                      Mailboxes: {probe.mailboxCount ?? 0}
+                      {" — "}
+                      <span className={probe.hasInbox ? "" : "text-warning-strong"}>
+                        Inbox {probe.hasInbox ? "✓" : "✗"}
+                      </span>
+                      {", "}
+                      <span className={probe.hasSent ? "" : "text-warning-strong"}>
+                        Sent {probe.hasSent ? "✓" : "✗"}
+                      </span>
+                      {", "}
+                      <span className={probe.hasDrafts ? "" : "text-warning-strong"}>
+                        Drafts {probe.hasDrafts ? "✓" : "✗"}
+                      </span>
+                    </div>
+                    <div className="text-text-primary">
+                      Capabilities: {(probe.capabilities ?? []).join(", ") || "none"}
+                    </div>
+                    {probe.insecure && (
+                      <div className="text-warning-strong pt-1">
+                        ⚠ Connection uses plain HTTP — token + mail bodies travel unencrypted.
+                      </div>
+                    )}
                   </>
                 ) : (
                   <>
-                    <div className="font-semibold">✗ Probe failed</div>
-                    {probe.status && <div className="text-text-primary">Status: {probe.status}</div>}
-                    {probe.body && <div className="font-mono text-[11px] text-text-primary break-all">{probe.body}</div>}
-                    {probe.error && <div className="font-mono text-[11px] text-text-primary break-all">{probe.error}</div>}
+                    <div className="font-semibold">
+                      ✗ Probe failed{probe.stage ? ` (${probe.stage === "session" ? "couldn't reach the server" : "couldn't list mailboxes — check token scope"})` : ""}
+                    </div>
+                    {probe.status !== undefined && (
+                      <div className="text-text-primary">Status: {probe.status}</div>
+                    )}
+                    {probe.body && (
+                      <div className="font-mono text-[11px] text-text-primary break-all">{probe.body}</div>
+                    )}
+                    {probe.error && (
+                      <div className="font-mono text-[11px] text-text-primary break-all">{probe.error}</div>
+                    )}
                   </>
                 )}
               </div>
@@ -293,6 +403,12 @@ function DnsRecordsCard(): React.ReactElement {
     setError(undefined);
     setBundle(null);
     try {
+      const normalized = normalizeDkimPublicKey(dkimPublicKey);
+      if (!normalized.ok) {
+        setError(normalized.error);
+        setBuilding(false);
+        return;
+      }
       const res = await api<{ bundle: DnsBundle; zoneFile: string }>(
         "/mail/self-hosted/dns",
         {
@@ -301,7 +417,7 @@ function DnsRecordsCard(): React.ReactElement {
             domain,
             mailHost: mailHost || `mail.${domain}`,
             dkimSelector,
-            dkimPublicKeyBase64: dkimPublicKey.replace(/\s+/g, ""),
+            dkimPublicKeyBase64: normalized.value,
             dkimKeyType,
             dmarcPolicy,
           }),

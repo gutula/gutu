@@ -117,6 +117,12 @@ interface SessionState {
 const SESSION_POOL = new Map<string, SessionState>();
 const SESSION_TTL_MS = 5 * 60_000;
 const REQUEST_TIMEOUT_MS = 15_000;
+/** Retry transient failures (network errors, 502/503/504, 429) up to
+ *  this many times. Exponential backoff capped at MAX_BACKOFF_MS. The
+ *  driver does NOT retry 4xx (other than 429) because they signal a
+ *  config error, not a transient failure. */
+const MAX_RETRIES = 3;
+const MAX_BACKOFF_MS = 4_000;
 
 /* -------------------------------------------------------------------- */
 /* Folder mapping. JMAP uses `role` (RFC 8621) which maps cleanly to    */
@@ -187,10 +193,20 @@ export class JmapDriver implements MailDriver {
 
   private async bootstrap(baseUrl: string, authHeader: string): Promise<SessionState> {
     const url = baseUrl.replace(/\/+$/, "") + "/.well-known/jmap";
-    const session = await fetchJson<JmapSession>(url, {
-      method: "GET",
-      headers: { Authorization: authHeader, Accept: "application/json" },
-    });
+    let session: JmapSession;
+    try {
+      session = await fetchJson<JmapSession>(url, {
+        method: "GET",
+        headers: { Authorization: authHeader, Accept: "application/json" },
+      });
+    } catch (err) {
+      // Bad token at bootstrap also means the cached session is dead —
+      // make sure we don't accidentally hold a half-built one.
+      if (err instanceof JmapHttpError && err.status === 401) {
+        SESSION_POOL.delete(this.connectionId);
+      }
+      throw err;
+    }
     const accountId = session.primaryAccounts?.["urn:ietf:params:jmap:mail"];
     if (!accountId) throw new Error("jmap session has no mail account");
 
@@ -229,17 +245,27 @@ export class JmapDriver implements MailDriver {
       using: ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail", "urn:ietf:params:jmap:submission"],
       methodCalls: [[method, args, "0"]],
     };
-    const res = await fetchJson<{
-      methodResponses: Array<[string, Record<string, unknown>, string]>;
-    }>(state.apiUrl, {
-      method: "POST",
-      headers: {
-        Authorization: state.authHeader,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    let res: { methodResponses: Array<[string, Record<string, unknown>, string]> };
+    try {
+      res = await fetchJson<typeof res>(state.apiUrl, {
+        method: "POST",
+        headers: {
+          Authorization: state.authHeader,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+    } catch (err) {
+      // 401 means the token is bad / rotated. Evict the cached session
+      // so the NEXT call rebuilds it from the current connection record
+      // — if the operator updated the token in the settings page, that
+      // path picks up the new token transparently.
+      if (err instanceof JmapHttpError && err.status === 401) {
+        SESSION_POOL.delete(this.connectionId);
+      }
+      throw err;
+    }
     const first = res.methodResponses?.[0];
     if (!first) throw new Error(`jmap call ${method}: empty methodResponses`);
     const [respName, respArgs] = first;
@@ -729,9 +755,29 @@ function collectParticipantsFromMessages(messages: readonly DriverMessage[]): Ad
   return Array.from(seen.values());
 }
 
-async function fetchWithTimeout(url: string, init: RequestInit): Promise<Response> {
+/** Error thrown by `fetchJson` carrying the HTTP status. The driver
+ *  uses the status to decide whether to evict the cached session (401),
+ *  retry (5xx / 429), or surface the error untouched. */
+export class JmapHttpError extends Error {
+  constructor(
+    public readonly status: number,
+    public readonly bodySnippet: string,
+    message: string,
+  ) {
+    super(message);
+    this.name = "JmapHttpError";
+  }
+}
+
+async function fetchWithTimeout(
+  url: string,
+  init: RequestInit,
+  timeoutMs = REQUEST_TIMEOUT_MS,
+): Promise<Response> {
   const controller = new AbortController();
-  const t = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const t = setTimeout(() => controller.abort(), timeoutMs);
+  // Strip leading slashes if any (defensive — paths come from the JMAP
+  // session, not the user, but worth keeping the URL hygienic).
   try {
     return await fetch(url, { ...init, signal: controller.signal });
   } finally {
@@ -739,11 +785,74 @@ async function fetchWithTimeout(url: string, init: RequestInit): Promise<Respons
   }
 }
 
-async function fetchJson<T>(url: string, init: RequestInit): Promise<T> {
-  const res = await fetchWithTimeout(url, init);
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`jmap ${init.method ?? "GET"} ${url} failed: ${res.status} ${text.slice(0, 200)}`);
+/** Strip Authorization headers from anything we re-throw so an
+ *  upstream error log can never accidentally include the bearer
+ *  token. The token still lives in the original RequestInit but
+ *  is never part of any error payload. */
+function sanitizeUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    // Strip any querystring `token=` / `apikey=` style params even
+    // though we don't currently set them — defense in depth.
+    for (const k of Array.from(u.searchParams.keys())) {
+      if (/^(token|apikey|api_key|access_token|secret)$/i.test(k)) {
+        u.searchParams.set(k, "[REDACTED]");
+      }
+    }
+    return u.toString();
+  } catch {
+    return url;
   }
-  return (await res.json()) as T;
+}
+
+/** Fetch JSON with retry-on-transient + token-safe error messages. */
+async function fetchJson<T>(url: string, init: RequestInit): Promise<T> {
+  let lastErr: unknown;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const res = await fetchWithTimeout(url, init);
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        const safeUrl = sanitizeUrl(url);
+        const err = new JmapHttpError(
+          res.status,
+          text.slice(0, 200),
+          `jmap ${init.method ?? "GET"} ${safeUrl} failed: ${res.status} ${text.slice(0, 200)}`,
+        );
+        // Retry only on truly transient statuses. 4xx (other than 429)
+        // signal a config bug — retrying just hides the problem.
+        const isTransient = res.status === 429 || (res.status >= 500 && res.status < 600);
+        if (!isTransient || attempt === MAX_RETRIES) throw err;
+        await sleep(backoffMs(attempt));
+        lastErr = err;
+        continue;
+      }
+      return (await res.json()) as T;
+    } catch (err) {
+      // AbortError + DNS / connection-reset / TLS errors land here.
+      // These are also transient — retry up to MAX_RETRIES.
+      if (err instanceof JmapHttpError) throw err; // already handled above
+      if (attempt === MAX_RETRIES) {
+        const message = err instanceof Error ? err.message : String(err);
+        const safeUrl = sanitizeUrl(url);
+        throw new Error(`jmap ${init.method ?? "GET"} ${safeUrl} network error after ${attempt + 1} attempts: ${message}`);
+      }
+      await sleep(backoffMs(attempt));
+      lastErr = err;
+    }
+  }
+  // unreachable
+  throw lastErr instanceof Error ? lastErr : new Error("jmap fetch failed");
+}
+
+function backoffMs(attempt: number): number {
+  // 200, 400, 800, … capped. Add ±25 % jitter so retries don't
+  // synchronise across many drivers running against the same server.
+  const base = Math.min(MAX_BACKOFF_MS, 200 * Math.pow(2, attempt));
+  const jitter = base * 0.25 * (Math.random() * 2 - 1);
+  return Math.max(50, Math.floor(base + jitter));
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((r) => setTimeout(r, ms));
 }

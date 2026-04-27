@@ -168,6 +168,29 @@ selfHostedRoutes.post("/", async (c) => {
   return c.json({ ok: true, connectionId: id });
 });
 
+/* DELETE — disconnect the self-hosted JMAP server. Removes the
+ *  connection record + its ACL grants. The mail-sync + mail-send jobs
+ *  immediately stop using the server because driverFor() can no longer
+ *  load the connection. Stalwart is left running (the framework never
+ *  owned its lifecycle). */
+selfHostedRoutes.delete("/", (c) => {
+  const tenantId = tenantIdFromCtx();
+  const user = currentUser(c);
+  const row = db
+    .prepare(
+      `SELECT id FROM records WHERE resource = 'mail.connection'
+       AND json_extract(data, '$.userId') = ?
+       AND json_extract(data, '$.tenantId') = ?
+       AND json_extract(data, '$.provider') = 'jmap'
+       LIMIT 1`,
+    )
+    .get(user.id, tenantId) as { id: string } | undefined;
+  if (!row) return c.json({ ok: true, removed: 0 });
+  db.prepare(`DELETE FROM editor_acl WHERE resource = 'mail.connection' AND record_id = ?`).run(row.id);
+  db.prepare(`DELETE FROM records WHERE resource = 'mail.connection' AND id = ?`).run(row.id);
+  return c.json({ ok: true, removed: 1, connectionId: row.id });
+});
+
 /* POST — render the DNS bundle for a domain. */
 selfHostedRoutes.post("/dns", async (c) => {
   const body = await c.req.json().catch(() => null);
@@ -192,9 +215,21 @@ selfHostedRoutes.post("/dns", async (c) => {
   }
 });
 
-/* POST — probe the JMAP server. Reports the same Authorization-aware
- *  bootstrap path the driver uses, so admins see exactly what the live
- *  pipeline would see. */
+/* POST — probe the JMAP server.
+ *
+ *  Two-stage probe so we report the same failure mode the live pipeline
+ *  hits:
+ *    1. GET `/.well-known/jmap` — validates URL is reachable, returns
+ *       a JMAP session, and confirms the token has at LEAST session
+ *       capability.
+ *    2. POST `Email/query` (limit 1) on the mail account — actually
+ *       exercises the mail scope. A token that can read the session
+ *       but lacks `urn:ietf:params:jmap:mail` would slip past stage 1
+ *       and fail later inside the sync job; we want that to fail HERE
+ *       so the operator fixes the token before saving.
+ *
+ *  Rate limiting: protected by the global rateLimit() middleware, plus
+ *  a hard 10s timeout per stage. */
 selfHostedRoutes.post("/probe", async (c) => {
   const body = await c.req.json().catch(() => null);
   const parsed = ProbeBody.safeParse(body);
@@ -202,39 +237,129 @@ selfHostedRoutes.post("/probe", async (c) => {
     return c.json({ error: "invalid body", issues: parsed.error.issues }, 400);
   }
   const { baseUrl, token } = parsed.data;
-  const url = baseUrl.replace(/\/+$/, "") + "/.well-known/jmap";
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10_000);
+  const cleanBase = baseUrl.replace(/\/+$/, "");
+  const authHeader = token.startsWith("Basic ") || token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+  const headers: HeadersInit = {
+    Authorization: authHeader,
+    Accept: "application/json",
+  };
+
+  // Soft warning: non-HTTPS URLs are dangerous in production.
+  // We still allow them (dev / docker-compose on localhost), but flag.
+  const insecure = cleanBase.startsWith("http://") && !/^http:\/\/(localhost|127\.|0\.0\.0\.0)/.test(cleanBase);
+
+  // Stage 1: session bootstrap.
+  const sessionUrl = `${cleanBase}/.well-known/jmap`;
+  let session: {
+    apiUrl?: string;
+    primaryAccounts?: Record<string, string>;
+    capabilities?: Record<string, unknown>;
+  };
   try {
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: token.startsWith("Basic ") || token.startsWith("Bearer ")
-          ? token
-          : `Bearer ${token}`,
-        Accept: "application/json",
-      },
-      signal: controller.signal,
+    const res = await timedFetch(sessionUrl, { method: "GET", headers });
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      return c.json({
+        ok: false,
+        stage: "session",
+        status: res.status,
+        body: text.slice(0, 400),
+        insecure,
+      });
+    }
+    session = await res.json();
+  } catch (err) {
+    return c.json({
+      ok: false,
+      stage: "session",
+      error: err instanceof Error ? err.message : String(err),
+      insecure,
+    });
+  }
+
+  const accountId = session.primaryAccounts?.["urn:ietf:params:jmap:mail"];
+  if (!accountId) {
+    return c.json({
+      ok: false,
+      stage: "session",
+      error: "session has no mail account — token may lack urn:ietf:params:jmap:mail capability",
+      apiUrl: session.apiUrl,
+      capabilities: Object.keys(session.capabilities ?? {}),
+      insecure,
+    });
+  }
+
+  // Stage 2: prove the mail scope by querying one mailbox.
+  const apiUrl = session.apiUrl;
+  if (!apiUrl) {
+    return c.json({ ok: false, stage: "session", error: "session missing apiUrl", insecure });
+  }
+  try {
+    const res = await timedFetch(apiUrl, {
+      method: "POST",
+      headers: { ...headers, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        using: ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
+        methodCalls: [["Mailbox/get", { accountId, ids: null }, "0"]],
+      }),
     });
     if (!res.ok) {
       const text = await res.text().catch(() => "");
-      return c.json({ ok: false, status: res.status, body: text.slice(0, 400) });
+      return c.json({
+        ok: false,
+        stage: "mailbox",
+        status: res.status,
+        body: text.slice(0, 400),
+        insecure,
+      });
     }
-    const session = (await res.json()) as {
-      apiUrl?: string;
-      primaryAccounts?: Record<string, string>;
-      capabilities?: Record<string, unknown>;
+    const out = (await res.json()) as {
+      methodResponses?: Array<[string, { list?: Array<{ name: string; role?: string | null }>; error?: unknown }, string]>;
     };
-    const accountId = session.primaryAccounts?.["urn:ietf:params:jmap:mail"];
+    const first = out.methodResponses?.[0];
+    if (!first) {
+      return c.json({ ok: false, stage: "mailbox", error: "empty methodResponses", insecure });
+    }
+    const [respName, respArgs] = first;
+    if (respName === "error") {
+      return c.json({
+        ok: false,
+        stage: "mailbox",
+        error: `JMAP error: ${JSON.stringify(respArgs).slice(0, 300)}`,
+        insecure,
+      });
+    }
+    const mailboxes = respArgs.list ?? [];
+    const roles = new Set(mailboxes.map((m) => m.role).filter(Boolean));
     return c.json({
       ok: true,
-      apiUrl: session.apiUrl,
-      hasMailAccount: !!accountId,
+      apiUrl,
+      hasMailAccount: true,
       capabilities: Object.keys(session.capabilities ?? {}),
+      mailboxCount: mailboxes.length,
+      hasInbox: roles.has("inbox"),
+      hasSent: roles.has("sent"),
+      hasDrafts: roles.has("drafts"),
+      insecure,
     });
   } catch (err) {
-    return c.json({ ok: false, error: err instanceof Error ? err.message : String(err) });
-  } finally {
-    clearTimeout(timeout);
+    return c.json({
+      ok: false,
+      stage: "mailbox",
+      error: err instanceof Error ? err.message : String(err),
+      insecure,
+    });
   }
 });
+
+/** Short-timeout fetch used by the probe so an unreachable host fails
+ *  in 10s rather than hanging the request handler. */
+async function timedFetch(url: string, init: RequestInit, timeoutMs = 10_000): Promise<Response> {
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(t);
+  }
+}
