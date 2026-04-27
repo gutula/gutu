@@ -37,6 +37,13 @@ beforeAll(async () => {
     import("@gutu-plugin/forms-core"),
     import("@gutu-plugin/integration-core"),
     import("@gutu-plugin/analytics-bi-core"),
+    // editor-core owns the editor_acl table; the shell migration
+    // back-fills ACL rows on first boot and reads from it on every
+    // resource list. Phase tests need it present.
+    import("@gutu-plugin/editor-core"),
+    // field-metadata-core owns `field_metadata` (custom field schemas)
+    // — bulk-import + custom-field-aware tests fall over without it.
+    import("@gutu-plugin/field-metadata-core"),
   ]);
   await runPluginMigrations(plugins.map((p) => p.hostPlugin));
 });

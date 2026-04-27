@@ -12,7 +12,7 @@ import { relationshipKind } from "./relationship";
 import { tagsKind } from "./tags";
 import { fileKind } from "./file";
 import { imageKind } from "./image";
-import { geoPointKind } from "./geo";
+import { geoPointKind, geoPolygonKind } from "./geo";
 import { videoKind, audioKind } from "./media";
 import { codeKind } from "./code";
 import { markdownKind } from "./markdown";
@@ -36,6 +36,7 @@ registerFieldKind("image", imageKind);
 
 /* Tier 2 — geo + media */
 registerFieldKind("geo.point", geoPointKind);
+registerFieldKind("geo.polygon", geoPolygonKind);
 registerFieldKind("video", videoKind);
 registerFieldKind("audio", audioKind);
 

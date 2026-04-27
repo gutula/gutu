@@ -22,13 +22,31 @@ const seedIf = (r: string, rows: Record<string, unknown>[]) =>
 export function seedFieldServiceExtended(): Record<string, number> {
   const out: Record<string, number> = {};
 
+  // Real-world lat/lng for the demo dataset — spread across an SF
+  // bounding box so the dispatch map shows real geography, not a
+  // grid of synthetic dots.
+  const SF_BOX = { minLat: 37.74, maxLat: 37.81, minLng: -122.46, maxLng: -122.38 };
+  const dispatchCoords = (i: number): { lat: number; lng: number } => {
+    // Two interleaved 1-D Halton-ish sequences keep points spread
+    // without overlapping clusters.
+    const t1 = ((i * 13) % 100) / 100;
+    const t2 = ((i * 31) % 100) / 100;
+    return {
+      lat: SF_BOX.minLat + (SF_BOX.maxLat - SF_BOX.minLat) * t1,
+      lng: SF_BOX.minLng + (SF_BOX.maxLng - SF_BOX.minLng) * t2,
+    };
+  };
+
   out["field-service.job"] = seedIf("field-service.job", Array.from({ length: 40 }, (_, i) => {
     const scheduled = daysAgo(i - 10);
     const isCompleted = i % 3 === 2;
+    const coords = dispatchCoords(i);
     return {
       id: `fs_job_ext_${i + 1}`,
       code: code("FS", i, 6),
       customer: pick(["Acme Corp", "Globex", "Initech", "Hooli", "Pied Piper"], i),
+      lat: coords.lat,
+      lng: coords.lng,
       contactPhone: `+1-555-${String(2000 + i).slice(-4)}`,
       serviceType: pick(["install", "repair", "maintenance", "inspection", "emergency"], i),
       assetCode: `AST-${String(10000 + i).slice(-5)}`,

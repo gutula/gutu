@@ -202,7 +202,17 @@ export function migrate(): void {
   const backfilled = db
     .prepare(`SELECT value FROM meta WHERE key = ?`)
     .get("record_acl_backfilled_v2") as { value: string } | undefined;
-  if (!backfilled) {
+  // editor_acl is owned by editor-core's plugin migration. Production
+  // boot runs the shell migrate() AFTER plugin migrations so the table
+  // already exists. Unit tests sometimes invert that order — be
+  // defensive: skip the backfill (and re-attempt on next boot) when
+  // the table isn't there yet.
+  const editorAclExists = db
+    .prepare(
+      `SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'editor_acl' LIMIT 1`,
+    )
+    .get() as { name: string } | undefined;
+  if (!backfilled && editorAclExists) {
     // Walk ALL records (every resource), seed ACL where missing.
     const records = db
       .prepare(`SELECT resource, id, data FROM records`)

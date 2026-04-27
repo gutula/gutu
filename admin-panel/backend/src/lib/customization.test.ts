@@ -42,6 +42,8 @@ beforeAll(async () => {
     import("@gutu-plugin/forms-core"),
     import("@gutu-plugin/integration-core"),
     import("@gutu-plugin/analytics-bi-core"),
+    // editor-core: owns editor_acl, required by the migration backfill.
+    import("@gutu-plugin/editor-core"),
   ]);
   await runPluginMigrations(plugins.map((p) => p.hostPlugin));
 });
