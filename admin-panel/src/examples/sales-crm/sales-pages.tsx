@@ -1286,8 +1286,28 @@ function DealDetailPage() {
         }
         actions={
           <>
-            <Button variant="secondary" size="sm">Log call</Button>
-            <Button variant="primary" size="sm">Advance stage</Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => navigateTo(`/crm/calls/new?dealId=${deal.id}`)}
+            >
+              Log call
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              disabled={stageIndex >= DEAL_STAGES.length - 1}
+              onClick={() => {
+                // Demo deal data is read-only; surface intent to the
+                // operator so the click is visibly acknowledged.
+                const next = DEAL_STAGES[stageIndex + 1];
+                if (next) {
+                  window.alert(`Demo: would advance "${deal.code}" to "${next.label}". Real implementation requires a server mutation hook.`);
+                }
+              }}
+            >
+              Advance stage
+            </Button>
           </>
         }
       />

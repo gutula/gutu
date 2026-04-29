@@ -884,6 +884,16 @@ function AgentDetailPanel({ agent, onClose }: { agent: Agent; onClose: () => voi
       .then((r) => setCalls(r.calls))
       .catch(() => undefined);
   }, [agent.id]);
+  // Escape key dismisses the panel — standard dialog UX. Backdrop
+  // click + the explicit Close button already work; Esc closes the
+  // accessibility loop.
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent): void => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
 
   return (
     <div
@@ -1036,6 +1046,16 @@ function CreateAgentDialog({
   const [instructions, setInstructions] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
   const [err, setErr] = React.useState<string | undefined>();
+
+  // Escape closes — keyboard accessibility parity with backdrop click +
+  // explicit Cancel button.
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent): void => {
+      if (e.key === "Escape" && !submitting) onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose, submitting]);
 
   // Allowed actions follow the risk ceiling — `safe-read` should
   // never be able to grant write/delete, even if the picker shows them.
