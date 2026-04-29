@@ -51,6 +51,7 @@ import {
   seedDefaultAcl,
   type Role,
 } from "../lib/acl";
+import { getRegisteredResourceNamespaces } from "../host/plugin-contract";
 import { emitRecordEvent } from "../lib/event-bus";
 import { validateRecordAgainstFieldMeta } from "../lib/field-metadata";
 import { listUiResources } from "../lib/ui/metadata";
@@ -101,44 +102,15 @@ function knownResourceIds(): Set<string> {
  *  optional hyphens. Mirrors lib/mcp/bootstrap.ts. */
 const NAMESPACED_RESOURCE_RE = /^[a-z][a-z0-9-]*\.[a-z][a-z0-9-]*$/;
 
-/** Allow-listed plugin namespaces — every shipped plugin's resource
- *  prefix. A POST to `<ns>.<anything>` is accepted as a first write
- *  even before the catalog has discovered the resource (which only
- *  happens lazily once a record exists). Anything outside this list
- *  must already be in the catalog or the request 404s.
- *
- *  Adding a new plugin? Append its namespace here. The check is also
- *  performed by `lib/mcp/bootstrap.ts:isValidResourceId`, but this
- *  set is the *operational* allow-list — bootstrap's regex is the
- *  *syntactic* check. */
-const ALLOWED_PLUGIN_NAMESPACES = new Set<string>([
-  "accounting", "ai-assist", "ai-core", "ai-evals", "ai-rag", "ai-skills",
-  "analytics", "analytics-bi", "assets", "audit", "auth", "automation",
-  "booking", "business-portals", "collab", "community", "company-builder",
-  "content", "contracts", "crm", "dashboards", "document", "document-editor",
-  "e-invoicing", "editor", "editors", "execution-workspaces",
-  "favorites", "field-metadata", "field-service", "files", "forms",
-  "hr", "hr-payroll",
-  "integration", "inventory", "issues",
-  "jobs", "knowledge",
-  "mail", "maintenance-cmms", "manufacturing",
-  "notifications",
-  "org-tenant",
-  "page-builder", "party-relationships", "payments", "platform",
-  "portal", "pos", "pricing-tax", "procurement", "product-catalog", "projects",
-  "quality",
-  "record-links", "role-policy", "runtime-bridge",
-  "sales", "saved-views", "search", "slides", "spreadsheet", "subscriptions",
-  "support-service",
-  "template", "timeline", "traceability", "treasury",
-  "user-directory",
-  "webhook", "whiteboard", "workflow",
-]);
-
+/** Test the namespace prefix of `resource` against the dynamic
+ *  allow-list — the union of namespaces every loaded plugin declared
+ *  via `HostPlugin.resources`. No hardcoded enumeration in this
+ *  file; the host learns the set from the plugin contract at
+ *  `loadPlugins()` time. */
 function isAllowlistedNamespace(resource: string): boolean {
   if (!NAMESPACED_RESOURCE_RE.test(resource)) return false;
-  const ns = resource.split(".", 1)[0];
-  return ALLOWED_PLUGIN_NAMESPACES.has(ns);
+  const ns = resource.split(".", 1)[0]!;
+  return getRegisteredResourceNamespaces().has(ns);
 }
 
 /** Verify the route's `:resource` is a known catalog id. Returns a 404
@@ -149,11 +121,12 @@ function isAllowlistedNamespace(resource: string): boolean {
  *    1. Resource is already in the catalog (plugin tools or existing
  *       records) → allow.
  *    2. Resource matches the strict `<plugin>.<entity>` namespace
- *       pattern AND the plugin namespace is on the allow-list →
- *       allow (lets first writes seed the catalog without an
- *       explicit registration round-trip).
+ *       pattern AND a loaded plugin has declared at least one
+ *       resource in that namespace → allow (lets first writes seed
+ *       the catalog without an explicit registration round-trip).
  *    3. Otherwise → 404. `totallymadeup` (no namespace) and
- *       `fake.unknown` (unlisted namespace) both fail here. */
+ *       `fake.unknown` / `attacker.spam` (unloaded namespace) all
+ *       fail here. */
 function requireKnownResource(c: Context, resource: string): { ok: true } | { ok: false; res: Response } {
   if (knownResourceIds().has(resource)) return { ok: true };
   if (isAllowlistedNamespace(resource)) return { ok: true };

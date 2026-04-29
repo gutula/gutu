@@ -32,11 +32,18 @@ import { loadDiscoveredPlugins } from "./host/discover";
 import { ensureTenantEnablementSchema } from "./host/tenant-enablement";
 import { registerPluginWsRoutes, matchWsRoute } from "./host/ws-router";
 import { pluginsRoutes, setActivePlugins } from "./routes/_plugins";
+import { exampleAppHostPlugin } from "./host/example-app-plugin";
 
 // Discover every plugin from package.json["gutuPlugins"] / env /
 // monorepo scan. The HOST_PLUGINS list is no longer hardcoded — adding
 // a plugin is `bun add @acme/gutu-foo` + appending to `gutuPlugins`.
-const HOST_PLUGINS = await loadDiscoveredPlugins();
+//
+// The bundled `example-app` synthetic plugin is appended last so the
+// shell's resource-write gate accepts POSTs to demo namespaces (CRM,
+// Booking, Support, etc.) without each demo needing a backend plugin.
+// Drop the example app from the build and this plugin disappears with
+// it; the gate adapts automatically.
+const HOST_PLUGINS = [...(await loadDiscoveredPlugins()), exampleAppHostPlugin];
 
 const cfg = loadConfig();
 

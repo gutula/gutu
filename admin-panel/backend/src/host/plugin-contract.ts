@@ -132,6 +132,18 @@ export interface HostPlugin {
   provides?: string[];
   /** Capability ids this plugin needs. Boot fails if missing. */
   consumes?: string[];
+  /** Resources the plugin owns — full descriptors or bare resource ids
+   *  (`accounting.invoice`). The host auto-registers each into the UI
+   *  resource catalog at `loadPlugins()` time, so no `start()` hook
+   *  call is required. The resource-write gate also derives the
+   *  set of allowed plugin namespaces from this declaration:
+   *  no manual allowlist edits when adding a new plugin.
+   *
+   *  String shorthand → `{ id: <string> }`. The id MUST match the
+   *  `<plugin>.<entity>` convention; the host rejects anything else
+   *  with a clear error so plugin authors don't accidentally widen
+   *  the namespace surface. */
+  resources?: ReadonlyArray<UiResourceDescriptor | string>;
 
   /* ---- lifecycle hooks (all optional, all may be async) ---- */
 
@@ -331,18 +343,82 @@ async function runIsolated<T>(p: HostPlugin, phase: string, fn: () => T | Promis
 /* ---- lifecycle drivers --------------------------------------------- */
 
 /** Initialise the plugin registry: register every plugin's record + its
- *  initial status, run topo + consumes validation, record permissions. */
+ *  initial status, run topo + consumes validation, record permissions,
+ *  and fold every plugin's `resources[]` into the UI metadata catalog.
+ *
+ *  Auto-registering resources here (instead of in each plugin's
+ *  `start()` hook) means the catalog is populated BEFORE any HTTP
+ *  request lands. Tests, fresh DBs, and the catalog-gated write
+ *  endpoints all see the same set as production. */
 export function loadPlugins(plugins: HostPlugin[]): HostPlugin[] {
   const ordered = topologicallySort(plugins);
   validateConsumes(ordered);
   REGISTRY.clear();
+  REGISTERED_RESOURCE_NAMESPACES.clear();
   for (const p of ordered) {
     REGISTRY.set(p.id, { plugin: p, status: "loaded", errors: [] });
+    if (p.resources && p.resources.length > 0) {
+      registerPluginResources(p, p.resources);
+    }
   }
   // Register manifest permissions so host SDK call sites can enforce.
   // Lazy-import to avoid circular dep: permissions imports back from here.
   void import("./permissions").then((m) => m.registerPluginPermissions(ordered));
   return ordered;
+}
+
+/** Plugin-namespace allowlist for the resource-write gate. Populated
+ *  by `loadPlugins` from each plugin's `resources` declaration. The
+ *  resource-write gate (`requireKnownResource` in routes/resources.ts)
+ *  reads this to decide whether a POST to `<ns>.<entity>` is allowed
+ *  before the catalog has discovered the resource lazily.
+ *
+ *  Lookup is intentionally namespace-only (not full resource id) so a
+ *  plugin's first write — which seeds the records table and primes
+ *  the catalog — isn't blocked by an empty cache. Subsequent writes
+ *  fall through to the catalog membership check. */
+const REGISTERED_RESOURCE_NAMESPACES = new Set<string>();
+
+const VALID_RESOURCE_ID_RE = /^[a-z][a-z0-9-]*\.[a-z][a-z0-9-]*$/;
+
+function registerPluginResources(
+  p: HostPlugin,
+  resources: ReadonlyArray<UiResourceDescriptor | string>,
+): void {
+  for (const r of resources) {
+    const descriptor: UiResourceDescriptor = typeof r === "string" ? { id: r } : r;
+    if (!VALID_RESOURCE_ID_RE.test(descriptor.id)) {
+      console.error(
+        `[plugin-host] ${p.id} declared resource "${descriptor.id}" which doesn't match the <plugin>.<entity> namespace convention; skipping`,
+      );
+      continue;
+    }
+    try {
+      registerUiResource(descriptor);
+      const ns = descriptor.id.split(".", 1)[0]!;
+      REGISTERED_RESOURCE_NAMESPACES.add(ns);
+    } catch (err) {
+      console.error(
+        `[plugin-host] ${p.id} failed to register resource "${descriptor.id}":`,
+        err,
+      );
+    }
+  }
+}
+
+/** Read-only snapshot of namespaces every loaded plugin owns at least
+ *  one resource in. Used by the resource-write gate to permit first
+ *  writes ahead of catalog discovery without leaking a hardcoded
+ *  enumeration into route code. */
+export function getRegisteredResourceNamespaces(): ReadonlySet<string> {
+  return REGISTERED_RESOURCE_NAMESPACES;
+}
+
+/** Test-only — clear the registered namespaces. The host normally
+ *  re-populates this from `loadPlugins`, but isolated unit tests
+ *  that don't go through that flow may want a clean slate. */
+export function _resetRegisteredResourceNamespaces_forTest(): void {
+  REGISTERED_RESOURCE_NAMESPACES.clear();
 }
 
 /** Run every plugin's migrate(); records the run in meta so re-runs
